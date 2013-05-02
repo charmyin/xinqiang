@@ -1,5 +1,4 @@
 CMStudio
 ========
 
-It's a base project composed of SpringMVC, JeasyUI, Shiro and so on~ 
-test
+It's a base project composed of SpringMVC, JeasyUI, Shiro and so on~

@@ -9,6 +9,9 @@
 
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	
+	<!-- Enable autowire -->
+	<context:annotation-config />
+	
 	<!-- Enables the Spring MVC @Controller programming model -->
 	<annotation-driven />
 
