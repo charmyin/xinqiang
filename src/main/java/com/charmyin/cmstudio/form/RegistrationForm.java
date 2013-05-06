@@ -23,7 +23,7 @@ public class RegistrationForm {
 	
 	private String salt;
 	
-	private String id;
+	private Integer id;
 	
 	public String getUsername() {
 		return username;
@@ -57,11 +57,11 @@ public class RegistrationForm {
 		this.salt = salt;
 	}
 
-	public String getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	

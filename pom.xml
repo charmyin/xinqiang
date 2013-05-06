@@ -14,9 +14,8 @@
 		<org.slf4j-version>1.5.10</org.slf4j-version>
 		<org.apache.shiro-version>1.2.0</org.apache.shiro-version>
 		<org.hibernate-validator-version>4.2.0.Final</org.hibernate-validator-version>
-		<org.mybatis-version>3.2.2</org.mybatis-version>
-		<org.spring.jdbc-version>3.2.2.RELEASE</org.spring.jdbc-version>
-		<org.mybatis-spring-version>1.2.0</org.mybatis-spring-version>
+		<org.mybatis-version>3.0.6</org.mybatis-version>
+		<org.mybatis-spring-version>1.0.2</org.mybatis-spring-version>
 		<org.mybatis-repository-path>/src/main/resources/migrations</org.mybatis-repository-path>
 	</properties>
 	<dependencies>
@@ -25,19 +24,13 @@
 			<groupId>org.apache.tomcat</groupId>
 			<artifactId>dbcp</artifactId>
 			<version>6.0.29</version>
-		</dependency>
+		</dependency>		            
 		
 		<!-- MySQL JDBC  -->
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.15</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-jdbc</artifactId>
-			<version>${org.spring.jdbc-version}</version>
 		</dependency>
 		
 		<!-- JSR 303 Validation - Hibernat Validator 后端验证-->

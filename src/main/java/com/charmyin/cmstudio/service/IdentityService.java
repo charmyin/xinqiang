@@ -67,7 +67,7 @@ public class IdentityService {
 	}
 	
 	public Integer getIterations(){
-		return Integer.parseInt(env.getProperty("shiro.hashInterations"));
+		return Integer.parseInt(env.getProperty("shiro.hashIterations"));
 	}
 	
 	public Identity getIndentity(int id){
@@ -84,6 +84,14 @@ public class IdentityService {
 			logger.debug("identityMapper didn't get autowired!");
 		}
 		return identityMapper.getIdentityByUserId(userId);
+	}
+	
+	public Identity getIdentity(int id){
+		logger.trace("Enter getIdentiry(" + id + ")");
+		if(identityMapper == null){
+			logger.debug("identityMapper didn't get autowired!");
+		}
+		return identityMapper.getIdentityById(id);
 	}
 	
 	public void setIdentityMapper(IdentityMapper identityMapper){
