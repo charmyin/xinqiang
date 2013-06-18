@@ -26,12 +26,21 @@
 			<version>6.0.29</version>
 		</dependency>		            
 		
-		<!-- MySQL JDBC  -->
+		<!-- MySQL JDBC 
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.15</version>
 		</dependency>
+		 -->
+		 
+		<!-- PostgreSQL JDBC  -->
+		<dependency>
+			<groupId>postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>9.1-901.jdbc4</version>
+		</dependency>
+		            
 		
 		<!-- JSR 303 Validation - Hibernat Validator 后端验证-->
 		<dependency>

@@ -47,7 +47,7 @@
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
 		<!-- Single realm app. If you have multiple realms, use the 'realms' property 
 			instead. -->
-		<property name="realm" ref="sampleRealm" />
+		<property name="realm" ref="jdbcRealm" />
 		<!-- By default the servlet container sessions will be used. Uncomment 
 			this line to use shiro's native sessions (see the JavaDoc for more): -->
 		<property name="sessionMode" value="native"/>
@@ -66,7 +66,7 @@
 	<!-- Define the Shiro Realm implementation you want to use to connect to 
 		your back-end -->
 	<!-- security datasource: -->  
-	<bean id="sampleRealm" class="org.apache.shiro.realm.jdbc.JdbcRealm">
+	<bean id="jdbcRealm" class="org.apache.shiro.realm.jdbc.JdbcRealm">
 		<property name="dataSource" ref="dataSource"/>
 		<property name="authenticationQuery" value="select passphrase, CONCAT('${shiro.applicationSalt}', ':', salt) as salt from shiro_user where userid = ?"/>
 		<property name="userRolesQuery" value="SELECT name FROM shiro_role LEFT JOIN shiro_user_role ON shiro_role.id = shiro_user_role.role_id LEFT JOIN shiro_user ON shiro_user_role.user_id = shiro_user.id WHERE userid = ?"/>

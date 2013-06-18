@@ -7,20 +7,20 @@
 	<resultMap id="identityResult" type="Identity">
 		<result property="id" column="id" />
 		<result property="userid" column="userid" />
-
 		<result property="salt" column="salt" />
 		<result property="email" column="email" />
 		<result property="created" column="date_created" />
 	</resultMap>
 
 
-	<insert id="registerIdentity" parameterType="RegistrationForm"
+	<insert id="registerIdentity" parameterType="RegistrationForm" 
 		useGeneratedKeys="true" keyProperty="id" keyColumn="id">
 		INSERT INTO shiro_user (userid, passphrase, salt, email, date_created)
-		VALUES (#{username}, #{passphrase}, #{salt}, #{email}, CURDATE());
+		VALUES (#{username}, #{passphrase}, #{salt}, #{email}, NOW()) ;
+		<!-- 
 		<selectKey keyProperty="id" resultType="Integer" order="AFTER">
-			select last_insert_id()
-		</selectKey>
+			SELECT currval(pg_get_serial_sequence('shiro_user', 'id'));
+		</selectKey> -->
 	</insert>
 
 	<select id="getIdentityById" parameterType="int" resultMap="identityResult">

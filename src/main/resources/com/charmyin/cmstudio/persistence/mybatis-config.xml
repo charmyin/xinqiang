@@ -11,6 +11,6 @@
 	</typeAliases>
 
 	<mappers>
-		<mapper resource="com/charmyin/cmstudio/persistence/IdentityMapper.xml" />
+		<mapper resource="com/charmyin/cmstudio/persistence/IdentityMapper_PostgreSQL.xml" />
 	</mappers>
 </configuration>
