@@ -28,120 +28,120 @@ drop table if exists shiro_user;
 drop table if exists basic_department;
 
 
---×éÖ¯»ú¹¹±í
+--ç»„ç»‡æœºæ„è¡¨
 create table basic_department (id serial not null, name varchar(50), parent_id bigint, order_number int default 999999, remark varchar(200), primary key(id));
 alter table basic_department add constraint fk_basic_department_parent_id foreign key (parent_id) references basic_department (id);
-comment on table basic_department is '×éÖ¯»ú¹¹±í';
-comment on column basic_department.id is '²¿ÃÅÎ¨Ò»±êÊ¶£¨´Ó0Öğ1µİÔö£©';
-comment on column basic_department.name is '²¿ÃÅÃû³Æ£¨×î´ó³¤¶ÈÎª50£©';
-comment on column basic_department.parent_id is '¸¸¼¶²¿ÃÅid£¨³¤ÕûĞÍ£©';
-comment on column basic_department.order_number is 'ÓÃÓÚÅÅĞòµÄĞòºÅ£¬Ä¬ÈÏÎª99999£¬ÊıÖµÔ½Ğ¡£¬ÅÅĞò¿¿Ç°£¨ÕûĞÍ£©';
-comment on column basic_department.remark is '²¿ÃÅ±¸×¢ĞÅÏ¢£¨×î´ó³¤¶ÈÎª200£©';
-comment on constraint fk_basic_department_parent_id on basic_department is 'basic_department¡£parent_idµÄÍâ¼üÔ¼Êø£¬Ö¸Ïòbasic_department¡£id';
+comment on table basic_department is 'ç»„ç»‡æœºæ„è¡¨';
+comment on column basic_department.id is 'éƒ¨é—¨å”¯ä¸€æ ‡è¯†ï¼ˆä»0é€1é€’å¢ï¼‰';
+comment on column basic_department.name is 'éƒ¨é—¨åç§°ï¼ˆæœ€å¤§é•¿åº¦ä¸º50ï¼‰';
+comment on column basic_department.parent_id is 'çˆ¶çº§éƒ¨é—¨idï¼ˆé•¿æ•´å‹ï¼‰';
+comment on column basic_department.order_number is 'ç”¨äºæ’åºçš„åºå·ï¼Œé»˜è®¤ä¸º99999ï¼Œæ•°å€¼è¶Šå°ï¼Œæ’åºé å‰ï¼ˆæ•´å‹ï¼‰';
+comment on column basic_department.remark is 'éƒ¨é—¨å¤‡æ³¨ä¿¡æ¯ï¼ˆæœ€å¤§é•¿åº¦ä¸º200ï¼‰';
+comment on constraint fk_basic_department_parent_id on basic_department is 'basic_departmentã€‚parent_idçš„å¤–é”®çº¦æŸï¼ŒæŒ‡å‘basic_departmentã€‚id';
 
 
---ÓÃ»§±í
+--ç”¨æˆ·è¡¨
 CREATE TABLE shiro_user (id SERIAL NOT NULL, userid VARCHAR(100) NOT NULL UNIQUE, name varchar(50), department_id bigint, email VARCHAR(100) NOT NULL UNIQUE, passphrase VARCHAR(100) NOT NULL, salt VARCHAR(100) NOT NULL, state boolean default true, date_created TIMESTAMP NOT NULL, remark varchar(200), PRIMARY KEY (id));
 alter table shiro_user add constraint fk_shiro_user_department_id foreign key (department_id) references basic_department (id);
-comment on table shiro_user is 'ÓÃ»§±í';
-comment on column shiro_user.id is 'ÓÃ»§Î¨Ò»±êÊ¶£¨´Ó0Öğ1µİÔö£©';
-comment on column shiro_user.userid is 'ÓÃ»§µÇÂ¼ÕËºÅ£¨¾ßÓĞÎ¨Ò»ĞÔ£¬×î´ó³¤¶ÈÎª100£©';
-comment on column shiro_user.name is 'ÓÃ»§Ãû£¨ÈËÃû¿ÉÖØ¸´£¬×î´ó³¤¶ÈÎª50£©';
-comment on column shiro_user.department_id is 'ËùÊô²¿ÃÅ£¨³¤ÕûĞÍ£©';
-comment on column shiro_user.email is 'emailµØÖ·£¨¾ßÓĞÎ¨Ò»ĞÔ£¬×î´ó³¤¶ÈÎª100£©';
-comment on column shiro_user.passphrase is 'ÃÜÂë£¨Ã÷ÎÄÖÁÉÙÎª8Î»£¬´ËÎª¼ÓÃÜºóµÄÎÄ×Ö£¬×î´ó³¤¶ÈÎª100£©';
-comment on column shiro_user.salt is 'ÃÜÂëµ÷ÁÏ£¨×î´ó³¤¶ÈÎª100£©';
-comment on column shiro_user.state is 'ÓÃ»§×´Ì¬£¬booleanÀàĞÍ£¬trueÎª¼¤»î×´Ì¬£¬falseÎªËø¶¨×´Ì¬£¬Ä¬ÈÏÎªtrue';
-comment on column shiro_user.date_created is 'ÓÃ»§´´½¨Ê±¼ä';
-comment on column shiro_user.remark is 'ÓÃ»§±¸×¢';
-comment on constraint fk_shiro_user_department_id on shiro_user is 'shiro_user.department_idµÄÍâ¼ü£¬Ö¸Ïòbasic_department';
+comment on table shiro_user is 'ç”¨æˆ·è¡¨';
+comment on column shiro_user.id is 'ç”¨æˆ·å”¯ä¸€æ ‡è¯†ï¼ˆä»0é€1é€’å¢ï¼‰';
+comment on column shiro_user.userid is 'ç”¨æˆ·ç™»å½•è´¦å·ï¼ˆå…·æœ‰å”¯ä¸€æ€§ï¼Œæœ€å¤§é•¿åº¦ä¸º100ï¼‰';
+comment on column shiro_user.name is 'ç”¨æˆ·åï¼ˆäººåå¯é‡å¤ï¼Œæœ€å¤§é•¿åº¦ä¸º50ï¼‰';
+comment on column shiro_user.department_id is 'æ‰€å±éƒ¨é—¨ï¼ˆé•¿æ•´å‹ï¼‰';
+comment on column shiro_user.email is 'emailåœ°å€ï¼ˆå…·æœ‰å”¯ä¸€æ€§ï¼Œæœ€å¤§é•¿åº¦ä¸º100ï¼‰';
+comment on column shiro_user.passphrase is 'å¯†ç ï¼ˆæ˜æ–‡è‡³å°‘ä¸º8ä½ï¼Œæ­¤ä¸ºåŠ å¯†åçš„æ–‡å­—ï¼Œæœ€å¤§é•¿åº¦ä¸º100ï¼‰';
+comment on column shiro_user.salt is 'å¯†ç è°ƒæ–™ï¼ˆæœ€å¤§é•¿åº¦ä¸º100ï¼‰';
+comment on column shiro_user.state is 'ç”¨æˆ·çŠ¶æ€ï¼Œbooleanç±»å‹ï¼Œtrueä¸ºæ¿€æ´»çŠ¶æ€ï¼Œfalseä¸ºé”å®šçŠ¶æ€ï¼Œé»˜è®¤ä¸ºtrue';
+comment on column shiro_user.date_created is 'ç”¨æˆ·åˆ›å»ºæ—¶é—´';
+comment on column shiro_user.remark is 'ç”¨æˆ·å¤‡æ³¨';
+comment on constraint fk_shiro_user_department_id on shiro_user is 'shiro_user.department_idçš„å¤–é”®ï¼ŒæŒ‡å‘basic_department';
 
 
---½ÇÉ«±í
+--è§’è‰²è¡¨
 CREATE TABLE shiro_role (id SERIAL NOT NULL, name VARCHAR(50) NOT NULL, description VARCHAR(200), department_id bigint, remark varchar(200), state boolean default true, PRIMARY KEY (id));
 alter table shiro_role add constraint fk_shiro_role_department_id foreign key (department_id) references basic_department(id);
-comment on table shiro_role is '½ÇÉ«±í';
-comment on column shiro_role.id is '½ÇÉ«Î¨Ò»±êÊ¶£¨´Ó0Öğ1µİÔö£©';
-comment on column shiro_role.name is '½ÇÉ«Ãû³Æ£¨×î´ó³¤¶ÈÎªÎåÊ®£©';
-comment on column shiro_role.description is '½ÇÉ«ÃèÊö(×î´ó³¤¶ÈÎª200)';
-comment on column shiro_role.department_id is 'ËùÊô²¿ÃÅid£¨³¤ÕûĞÍ£©';
-comment on column shiro_role.remark is '½ÇÉ«±¸×¢£¨×î´ó³¤¶ÈÎª200£©';
-comment on column shiro_role.state is '½ÇÉ«×´Ì¬£¨booleanÀàĞÍ£©trueÎª¼¤»î×´Ì¬£¬falseÎªËø¶¨×´Ì¬£¬Ä¬ÈÏÎªtrue';
-comment on constraint fk_shiro_role_department_id on shiro_role is 'shiro_role.department_idÍâ¼ü£¬Ö¸Ïòbasic_department.id';
+comment on table shiro_role is 'è§’è‰²è¡¨';
+comment on column shiro_role.id is 'è§’è‰²å”¯ä¸€æ ‡è¯†ï¼ˆä»0é€1é€’å¢ï¼‰';
+comment on column shiro_role.name is 'è§’è‰²åç§°ï¼ˆæœ€å¤§é•¿åº¦ä¸ºäº”åï¼‰';
+comment on column shiro_role.description is 'è§’è‰²æè¿°(æœ€å¤§é•¿åº¦ä¸º200)';
+comment on column shiro_role.department_id is 'æ‰€å±éƒ¨é—¨idï¼ˆé•¿æ•´å‹ï¼‰';
+comment on column shiro_role.remark is 'è§’è‰²å¤‡æ³¨ï¼ˆæœ€å¤§é•¿åº¦ä¸º200ï¼‰';
+comment on column shiro_role.state is 'è§’è‰²çŠ¶æ€ï¼ˆbooleanç±»å‹ï¼‰trueä¸ºæ¿€æ´»çŠ¶æ€ï¼Œfalseä¸ºé”å®šçŠ¶æ€ï¼Œé»˜è®¤ä¸ºtrue';
+comment on constraint fk_shiro_role_department_id on shiro_role is 'shiro_role.department_idå¤–é”®ï¼ŒæŒ‡å‘basic_department.id';
 
 
---ÓÃ»§½ÇÉ«¹ØÁª±í
+--ç”¨æˆ·è§’è‰²å…³è”è¡¨
 CREATE TABLE shiro_user_role (user_id SERIAL NOT NULL , role_id BIGINT NOT NULL, PRIMARY KEY (user_id, role_id));
 ALTER TABLE shiro_user_role ADD CONSTRAINT fk_shiro_user_role_user_id FOREIGN KEY (user_id) REFERENCES shiro_user (id);
 ALTER TABLE shiro_user_role ADD CONSTRAINT fk_shiro_user_role_role_id FOREIGN KEY (role_id) REFERENCES shiro_role (id);
-comment on table shiro_user_role is 'ÓÃ»§idÓëÆä½ÇÉ«id¹ØÁª±í';
-comment on column shiro_user_role.user_id is 'ÓÃ»§Î¨Ò»±êÊ¶';
-comment on column shiro_user_role.role_id is '½ÇÉ«Î¨Ò»±êÊ¶';
-comment on constraint fk_shiro_user_role_user_id on shiro_user_role is 'shiro_user_role.user_idÍâ¼ü£¬Ö¸Ïòshiro_user.id';
-comment on constraint fk_shiro_user_role_role_id on shiro_user_role is 'shiro_user_role.role_idÍâ¼ü£¬Ö¸Ïòshiro_role.id';
+comment on table shiro_user_role is 'ç”¨æˆ·idä¸å…¶è§’è‰²idå…³è”è¡¨';
+comment on column shiro_user_role.user_id is 'ç”¨æˆ·å”¯ä¸€æ ‡è¯†';
+comment on column shiro_user_role.role_id is 'è§’è‰²å”¯ä¸€æ ‡è¯†';
+comment on constraint fk_shiro_user_role_user_id on shiro_user_role is 'shiro_user_role.user_idå¤–é”®ï¼ŒæŒ‡å‘shiro_user.id';
+comment on constraint fk_shiro_user_role_role_id on shiro_user_role is 'shiro_user_role.role_idå¤–é”®ï¼ŒæŒ‡å‘shiro_role.id';
 
 
---½ÇÉ«È¨ÏŞ¹ØÁª±í
+--è§’è‰²æƒé™å…³è”è¡¨
 CREATE TABLE shiro_role_permission (role_id BIGINT NOT NULL, permission VARCHAR(100) NOT NULL, PRIMARY KEY (role_id, permission));
 ALTER TABLE shiro_role_permission ADD CONSTRAINT fk_shiro_role_id FOREIGN KEY (role_id) REFERENCES shiro_role (id);
-comment on table shiro_role_permission is '½ÇÉ«idÓëÈ¨ÏŞ¹ØÁª±í';
-comment on column shiro_role_permission.role_id is '½ÇÉ«Î¨Ò»±êÊ¶';
-comment on column shiro_role_permission.permission is 'È¨ÏŞ£¬µ¥ĞĞÖ»ÔÊĞí´æÈëµ¥¸öÈ¨ÏŞ£¬Èç¹ûÓĞ¶à¸ö£¬ĞèÒª·Ö¿ªµ¥¶À´æ´¢¶àĞĞ¡£×î´ó³¤¶ÈÎª100¡£';
-comment on constraint fk_shiro_role_id on shiro_role_permission is 'shiro_role_permission.role_idÍâ¼ü£¬Ö¸Ïòshiro_role.id';
+comment on table shiro_role_permission is 'è§’è‰²idä¸æƒé™å…³è”è¡¨';
+comment on column shiro_role_permission.role_id is 'è§’è‰²å”¯ä¸€æ ‡è¯†';
+comment on column shiro_role_permission.permission is 'æƒé™ï¼Œå•è¡Œåªå…è®¸å­˜å…¥å•ä¸ªæƒé™ï¼Œå¦‚æœæœ‰å¤šä¸ªï¼Œéœ€è¦åˆ†å¼€å•ç‹¬å­˜å‚¨å¤šè¡Œã€‚æœ€å¤§é•¿åº¦ä¸º100ã€‚';
+comment on constraint fk_shiro_role_id on shiro_role_permission is 'shiro_role_permission.role_idå¤–é”®ï¼ŒæŒ‡å‘shiro_role.id';
 
 
---Ê÷¼¶²Ëµ¥ÌõÄ¿ÏêÏ¸±í
+--æ ‘çº§èœå•æ¡ç›®è¯¦ç»†è¡¨
 create table basic_menu (id serial not null, name varchar(20), parent_id bigint, link_url varchar(300) not null, order_number int default 999999, remark varchar(200), full_permission varchar(300), read_permission varchar(300), primary key(id));
 ALTER TABLE basic_menu ADD CONSTRAINT fk_basic_menu_parent_id FOREIGN KEY (parent_id) REFERENCES basic_menu (id);
-comment on table basic_menu is 'Ê÷¼¶²Ëµ¥ÌõÄ¿ÏêÏ¸±í';
-comment on column basic_menu.id is 'Ê÷ĞÎ²Ëµ¥ÌõÄ¿Î¨Ò»±êÊ¶';
-comment on column basic_menu.name is 'Ê÷ĞÎ²Ëµ¥Ãû³Æ£¨×î³¤Îª20¸ö×Ö·û£©';
-comment on column basic_menu.parent_id is '¸¸¼¶²Ëµ¥Î¨Ò»±êÊ¶£¨Íâ¼ü£©';
-comment on column basic_menu.order_number is 'ÓÃÓÚÅÅĞòµÄĞòºÅ£¬Ä¬ÈÏÎª99999£¬ÊıÖµÔ½Ğ¡£¬ÅÅĞò¿¿Ç°£¨ÕûĞÍ£©';
-comment on column basic_menu.remark is 'Ê÷ĞÎ²Ëµ¥±¸×¢ËµÃ÷';
-comment on column basic_menu.full_permission is '¿ÉÖ´ĞĞËùÓĞ²Ù×÷È¨ÏŞ£¬ÓÉ·ÖºÅ·Ö¸ô£¬Èç£ºaccount:create£»account:read';
-comment on column basic_menu.read_permission is '¿ÉÖ´ĞĞ¶ÁÈ¡µÄ²Ù×÷È¨ÏŞ£¬ÓÉ·ÖºÅ·Ö¸ô£¬Èç£ºaccount:create£»account:read';
-comment on constraint fk_basic_menu_parent_id on basic_menu is 'basic_menu.parent_idÍâ¼ü£¬Ö¸Ïòbasicmenu.id';
+comment on table basic_menu is 'æ ‘çº§èœå•æ¡ç›®è¯¦ç»†è¡¨';
+comment on column basic_menu.id is 'æ ‘å½¢èœå•æ¡ç›®å”¯ä¸€æ ‡è¯†';
+comment on column basic_menu.name is 'æ ‘å½¢èœå•åç§°ï¼ˆæœ€é•¿ä¸º20ä¸ªå­—ç¬¦ï¼‰';
+comment on column basic_menu.parent_id is 'çˆ¶çº§èœå•å”¯ä¸€æ ‡è¯†ï¼ˆå¤–é”®ï¼‰';
+comment on column basic_menu.order_number is 'ç”¨äºæ’åºçš„åºå·ï¼Œé»˜è®¤ä¸º99999ï¼Œæ•°å€¼è¶Šå°ï¼Œæ’åºé å‰ï¼ˆæ•´å‹ï¼‰';
+comment on column basic_menu.remark is 'æ ‘å½¢èœå•å¤‡æ³¨è¯´æ˜';
+comment on column basic_menu.full_permission is 'å¯æ‰§è¡Œæ‰€æœ‰æ“ä½œæƒé™ï¼Œç”±åˆ†å·åˆ†éš”ï¼Œå¦‚ï¼šaccount:createï¼›account:read';
+comment on column basic_menu.read_permission is 'å¯æ‰§è¡Œè¯»å–çš„æ“ä½œæƒé™ï¼Œç”±åˆ†å·åˆ†éš”ï¼Œå¦‚ï¼šaccount:createï¼›account:read';
+comment on constraint fk_basic_menu_parent_id on basic_menu is 'basic_menu.parent_idå¤–é”®ï¼ŒæŒ‡å‘basicmenu.id';
 
 
---²Ëµ¥È¨ÏŞ±í
+--èœå•æƒé™è¡¨
 create table basic_menu_permission(menu_id int not null, permission varchar(100) not null, primary key(menu_id, permission));
 alter table basic_menu_permission add constraint fk_basic_menu_permission_menu_id foreign key (menu_id) references basic_menu(id);
-comment on table basic_menu_permission is '²Ëµ¥È¨ÏŞ±í£¬ÓÃÓÚÃèÊöÄ³Ò»²Ëµ¥Ëù°üº¬µÄµÄÈ¨ÏŞ';
-comment on column basic_menu_permission.menu_id is '²Ëµ¥ÌõÄ¿Î¨Ò»±êÊ¶';
-comment on column basic_menu_permission.permission is 'È¨ÏŞ£¬µ¥ĞĞÖ»ÔÊĞí´æÈëµ¥¸öÈ¨ÏŞ£¬Èç¹ûÓĞ¶à¸ö£¬ĞèÒª·Ö¿ªµ¥¶À´æ´¢¶àĞĞ¡£×î´ó³¤¶ÈÎª100¡£';
-comment on constraint fk_basic_menu_permission_menu_id on basic_menu_permission is 'basic_menu_permission.menu_idÍâ¼ü£¬Ö¸Ïòbasic_menu.id';
+comment on table basic_menu_permission is 'èœå•æƒé™è¡¨ï¼Œç”¨äºæè¿°æŸä¸€èœå•æ‰€åŒ…å«çš„çš„æƒé™';
+comment on column basic_menu_permission.menu_id is 'èœå•æ¡ç›®å”¯ä¸€æ ‡è¯†';
+comment on column basic_menu_permission.permission is 'æƒé™ï¼Œå•è¡Œåªå…è®¸å­˜å…¥å•ä¸ªæƒé™ï¼Œå¦‚æœæœ‰å¤šä¸ªï¼Œéœ€è¦åˆ†å¼€å•ç‹¬å­˜å‚¨å¤šè¡Œã€‚æœ€å¤§é•¿åº¦ä¸º100ã€‚';
+comment on constraint fk_basic_menu_permission_menu_id on basic_menu_permission is 'basic_menu_permission.menu_idå¤–é”®ï¼ŒæŒ‡å‘basic_menu.id';
 
 
---½ÇÉ«²Ëµ¥±í
+--è§’è‰²èœå•è¡¨
 create table basic_role_menu(role_id int not null, menu_id int not null, primary key(role_id, menu_id));
 alter table basic_role_menu add constraint fk_basic_role_menu_role_id foreign key (role_id) references shiro_role(id);
 alter table basic_role_menu add constraint fk_basic_role_menu_menu_id foreign key (menu_id) references basic_menu(id);
-comment on table basic_role_menu is '½ÇÉ«ËùÓÃ¹ØÁªµÄ²Ëµ¥±í';
-comment on column basic_role_menu.role_id is '½ÇÉ«Î¨Ò»±êÊ¶£¨Íâ¼ü£©';
-comment on column basic_role_menu.menu_id is '²Ëµ¥ÌõÄ¿Î¨Ò»±êÊ¶£¨Íâ¼ü£©';
-comment on constraint fk_basic_role_menu_role_id on basic_role_menu is 'basic_role_menu.role_idÍâ¼ü£¬Ö¸Ïòshiro_role.id';
-comment on constraint fk_basic_role_menu_menu_id on basic_role_menu is 'basic_role_menu.menu_idÍâ¼ü£¬Ö¸Ïòbasic_menu.id';
+comment on table basic_role_menu is 'è§’è‰²æ‰€ç”¨å…³è”çš„èœå•è¡¨';
+comment on column basic_role_menu.role_id is 'è§’è‰²å”¯ä¸€æ ‡è¯†ï¼ˆå¤–é”®ï¼‰';
+comment on column basic_role_menu.menu_id is 'èœå•æ¡ç›®å”¯ä¸€æ ‡è¯†ï¼ˆå¤–é”®ï¼‰';
+comment on constraint fk_basic_role_menu_role_id on basic_role_menu is 'basic_role_menu.role_idå¤–é”®ï¼ŒæŒ‡å‘shiro_role.id';
+comment on constraint fk_basic_role_menu_menu_id on basic_role_menu is 'basic_role_menu.menu_idå¤–é”®ï¼ŒæŒ‡å‘basic_menu.id';
 
 
---½ÇÉ«¿ÉÊÚÈ¨²Ëµ¥±í
+--è§’è‰²å¯æˆæƒèœå•è¡¨
 create table basic_role_menu_for_authorization(role_id int not null, menu_id int not null, primary key(role_id, menu_id));
 alter table basic_role_menu_for_authorization add constraint fk_basic_role_menu_for_authorization_role_id foreign key (role_id) references shiro_role(id);
 alter table basic_role_menu_for_authorization add constraint fk_basic_role_menu_for_authorization_menu_id foreign key (menu_id) references basic_menu(id);
-comment on table basic_role_menu_for_authorization is '½ÇÉ«ËùÓÃ¹ØÁªµÄ²Ëµ¥±í';
-comment on column basic_role_menu_for_authorization.role_id is '½ÇÉ«Î¨Ò»±êÊ¶£¨Íâ¼ü£©';
-comment on column basic_role_menu_for_authorization.menu_id is '²Ëµ¥ÌõÄ¿Î¨Ò»±êÊ¶£¨Íâ¼ü£©';
-comment on constraint fk_basic_role_menu_for_authorization_role_id on basic_role_menu_for_authorization is 'basic_role_menu_for_authorization.role_idÍâ¼ü£¬Ö¸Ïòshiro_role.id';
-comment on constraint fk_basic_role_menu_for_authorization_menu_id on basic_role_menu_for_authorization is 'basic_role_menu_for_authorization.menu_idÍâ¼ü£¬Ö¸Ïòbasic_menu.id';
+comment on table basic_role_menu_for_authorization is 'è§’è‰²æ‰€ç”¨å…³è”çš„èœå•è¡¨';
+comment on column basic_role_menu_for_authorization.role_id is 'è§’è‰²å”¯ä¸€æ ‡è¯†ï¼ˆå¤–é”®ï¼‰';
+comment on column basic_role_menu_for_authorization.menu_id is 'èœå•æ¡ç›®å”¯ä¸€æ ‡è¯†ï¼ˆå¤–é”®ï¼‰';
+comment on constraint fk_basic_role_menu_for_authorization_role_id on basic_role_menu_for_authorization is 'basic_role_menu_for_authorization.role_idå¤–é”®ï¼ŒæŒ‡å‘shiro_role.id';
+comment on constraint fk_basic_role_menu_for_authorization_menu_id on basic_role_menu_for_authorization is 'basic_role_menu_for_authorization.menu_idå¤–é”®ï¼ŒæŒ‡å‘basic_menu.id';
 
 
---Í¨ÓÃÊı¾İ×Öµä
+--é€šç”¨æ•°æ®å­—å…¸
 --create table system_data_dictionary 
 
---È«¾Ö²ÎÊı±í
+--å…¨å±€å‚æ•°è¡¨
 --create table system_global_parameter
 
---ÏµÍ³Òì³£¼ÇÂ¼
+--ç³»ç»Ÿå¼‚å¸¸è®°å½•
 --create table system_exception
 
 

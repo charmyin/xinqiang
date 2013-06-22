@@ -30,12 +30,15 @@
 	
 	<!-- Enable component scanning and autowire (beware that this does not enable 
 		MyBatis mapper scanning!) -->
-	<context:component-scan base-package="com.charmyin.cmstudio.service, com.charmyin.cmstudio.util" />
+	<context:component-scan base-package="com.charmyin.cmstudio" />
 	
 	<!-- We Use This for Bean Validation-->
 	<bean id="validator"
 		class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
-		 
+		
+    <!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
+	<mvc:resources mapping="/resources/**" location="/resources/" />
+	<mvc:resources mapping="/staticviews/**" location="/staticviews/" />
 	
 	<!-- transaction manager, use JtaTransactionManager for global tx -->
 	<bean id="transactionManager"
@@ -44,9 +47,8 @@
 	</bean>
 	
 	<!-- Sample Beans -->
-
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.charmyin.cmstudio.persistence" />
+		<property name="basePackage" value="com.charmyin.cmstudio.basic.authorize.persistence" />
 	</bean>
 	
 	<!-- Security Configuration / Apache Shiro -->
@@ -56,9 +58,9 @@
 	<!-- define the SqlSessionFactory -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
-		<property name="typeAliasesPackage" value="com.h57.sample.domain" />
+		<property name="typeAliasesPackage" value="com.charmyin.cmstudio.basic.authorize.domain" />
 		<property name="configLocation"
-			value="classpath:com/charmyin/cmstudio/persistence/mybatis-config.xml" />
+			value="classpath:mybatis-config.xml" />
 	</bean>
 
 	<!-- Get the Datasource -->

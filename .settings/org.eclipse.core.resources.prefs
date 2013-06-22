@@ -1,2 +1,4 @@
 eclipse.preferences.version=1
-encoding//src/main/java/com/charmyin/cmstudio/form/LoginForm.java=UTF-8
+encoding//src/main/java/com/charmyin/cmstudio/basic/authorize/form/LoginForm.java=UTF-8
+encoding//src/main/webapp/WEB-INF/dynamicviews/basic/main/test.jsp=UTF-8
+encoding/<project>=UTF-8
