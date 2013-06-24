@@ -179,10 +179,18 @@
 			<groupId>org.mybatis</groupId>
 			<artifactId>mybatis</artifactId>
 			<version>${org.mybatis-version}</version>
-		</dependency>      
+		</dependency>  
+		
+		<!-- Jackson -->
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-core-asl</artifactId>
+			<version>1.9.12</version>
+		</dependency>    
 	</dependencies>
 	
 	
+	            
 	
 	<repositories>
 		<!-- For JSR 303 Validation - Hibernat Validator -->

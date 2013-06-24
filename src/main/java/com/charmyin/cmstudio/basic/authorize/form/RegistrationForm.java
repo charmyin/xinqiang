@@ -12,7 +12,7 @@ import org.hibernate.validator.constraints.Email;
  */
 public class RegistrationForm {
 	@NotNull(message = "用户名不能为空！")
-	@Size(min=4, max=50, message="用户名长度必须大�?小于50")
+	@Size(min=4, max=50, message="用户名长度必须大4小于50")
 	private String username;
 	
 	@NotNull(message = "用户名不能为空！")

@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -6,7 +8,6 @@
 		<meta http-equiv="description" content="this is my page">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<!-- 指向http://xxx.xxx.xxx:xxxx/cmstudio/ -->
-		<base href="../../../" />
 		
 		<link rel="shortcut icon" type="image/x-icon" href="resources/zebone.ico"/>
 		<link rel="stylesheet" type="text/css" href="resources/vendor/easyui_1.3.2/themes/icon.css" />
@@ -84,12 +85,18 @@
 			function validUserByAjax(userName, password){
 				
 				$.ajax({
-					  url: "",
+					  url: "identity/authenticate",
+					  type:"POST",
 					  data: {
-					    zipcode: 97201
+					    passphrase : password,
+					    username : userName
 					  },
 					  success: function( data ) {
+						alert(data);
 					    $( "#weather-temp" ).html( "<strong>" + data + "</strong> degrees" );
+					  },
+					  error: function(data){
+						  alert(data);
 					  }
 					});
 				
@@ -204,7 +211,7 @@
 					 			</div>
 					 	</div>
 					 	<div title="帮助提示" iconCls="icon-help">
-					 		<div style="margin:70px 0 0 70px;">版权所有，翻版不究^_^</div>
+					 		<div style="margin:70px 0 0 70px;" id="weather-temp">版权所有，翻版不究^_^</div>
 					 	</div>
 					</div>
 				</div>

@@ -1,6 +1,10 @@
 package com.charmyin.cmstudio.basic.authorize.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.validation.Valid;
 import javax.validation.Validator;
@@ -15,9 +19,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.charmyin.cmstudio.basic.authorize.domain.Identity;
 import com.charmyin.cmstudio.basic.authorize.form.LoginForm;
@@ -58,9 +64,7 @@ public class IdentityController {
 	  @RequestMapping(method = RequestMethod.GET, value = { "/login", "/identity" })
 	  public String login(Locale locale, Model model) {
 	    logger.trace("Entering login");
-	    model.addAttribute("loginForm", new LoginForm());
-	    //return "identity/login";
-	    return "basic/main/index";
+	    return "basic/authorize/login";
 	  }
 
 	  /**
@@ -74,8 +78,8 @@ public class IdentityController {
 	  public String registration(Locale locale, Model model) {
 	    logger.trace("Entering Registration");
 	    model.addAttribute("registration", new RegistrationForm());
-	    //return "identity/registration";
-	    return "basic/main/index";
+	    return "identity/registration";
+	    //return "basic/main/index";
 	  }
 
 	  /**
@@ -113,13 +117,25 @@ public class IdentityController {
 	   * @return
 	   */
 	  @RequestMapping(method = RequestMethod.POST, value = { "/authenticate" })
-	  public String register(@ModelAttribute(value = "loginForm") @Valid LoginForm loginForm, BindingResult result, Model model) {
+	  public @ResponseBody Map register(@ModelAttribute(value = "loginForm") @Valid LoginForm loginForm, BindingResult result, Model model) {
 	    logger.trace("Entering Authenticate");
-
+	    
+	    Map<String,Object> map = new HashMap();
+	    
 	    if (result.hasErrors()) {
-
+	    //	List<ObjectError> errorlist = result.getAllErrors();
+	    	List<FieldError> errors = result.getFieldErrors();
+	    	String errorInfo = "";
+	        for (FieldError error : errors ) {
+	        	errorInfo += error.getObjectName() + " - " + error.getDefaultMessage();
+	        }
+	       
+	       
+	        map.put("status", "error");
+	        map.put("data", errorInfo);
+	    	return map ;
 	      //return "identity/login";
-	    	return "basic/main/index";
+	    	//return "basic/main/index";
 	    }
 
 	    UsernamePasswordToken token = new UsernamePasswordToken(loginForm.getUsername(), loginForm.getPassphrase());
@@ -138,11 +154,16 @@ public class IdentityController {
 	    }
 
 	    if (currentUser.isAuthenticated()) {
-	      return "redirect:/index";
+	      map.put("status", "ok");
+	      return map;
 	    }
 
 	    //return "identity/login";
-	    return "basic/main/index";
+	     
+        map.put("status", "error");
+        map.put("msg", "用户名或密码错误!");
+        
+        return map;
 	  }
 	  
 	  

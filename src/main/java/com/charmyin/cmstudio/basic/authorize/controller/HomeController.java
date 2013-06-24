@@ -110,7 +110,8 @@ public class HomeController {
 	    model.addAttribute("serverTime", formattedDate);
 	    model.addAttribute("services", services);
 	    //return "home";
-	    return "forward:staticviews/basic/authorize/login.html";
+	    
+	    return "redirect:staticviews/basic/authorize/login.html";
 	  }
 
 	  /**
