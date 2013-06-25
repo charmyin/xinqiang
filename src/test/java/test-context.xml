@@ -32,14 +32,6 @@
 		MyBatis mapper scanning!) -->
 	<context:component-scan base-package="com.charmyin.cmstudio" />
 	
-	<!-- We Use This for Bean Validation-->
-	<bean id="validator"
-		class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
-		
-    <!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
-	<mvc:resources mapping="/resources/**" location="/resources/" />
-	<mvc:resources mapping="/staticviews/**" location="/staticviews/" />
-	
 	<!-- transaction manager, use JtaTransactionManager for global tx -->
 	<bean id="transactionManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
@@ -50,10 +42,7 @@
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<property name="basePackage" value="com.charmyin.cmstudio.basic.authorize.persistence" />
 	</bean>
-	
-	<!-- Security Configuration / Apache Shiro -->
-	<import resource="shiro-context.xml" />
-	
+
 	<!-- Database Configuration / MyBatis -->
 	<!-- define the SqlSessionFactory -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">

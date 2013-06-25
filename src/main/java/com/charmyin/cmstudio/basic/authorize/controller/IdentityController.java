@@ -1,6 +1,5 @@
 package com.charmyin.cmstudio.basic.authorize.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -11,6 +10,12 @@ import javax.validation.Validator;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.ConcurrentAccessException;
+import org.apache.shiro.authc.ExcessiveAttemptsException;
+import org.apache.shiro.authc.ExpiredCredentialsException;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.LockedAccountException;
+import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
@@ -20,7 +25,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -91,7 +95,7 @@ public class IdentityController {
 	   * @return
 	   */
 	  @RequestMapping(method = RequestMethod.POST, value = { "/register" })
-	  public String register(@ModelAttribute(value = "registration") @Valid RegistrationForm registration, BindingResult result, Model model) {
+	  public String register(@Valid RegistrationForm registration, BindingResult result) {
 	    logger.trace("Entering Register");
 
 	    if (result.hasErrors()) {
@@ -101,9 +105,9 @@ public class IdentityController {
 	    }
 
 	    Identity identity = this.identityService.registerIdentity(registration);
-
-	    model.addAttribute("registration", registration);
-	    model.addAttribute("identity", identity);
+//
+//	    model.addAttribute("registration", registration);
+//	    model.addAttribute("identity", identity);
 	    //return "identity/register";
 	    return "basic/main/index";
 	  }
@@ -117,25 +121,21 @@ public class IdentityController {
 	   * @return
 	   */
 	  @RequestMapping(method = RequestMethod.POST, value = { "/authenticate" })
-	  public @ResponseBody Map register(@ModelAttribute(value = "loginForm") @Valid LoginForm loginForm, BindingResult result, Model model) {
+	  public @ResponseBody Map register( @Valid LoginForm loginForm, BindingResult result) {
 	    logger.trace("Entering Authenticate");
 	    
-	    Map<String,Object> map = new HashMap();
+	    Map<String,Object> map = new HashMap<String, Object>();
 	    
 	    if (result.hasErrors()) {
 	    //	List<ObjectError> errorlist = result.getAllErrors();
 	    	List<FieldError> errors = result.getFieldErrors();
 	    	String errorInfo = "";
 	        for (FieldError error : errors ) {
-	        	errorInfo += error.getObjectName() + " - " + error.getDefaultMessage();
+	        	errorInfo += error.getDefaultMessage()+"  ";
 	        }
-	       
-	       
 	        map.put("status", "error");
-	        map.put("data", errorInfo);
+	        map.put("msg", errorInfo);
 	    	return map ;
-	      //return "identity/login";
-	    	//return "basic/main/index";
 	    }
 
 	    UsernamePasswordToken token = new UsernamePasswordToken(loginForm.getUsername(), loginForm.getPassphrase());
@@ -147,21 +147,37 @@ public class IdentityController {
 	    Subject currentUser = SecurityUtils.getSubject();
 
 	    try {
-	      currentUser.login(token);
-	      logger.info("AUTH SUCCESS");
-	    } catch (AuthenticationException ae) {
-	      logger.info("AUTH MSSG: " + ae.getMessage());
+	        currentUser.login(token);
+	        logger.info("AUTH SUCCESS");
+	    } catch (UnknownAccountException ue) {
+	    	logger.info("AUTH MSSG: " + ue.getMessage());
+	    	map.put("msg", "用户名不存在！");
+	    } catch (IncorrectCredentialsException ice){
+	    	logger.info("AUTH MSSG: " + ice.getMessage());
+	    	map.put("msg", "用户名或密码错误!");
+	    } catch (LockedAccountException lae){
+	    	logger.info("AUTH MSSG: " + lae.getMessage());
+	    	map.put("msg", "当前账号已被锁定!请稍后再试！");
+	    } catch (ExpiredCredentialsException ece){
+	    	logger.info("AUTH MSSG: " + ece.getMessage());
+	    	map.put("msg", "当前用户密码已经过期，请及时更改！");
+	    } catch (ExcessiveAttemptsException eae){
+	    	logger.info("AUTH MSSG: " + eae.getMessage());
+	    	map.put("msg", "当前账号登录尝试过于频繁，请稍后再试！");
+	    } catch (ConcurrentAccessException cae){
+	    	logger.info("AUTH MSSG: " + cae.getMessage());
+	    	map.put("msg", "当前系统不允许多点登录，请先退出之前登录的系统！");
+	    } catch (AuthenticationException ae){
+	    	logger.warn("AUTH MSSG: " + ae.getMessage());
+	    	map.put("msg", "未知原因，登录失败！"+ae.getMessage());
 	    }
 
 	    if (currentUser.isAuthenticated()) {
 	      map.put("status", "ok");
 	      return map;
 	    }
-
-	    //return "identity/login";
-	     
+	    
         map.put("status", "error");
-        map.put("msg", "用户名或密码错误!");
         
         return map;
 	  }

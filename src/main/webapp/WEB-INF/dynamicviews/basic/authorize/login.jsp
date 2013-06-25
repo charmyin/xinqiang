@@ -59,10 +59,12 @@
 				if(!$('#authForm').form('validate')){
 					return;
 				}			
+				
+				var userName = $('#inputUsername').val();
+				var password = $('#inputPassword').val();
+				
 				//保存cookie
 				if($('#inputRememberMe').is(':checked')){
-					var userName = $('#inputUsername').val();
-					var password = $('#inputPassword').val();
 					if(userName){
 						cookie.set('loginUserName', userName);
 					}
@@ -83,7 +85,7 @@
 			
 			//Ajax形式验证用户凭据
 			function validUserByAjax(userName, password){
-				
+				//alert(userName+password);
 				$.ajax({
 					  url: "identity/authenticate",
 					  type:"POST",
@@ -91,27 +93,41 @@
 					    passphrase : password,
 					    username : userName
 					  },
+					  dataType: "json",
 					  success: function( data ) {
-						alert(data);
-					    $( "#weather-temp" ).html( "<strong>" + data + "</strong> degrees" );
+					    if(data.status == 'ok'){
+					    	alert("success");
+					    }else{
+					    	$.messager.show({
+								title:'登录提示',
+								msg:data.msg,
+								timeout : 2000,
+								showType:'slide',
+								style:{
+									right:'',
+									top:document.body.scrollTop+document.documentElement.scrollTop+150,
+									bottom:''
+								}
+							});
+					    }
 					  },
 					  error: function(data){
-						  alert(data);
+						// show message window on top center
+						$.messager.show({
+							title:'登录提示',
+							msg:data.msg,
+							timeout : 2000,
+							showType:'slide',
+							style:{
+								right:'',
+								top:document.body.scrollTop+document.documentElement.scrollTop+150,
+								bottom:''
+							}
+						});
+						  
 					  }
 					});
 				
-				// show message window on top center
-				$.messager.show({
-					title:'My Title',
-					msg:'<a href="#">adf</a>Message will be closed after 1 seconds.',
-					timeout : 2000,
-					showType:'slide',
-					style:{
-						right:'',
-						top:document.body.scrollTop+document.documentElement.scrollTop+150,
-						bottom:''
-					}
-				});
 			}
 			
 			//监视easyloader加载组件完成的事件
