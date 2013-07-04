@@ -8,7 +8,7 @@
 		<meta http-equiv="description" content="this is my page">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<!-- 指向http://xxx.xxx.xxx:xxxx/cmstudio/ -->
-		
+		<base href="../"/>
 		<link rel="shortcut icon" type="image/x-icon" href="resources/zebone.ico"/>
 		<link rel="stylesheet" type="text/css" href="resources/vendor/easyui_1.3.2/themes/icon.css" />
 		<link rel="stylesheet" type="text/css" href="resources/css/basic/authorize/login.css" />
@@ -85,7 +85,7 @@
 			
 			//Ajax形式验证用户凭据
 			function validUserByAjax(userName, password){
-				//alert(userName+password);
+				alert(userName+password);
 				$.ajax({
 					  url: "identity/authenticate",
 					  type:"POST",
@@ -96,7 +96,8 @@
 					  dataType: "json",
 					  success: function( data ) {
 					    if(data.status == 'ok'){
-					    	alert("success");
+					    	//alert("aaaa");
+					    	window.location.href="staticviews/basic/main/index.html";
 					    }else{
 					    	$.messager.show({
 								title:'登录提示',
@@ -171,7 +172,8 @@
 					document.authForm.username.focus();
 				});
 				//提交表单
-				$('#aSubmitForm').click(function () {
+				$('#aSubmitForm').click(function (event) {
+					event.preventDefault();
 					submitLoginForm();
 				});
 				//设定enter按钮事件
@@ -220,7 +222,7 @@
 				 					</form>
 					 				<div id="operationBtnsDiv" >
 					 					<div style="height:6px;"></div>
-					 					<a href="#" id="aSubmitForm" class="easyui-linkbutton" iconCls="icon-ok" onclick="">提交</a>
+					 					<a href="#" id="aSubmitForm" class="easyui-linkbutton" iconCls="icon-ok">提交</a>
 					 					&nbsp;
 					 					<a href="#" id="aResetForm" class="easyui-linkbutton" iconCls="icon-cancel">重置</a>
 					 				</div>

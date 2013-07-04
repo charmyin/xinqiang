@@ -5,6 +5,7 @@
 	
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <link rel="shortcut icon" type="image/x-icon" href="resources/zebone.ico"/>
+    <base href="../../">
 	<link rel="stylesheet" type="text/css" href="resources/vendor/easyui_1.3.2/themes/icon.css" />
 	<link rel="stylesheet" type="text/css" href="resources/css/basic/main/index.css" />
 	<link rel="stylesheet" type="text/css" href="resources/vendor/easyui_1.3.2/themes/bootstrap/easyui.css" />
@@ -94,14 +95,13 @@
 						 // alert(tabCount);
 					}
 				});
-				
 			}
 			
 			$(".divOnChangeTheme").click(function () {
 				changeTheme($(this).attr('value'));
 			});
 			
-			easyloader.locale = 'zh_CN';
+			//easyloader.locale = 'zh_CN';
 		});
 	</script>
 
@@ -116,7 +116,7 @@
       				<a href="" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-sum'">桌面版</a>
       				<a id="aMenubutton_Main" href="#" class="easyui-menubutton" data-options="menu:'#mm1', iconCls:'icon-tip'" >切换主题</a>
       				<a href="#" class="easyui-menubutton" data-options="menu:'#mm2', iconCls:'icon-help'">首选项</a>
-      				<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-no'">退出</a>
+      				<a href="#" class="easyui-linkbutton" id="logout" data-options="plain:true, iconCls:'icon-no'">退出</a>
       			</div>
       			<div id="mm1" style="width:150px;">
       				<div data-options="iconCls: 'icon-undo'" class="divOnChangeTheme" value="default">Default</div>
