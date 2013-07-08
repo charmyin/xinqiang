@@ -8,7 +8,7 @@
 		<meta http-equiv="description" content="this is my page">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<!-- 指向http://xxx.xxx.xxx:xxxx/cmstudio/ -->
-		<base href="../"/>
+		<base href="${basepath}"/>
 		<link rel="shortcut icon" type="image/x-icon" href="resources/zebone.ico"/>
 		<link rel="stylesheet" type="text/css" href="resources/vendor/easyui_1.3.2/themes/icon.css" />
 		<link rel="stylesheet" type="text/css" href="resources/css/basic/authorize/login.css" />
@@ -97,7 +97,7 @@
 					  success: function( data ) {
 					    if(data.status == 'ok'){
 					    	//alert("aaaa");
-					    	window.location.href="staticviews/basic/main/index.html";
+					    	window.location.href="staticviews/basic/index.html";
 					    }else{
 					    	$.messager.show({
 								title:'登录提示',
