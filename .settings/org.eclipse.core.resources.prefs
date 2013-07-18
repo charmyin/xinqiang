@@ -1,4 +1,6 @@
 eclipse.preferences.version=1
 encoding//src/main/java/com/charmyin/cmstudio/basic/authorize/form/LoginForm.java=UTF-8
+encoding//src/main/resources/application-spring.properties=UTF-8
+encoding//src/main/resources/webcontext.properties=UTF-8
 encoding//src/main/webapp/WEB-INF/dynamicviews/basic/menu_manage.jsp=UTF-8
 encoding/<project>=UTF-8

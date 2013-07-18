@@ -7,18 +7,18 @@
 		<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 		<meta http-equiv="description" content="this is my page">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<!-- 指向http://xxx.xxx.xxx:xxxx/cmstudio/ -->
-		<base href="${basepath}"/>
-		<link rel="shortcut icon" type="image/x-icon" href="resources/zebone.ico"/>
-		<link rel="stylesheet" type="text/css" href="resources/vendor/easyui_1.3.2/themes/icon.css" />
-		<link rel="stylesheet" type="text/css" href="resources/css/basic/authorize/login.css" />
-		<link rel="stylesheet" type="text/css" href="resources/vendor/easyui_1.3.2/themes/bootstrap/easyui.css" />
-		<script src="resources/vendor/jquery_1.8/jquery-1.8.3.min.js" type="text/javascript"></script>
-		<script src="resources/vendor/easyui_1.3.2/jquery.easyui.min.js" type="text/javascript"></script>
-		<script src="resources/vendor/easyui_1.3.2/locale/easyui-lang-zh_CN.js" type="text/javascript"></script>
+		<!-- 指向http://xxx.xxx.xxx:xxxx/cmstudio/ 
+		<base href="${app.name}"/>-->
+		<link rel="shortcut icon" type="image/x-icon" href="/resources/zebone.ico"/>
+		<link rel="stylesheet" type="text/css" href="/resources/vendor/easyui_1.3.2/themes/icon.css" />
+		<link rel="stylesheet" type="text/css" href="/resources/css/basic/authorize/login.css" />
+		<link rel="stylesheet" type="text/css" href="/resources/vendor/easyui_1.3.2/themes/bootstrap/easyui.css" />
+		<script src="/resources/vendor/jquery_1.8/jquery-1.8.3.min.js" type="text/javascript"></script>
+		<script src="/resources/vendor/easyui_1.3.2/jquery.easyui.min.js" type="text/javascript"></script>
+		<script src="/resources/vendor/easyui_1.3.2/locale/easyui-lang-zh_CN.js" type="text/javascript"></script>
 		<!-- <script src="../../../resources/vendor/easyui_1.3.2/easyloader.js" type="text/javascript"></script>-->
-		<script src="resources/vendor/cookiejs/cookie.min.js" type="text/javascript"></script>
-		<script type="text/javascript">
+		<script src="/resources/vendor/cookiejs/cookie.min.js" type="text/javascript"></script>
+		<script type="/text/javascript">
 			
 			//从cookie获取用户信息
 		    function getUserInfoFromCookie() {

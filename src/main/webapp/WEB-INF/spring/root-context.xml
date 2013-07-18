@@ -17,7 +17,7 @@
 	<!-- Root Context: defines shared resources visible to all other web components -->
 		
 	<!-- Grab out properties for use in these Spring Configs -->
-	<context:property-placeholder location="classpath:application.properties" />
+	<context:property-placeholder location="classpath:application-spring.properties" />
 	
 	<!-- enable autowire -->
 	<context:annotation-config />
