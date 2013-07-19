@@ -1,25 +1,23 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="/WEB-INF/tlds/cmstudio.tld" prefix="cmstudio" %>
 <!DOCTYPE html>
 <html>
 	<head>
 		<title>Zebone:基础研发平台</title>
-		<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
-		<meta http-equiv="description" content="this is my page">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<!-- 指向http://xxx.xxx.xxx:xxxx/cmstudio/ 
-		<base href="${app.name}"/>-->
-		<link rel="shortcut icon" type="image/x-icon" href="/resources/zebone.ico"/>
-		<link rel="stylesheet" type="text/css" href="/resources/vendor/easyui_1.3.2/themes/icon.css" />
-		<link rel="stylesheet" type="text/css" href="/resources/css/basic/authorize/login.css" />
-		<link rel="stylesheet" type="text/css" href="/resources/vendor/easyui_1.3.2/themes/bootstrap/easyui.css" />
-		<script src="/resources/vendor/jquery_1.8/jquery-1.8.3.min.js" type="text/javascript"></script>
-		<script src="/resources/vendor/easyui_1.3.2/jquery.easyui.min.js" type="text/javascript"></script>
-		<script src="/resources/vendor/easyui_1.3.2/locale/easyui-lang-zh_CN.js" type="text/javascript"></script>
-		<!-- <script src="../../../resources/vendor/easyui_1.3.2/easyloader.js" type="text/javascript"></script>-->
-		<script src="/resources/vendor/cookiejs/cookie.min.js" type="text/javascript"></script>
-		<script type="/text/javascript">
-			
+		<!-- 指向http://xxx.xxx.xxx:xxxx/cmstudio/ -->
+		<cmstudio:htmlBase/>
+		<link rel="shortcut icon" type="image/x-icon" href="resources/five.ico"/>
+		<link rel="stylesheet" type="text/css" href="resources/css/basic/authorize/login.css" />
+		<!--Start importing the jquery files -->
+		<cmstudio:importJsCss name="jquery" version="${jquery_version}"/>
+		<!--End import the jquery files -->
+		<!--Start importing the jeasyui files -->
+		<cmstudio:importJsCss name="jeasyui" version="${jeasyui_version}"/>
+		<!--End importing the jeasyui files -->
+		<script src="resources/vendor/cookiejs/cookie.min.js" type="text/javascript"></script>
+		<script type="text/javascript">
 			//从cookie获取用户信息
 		    function getUserInfoFromCookie() {
 				var userName = cookie.get('loginUserName');
@@ -85,9 +83,9 @@
 			
 			//Ajax形式验证用户凭据
 			function validUserByAjax(userName, password){
-				alert(userName+password);
+				//alert(userName+password);
 				$.ajax({
-					  url: "identity/authenticate",
+					  url: "/${application_name}/identity/authenticate",
 					  type:"POST",
 					  data: {
 					    passphrase : password,
