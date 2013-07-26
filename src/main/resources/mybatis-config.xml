@@ -6,8 +6,7 @@
 
 	<typeAliases>
 		<typeAlias type="com.charmyin.cmstudio.basic.authorize.domain.Identity" alias="Identity" />
-		<typeAlias type="com.charmyin.cmstudio.basic.authorize.form.RegistrationForm"
-			alias="RegistrationForm" />
+		<typeAlias type="com.charmyin.cmstudio.basic.authorize.form.RegistrationForm" alias="RegistrationForm" />
 	</typeAliases>
 
 	<mappers>

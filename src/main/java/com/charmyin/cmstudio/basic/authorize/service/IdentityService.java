@@ -20,7 +20,7 @@ import com.charmyin.cmstudio.basic.authorize.persistence.IdentityMapper;
  *
  */
 @Service
-@PropertySource("classpath:application-spring.properties")
+//@PropertySource("classpath:application-spring.properties")
 public class IdentityService {
 	
 	@Autowired

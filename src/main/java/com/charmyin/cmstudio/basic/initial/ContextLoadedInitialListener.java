@@ -46,6 +46,7 @@ public class ContextLoadedInitialListener implements ServletContextListener {
 	      logger.info("Loading web context properties : " + key + " -- " + webContextProperties.getProperty(key));
 	    }
 	    logger.info("------------ Loading web context properties ended!--------"); 
+	    logger.warn("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"+sce.getServletContext().getInitParameter("contextConfigLocation"));
 	}
 
 	@Override

@@ -13,11 +13,9 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
-import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,7 +31,6 @@ import com.charmyin.cmstudio.basic.authorize.service.IdentityService;
 public class HomeController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
-	
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
@@ -73,11 +70,11 @@ public class HomeController {
 	    // more.
 	    List<String> services = new ArrayList<String>();
 	    // My SQL class org.apache.commons.dbcp.BasicDataSource
-	    if (dataSource instanceof BasicDataSource) {
-	      services.add("Data Source: " + ((BasicDataSource) dataSource).getUrl());
-	    } else if (dataSource instanceof SimpleDriverDataSource) {
-	      services.add("Data Source: " + ((SimpleDriverDataSource) dataSource).getUrl());
-	    }
+//	    if (dataSource instanceof BasicDataSource) {
+//	      services.add("Data Source: " + ((BasicDataSource) dataSource).getUrl());
+//	    } else if (dataSource instanceof SimpleDriverDataSource) {
+//	      services.add("Data Source: " + ((SimpleDriverDataSource) dataSource).getUrl());
+//	    }
 
 	    services.add("PostgreSQL: " + dataSource.getClass());
 

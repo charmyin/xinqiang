@@ -7,7 +7,9 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 
 /**
- * 
+ * This tag used to generate the base tag of html file , 
+ * for the purpose of managing the relative file path easily. 
+ * i.e <base href='http://localhost:8080/cmstudio/'/>
  * @author charmyin
  * @since 2013-7-19
  * @serial 1.0

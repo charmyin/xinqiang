@@ -9,23 +9,38 @@
 	<version>1.0.0-BUILD-SNAPSHOT</version>
 	<properties>
 		<java-version>1.6</java-version>
-		<org.springframework-version>3.1.0.RELEASE</org.springframework-version>
+		<org.springframework-version>3.2.3.RELEASE</org.springframework-version>
+		<org.spring-dao>2.0.7</org.spring-dao>
 		<org.aspectj-version>1.6.9</org.aspectj-version>
-		<org.slf4j-version>1.5.10</org.slf4j-version>
-		<org.apache.shiro-version>1.2.0</org.apache.shiro-version>
+		
+		<org.apache.shiro-version>1.2.2</org.apache.shiro-version>
+		<org.apache.tomcat.dbcp_version>6.0.29</org.apache.tomcat.dbcp_version>
+		
+		<org.junit-version>4.7</org.junit-version>
 		<org.hibernate-validator-version>4.2.0.Final</org.hibernate-validator-version>
-		<org.mybatis-version>3.0.6</org.mybatis-version>
-		<org.mybatis-spring-version>1.0.2</org.mybatis-spring-version>
+		<org.postgresql.jdbc-version>9.1-901.jdbc4</org.postgresql.jdbc-version>
+		
+		<org.mybatis-version>3.2.2</org.mybatis-version>
+		<org.mybatis-spring-version>1.2.0</org.mybatis-spring-version>
 		<org.mybatis-repository-path>/src/main/resources/migrations</org.mybatis-repository-path>
+		
+		<org.slf4j-version>1.7.5</org.slf4j-version>
+		<org.log4j-version>1.2.15</org.log4j-version>
+		
+		<org.javax.servlet.servlet-api-version>2.5</org.javax.servlet.servlet-api-version>
+		<org.javax.servlet.jsp-api-version>2.1</org.javax.servlet.jsp-api-version>
+		<org.javax.servlet.jstl-version>1.2</org.javax.servlet.jstl-version>
+		
+		<org.codehaus.jackson.version>1.9.12</org.codehaus.jackson.version>
 	</properties>
 	<dependencies>
 		<!-- Apache Datasource -->
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>
 			<artifactId>dbcp</artifactId>
-			<version>6.0.29</version>
-		</dependency>		            
-		
+			<version>${org.apache.tomcat.dbcp_version}</version>
+		</dependency>	
+
 		<!-- MySQL JDBC 
 		<dependency>
 			<groupId>mysql</groupId>
@@ -38,7 +53,7 @@
 		<dependency>
 			<groupId>postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-			<version>9.1-901.jdbc4</version>
+			<version>${org.postgresql.jdbc-version}</version>
 		</dependency>
 		            
 		
@@ -79,17 +94,28 @@
 				 </exclusion>
 			</exclusions>
 		</dependency>
+		<!-- <dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-dao</artifactId>
+			<version>${org.spring-dao}</version>
+		</dependency> -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
 			<version>${org.springframework-version}</version>
-		</dependency>		
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+		            		
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
-			<version>3.2.3.RELEASE</version>
+			<version>${org.springframework-version}</version>
 		</dependency>
-		            
+            
 				
 		<!-- AspectJ -->
 		<dependency>
@@ -116,10 +142,11 @@
 			<version>${org.slf4j-version}</version>
 			<scope>runtime</scope>
 		</dependency>
+		
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
-			<version>1.2.15</version>
+			<version>${org.log4j-version}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>javax.mail</groupId>
@@ -152,57 +179,57 @@
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
-			<version>2.5</version>
+			<version>${org.javax.servlet.servlet-api-version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet.jsp</groupId>
 			<artifactId>jsp-api</artifactId>
-			<version>2.1</version>
+			<version>${org.javax.servlet.jsp-api-version}</version>
 			<scope>provided</scope>
 		</dependency>
+		
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
-			<version>1.2</version>
+			<version>${org.javax.servlet.jstl-version}</version>
 		</dependency>
 	
 		<!-- Test -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.7</version>
+			<version>${org.junit-version}</version>
 			<scope>test</scope>
 		</dependency>  
 		
 		<!-- MyBatis -->
 		<dependency>
 			<groupId>org.mybatis</groupId>
-			<artifactId>mybatis-spring</artifactId>
-			<version>${org.mybatis-spring-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.mybatis</groupId>
 			<artifactId>mybatis</artifactId>
 			<version>${org.mybatis-version}</version>
 		</dependency>  
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis-spring</artifactId>
+			<version>${org.mybatis-spring-version}</version>
+		</dependency>
+		
 		
 		<!-- Jackson -->
-		<!--<dependency>
+		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-core-asl</artifactId>
-			<version>1.9.12</version>
-		</dependency>   -->
+			<version>${org.codehaus.jackson.version}</version>
+		</dependency>  
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-mapper-asl</artifactId>
-			<version>1.9.12</version>
+			<version>${org.codehaus.jackson.version}</version>
 		</dependency>
 		             
 	</dependencies>
-	
-	
-	            
+
 	
 	<repositories>
 		<!-- For JSR 303 Validation - Hibernat Validator -->
@@ -215,6 +242,10 @@
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>
+		</repository>
+		<repository>
+			<id>com.springsource.repository.bundles.release</id>
+			<url>http://repository.springsource.com/maven/bundles/release/</url>
 		</repository>
 	</repositories>
 	

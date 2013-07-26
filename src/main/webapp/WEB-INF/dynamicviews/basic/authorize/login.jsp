@@ -1,10 +1,18 @@
+<%
+/**
+ * This is the login page~ Authorize you the power to go into this application~
+ * @author charmyin
+ * @since 2013-7-19
+ * @serial 1.0
+ */
+%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="/WEB-INF/tlds/cmstudio.tld" prefix="cmstudio" %>
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Zebone:基础研发平台</title>
+		<title> ${application_title} </title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<!-- 指向http://xxx.xxx.xxx:xxxx/cmstudio/ -->
 		<cmstudio:htmlBase/>
@@ -155,8 +163,6 @@
 					});
 				}
 				
-				
-				
 				//页面加载完成后，执行以下操作
 				// domReady(function () {
 				//获取cookie中的用户名和密码
@@ -183,7 +189,7 @@
 		 
 	</head>
 	<body>
-		<div id="loginwindow" class="easyui-window" title="Zebone&reg;--振邦信息化平台入口" data-options="iconCls:'icon-tip',closable:false, minimizable:false, maximizable:false, resizable:false, shadow:true" style="width:500px; height:300px; padding:2px;">
+		<div id="loginwindow" class="easyui-window" title="${application}平台入口" data-options="iconCls:'icon-tip',closable:false, minimizable:false, maximizable:false, resizable:false, shadow:true" >
 			<div class="easyui-layout" fit="true" style="overflow:hidden;">
 				<div region="west">
 				</div>
@@ -232,7 +238,7 @@
 					</div>
 				</div>
 				<div region="south" style="height:30px;line-height:28px;text-align:center;">
-					Powered by  Zebone © 2011-2013  &nbsp;<a href="http://www.zebone.cn" style="text-decoration: none;" target="_blank">http://www.zebone.cn</a>
+					Powered by  ${company_name}© ${company_poweredyear}  &nbsp;<a href="http://www.zebone.cn" style="text-decoration: none;" target="_blank">${company_website}</a>
 				</div>
 			</div>
 		</div>
