@@ -16,7 +16,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<!-- 指向http://xxx.xxx.xxx:xxxx/cmstudio/ -->
 		<cmstudio:htmlBase/>
-		<link rel="shortcut icon" type="image/x-icon" href="resources/five.ico"/>
+		<link rel="shortcut icon" type="image/x-icon" href="resources/${icon_name}"/>
 		<link rel="stylesheet" type="text/css" href="resources/css/basic/authorize/login.css" />
 		<!--Start importing the jquery files -->
 		<cmstudio:importJsCss name="jquery" version="${jquery_version}"/>
@@ -29,7 +29,7 @@
 			//从cookie获取用户信息
 		    function getUserInfoFromCookie() {
 				var userName = cookie.get('loginUserName');
-				var password = cookie.get('loginUassword');
+				var password = cookie.get('loginPassword');
 				$('#inputUsername').val(userName);
 				$('#inputPassword').val(password);
 			}
@@ -93,7 +93,7 @@
 			function validUserByAjax(userName, password){
 				//alert(userName+password);
 				$.ajax({
-					  url: "/${application_name}/identity/authenticate",
+					  url: "identity/authenticate",
 					  type:"POST",
 					  data: {
 					    passphrase : password,
@@ -103,7 +103,7 @@
 					  success: function( data ) {
 					    if(data.status == 'ok'){
 					    	//alert("aaaa");
-					    	window.location.href="staticviews/basic/index.html";
+					    	window.location.href="/${server_name}/";
 					    }else{
 					    	$.messager.show({
 								title:'登录提示',
@@ -189,7 +189,7 @@
 		 
 	</head>
 	<body>
-		<div id="loginwindow" class="easyui-window" title="${application}平台入口" data-options="iconCls:'icon-tip',closable:false, minimizable:false, maximizable:false, resizable:false, shadow:true" >
+		<div id="loginwindow" class="easyui-window" title="${application_name_cn}平台入口" data-options="iconCls:'icon-tip',closable:false, minimizable:false, maximizable:false, resizable:false, shadow:true" >
 			<div class="easyui-layout" fit="true" style="overflow:hidden;">
 				<div region="west">
 				</div>

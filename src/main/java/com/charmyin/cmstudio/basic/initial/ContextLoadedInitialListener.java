@@ -23,7 +23,7 @@ public class ContextLoadedInitialListener implements ServletContextListener {
 		//Get the web context(application scope) properties
 		ClassLoader cl = Thread.currentThread().getContextClassLoader();
 		logger.info("------------Starting loading web context properties!--------"); 
-		InputStream is = cl.getResourceAsStream("webcontext.properties");
+		InputStream is = cl.getResourceAsStream("servletcontext.properties");
 		Properties webContextProperties = new Properties();
 		try{
 			webContextProperties.load(is);

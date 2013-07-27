@@ -192,9 +192,20 @@ public class IdentityController {
 			  e.printStackTrace();
 		  }
 		  model.addAttribute("loginForm", new LoginForm());
-		  //return "identity/login";
-		  return "basic/main/index";
-		  		  
+		 return "basic/authorize/login";
+	  }
+	  
+	  /**
+	   * Show the Login form
+	   * 
+	   * @param locale
+	   * @param model
+	   * @return
+	   */
+	  @RequestMapping(method = RequestMethod.GET, value = { "/unauthorized"})
+	  public String unauthorized(Locale locale, Model model) {
+	    logger.trace("Unauthorized user");
+	    return "basic/errorpage/unauthorized";
 	  }
 	
 }

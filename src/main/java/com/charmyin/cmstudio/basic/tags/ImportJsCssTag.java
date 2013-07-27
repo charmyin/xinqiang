@@ -41,8 +41,8 @@ public class ImportJsCssTag extends TagSupport {
 	@Override
 	public int doStartTag() throws JspException {
 		try {
-			this.pageContext.include("../../commonpart/jscss/"+this.name+"_"+this.version+".jsp");
-			logger.debug("../../commonpart/jscss/"+this.name+"_"+this.version+".jsp  --- has been loaded to file!");
+			this.pageContext.include("/WEB-INF/dynamicviews/commonpart/jscss/"+this.name+"_"+this.version+".jsp");
+			logger.debug("/WEB-INF/dynamicviews/commonpart/jscss/"+this.name+"_"+this.version+".jsp  --- has been loaded to file!");
 		} catch (IOException e) {
 			e.printStackTrace();
 			logger.error(e.getMessage());

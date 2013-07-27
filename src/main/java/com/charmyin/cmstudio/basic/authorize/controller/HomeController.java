@@ -108,7 +108,7 @@ public class HomeController {
 	    model.addAttribute("services", services);
 	    //return "home";
 	    
-	    return "redirect:staticviews/basic/authorize/login.html";
+	    return "basic/index";
 	  }
 
 	  /**
@@ -140,30 +140,6 @@ public class HomeController {
 	    model.addAttribute("identity", thisIdentity);
 	    return "smoketest/smoke";
 	  }
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 }
