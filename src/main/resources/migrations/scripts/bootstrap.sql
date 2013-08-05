@@ -107,7 +107,7 @@ comment on constraint fk_basic_menu_parent_id on basic_menu is 'basic_menu.paren
 --菜单权限表
 create table basic_menu_permission(menu_id int not null, permission varchar(100) not null, primary key(menu_id, permission));
 alter table basic_menu_permission add constraint fk_basic_menu_permission_menu_id foreign key (menu_id) references basic_menu(id);
-comment on table basic_menu_permission is '菜单权限表，用于描述某一菜单所包含的的权限';
+comment on table basic_menu_permission is '菜单权限表，用于描述某一菜单所包含的的权限(暂时只考虑，一个菜单只包含一种权限，即所有子链接或功能，公用该权限)';
 comment on column basic_menu_permission.menu_id is '菜单条目唯一标识';
 comment on column basic_menu_permission.permission is '权限，单行只允许存入单个权限，如果有多个，需要分开单独存储多行。最大长度为100。';
 comment on constraint fk_basic_menu_permission_menu_id on basic_menu_permission is 'basic_menu_permission.menu_id外键，指向basic_menu.id';

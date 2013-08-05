@@ -60,6 +60,7 @@ public class IdentityController {
 
 	  /**
 	   * Show the Login form
+	   * If have loged in then go to the basic/index page
 	   * 
 	   * @param locale
 	   * @param model
@@ -67,6 +68,11 @@ public class IdentityController {
 	   */
 	  @RequestMapping(method = RequestMethod.GET, value = { "/login", "/identity" })
 	  public String login(Locale locale, Model model) {
+	    Subject currentUser = SecurityUtils.getSubject();
+	    if (currentUser.isAuthenticated()) {
+	    	return "basic/index";
+	    	
+	    }
 	    logger.trace("Entering login");
 	    return "basic/authorize/login";
 	  }
@@ -99,8 +105,6 @@ public class IdentityController {
 	    logger.trace("Entering Register");
 
 	    if (result.hasErrors()) {
-
-	      //return "identity/registration";
 	    	return "basic/main/index";
 	    }
 

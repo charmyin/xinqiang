@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.charmyin.cmstudio.basic.initial;
 
 /**
@@ -9,6 +6,6 @@ package com.charmyin.cmstudio.basic.initial;
  * The interfaces annotated by this annotation will be treated as the mapper interface in mybatis, thier implementations will be injected to spring context
  * So it is like a filter, to mark the interface which is used by mybatis as mapper.
  */
-public @interface CMMapper {
-
+public @interface SQLMapper {
+	
 }

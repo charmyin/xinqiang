@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import com.charmyin.cmstudio.basic.authorize.domain.Identity;
 import com.charmyin.cmstudio.basic.authorize.form.RegistrationForm;
+import com.charmyin.cmstudio.basic.initial.SQLMapper;
 
 /**
  * Mybatis Mapper Interface used for User Identity
@@ -13,6 +14,7 @@ import com.charmyin.cmstudio.basic.authorize.form.RegistrationForm;
  *
  */
 @Component
+@SQLMapper
 public interface IdentityMapper {
 	
 	public Identity getIdentityById(@Param("id") int id);

@@ -15,12 +15,13 @@ import com.charmyin.cmstudio.basic.authorize.form.RegistrationForm;
 import com.charmyin.cmstudio.basic.authorize.persistence.IdentityMapper;
 
 /**
- * Mybatis Identiry Service for our Identiry Domain object
+ * Implement from IdentityService
  * @author charmyin
  *
  */
 @Service
-//@PropertySource("classpath:application-spring.properties")
+//@PropertySource used on unit test to load properties
+@PropertySource("classpath:application-spring.properties")
 public class IdentityService {
 	
 	@Autowired
@@ -38,6 +39,7 @@ public class IdentityService {
 	public IdentityMapper getIdentityMapper(){
 		return identityMapper;
 	}
+	
 	
 	public Identity registerIdentity(RegistrationForm registration){
 		

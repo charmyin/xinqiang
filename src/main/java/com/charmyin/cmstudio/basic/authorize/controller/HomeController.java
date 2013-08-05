@@ -31,25 +31,8 @@ import com.charmyin.cmstudio.basic.authorize.service.IdentityService;
 public class HomeController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
-	/**
-	 * Simply selects the home view to render by returning its name.
-	 */
-//	@RequestMapping(value = "/", method = RequestMethod.GET)
-//	public String home(Locale locale, Model model) {
-//		logger.info("Welcome home! The client locale is {}.", locale);
-//		
-//		Date date = new Date();
-//		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-//		
-//		String formattedDate = dateFormat.format(date);
-//		
-//		model.addAttribute("serverTime", formattedDate );
-//		
-//		return "home";
-//	}
-//	
 
-	@Autowired(required = true)
+	  @Autowired(required = true)
 	  IdentityService identityService;
 	  @Autowired(required = true)
 	  DataSource dataSource;
@@ -63,6 +46,7 @@ public class HomeController {
 	  public String home(Locale locale, Model model, HttpServletRequest request) {
 	    logger.info("Welcome home! the client locale is " + locale.toString());
 
+	    /*
 	    // This gets the current subject from shiro
 	    Subject currentUser = SecurityUtils.getSubject();
 	    request.getSession().setAttribute("","");
@@ -107,39 +91,8 @@ public class HomeController {
 	    model.addAttribute("serverTime", formattedDate);
 	    model.addAttribute("services", services);
 	    //return "home";
-	    
+*/	    
 	    return "basic/index";
 	  }
-
-	  /**
-	   * Hard coded test against the default user that comes with the Schema.
-	   */
-	  @RequestMapping(value = "/smoketest", method = RequestMethod.GET)
-	  public String smoketest(Locale locale, Model model, HttpServletRequest request) {
-	    String salted = this.identityService.getApplicationSalt();
-	    logger.info("SALT = " + salted);
-	    String userid = "TestUser";
-	    String passphrase = "TestUserPassword";
-	    UsernamePasswordToken token = new UsernamePasswordToken(userid, passphrase);
-	    Subject currentUser = SecurityUtils.getSubject();
-
-	    try {
-	      currentUser.login(token);
-	      logger.info("AUTH SUCCESS");
-	    } catch (AuthenticationException ae) {
-	      logger.info("AUTH MSSG: " + ae.getMessage());
-	    }
-
-	    Identity thisIdentity = null;
-	    if (currentUser.isAuthenticated()) {
-	      logger.info("PRINCIPAL: " + currentUser.getPrincipal());
-	      thisIdentity = identityService.getIdentity(currentUser.getPrincipal().toString());
-	      salted = this.identityService.getCombinedSalt(thisIdentity.getSalt());
-	      logger.info("COMBINED SALT = " + salted);
-	    }
-	    model.addAttribute("identity", thisIdentity);
-	    return "smoketest/smoke";
-	  }
-	
 	
 }

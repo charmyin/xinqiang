@@ -48,7 +48,7 @@ xsi:schemaLocation="
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<!-- <property name="basePackage" value="com.charmyin.cmstudio.basic.authorize.persistence" /> -->
 		<property name="basePackage" value="com.charmyin.cmstudio" />
-		<!-- <property name="" value="" /> -->
+		<property name="annotationClass" value="com.charmyin.cmstudio.basic.initial.SQLMapper" />
 	</bean>
 	
 	<!-- Security Configuration / Apache Shiro -->

@@ -7,7 +7,6 @@
 	<resultMap id="identityResult" type="Identity">
 		<result property="id" column="id" />
 		<result property="userid" column="userid" />
-
 		<result property="salt" column="salt" />
 		<result property="email" column="email" />
 		<result property="created" column="date_created" />
