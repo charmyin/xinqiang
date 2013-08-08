@@ -17,10 +17,11 @@ public class IdentityServiceT {
 	@Test
 	public void testregisterIdentity(){
 		RegistrationForm rg = new RegistrationForm();
-		rg.setPassphrase("aaaabbb");
-		rg.setEmail("aaaabbb@gmail.com");
-		rg.setUsername("aaaabbb");
+		rg.setPassphrase("aaaaab");
+		rg.setEmail("aaabddb@gmail.com");
+		rg.setUsername("aaaaabb");
 		this.identityService.registerIdentity(rg);
+		System.out.println("Successs!!!");
 	}
 
 	public IdentityService getIdentityService() {

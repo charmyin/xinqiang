@@ -4,12 +4,13 @@
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 
-	<typeAliases>
+	<!-- <typeAliases>
 		<typeAlias type="com.charmyin.cmstudio.basic.authorize.domain.Identity" alias="Identity" />
 		<typeAlias type="com.charmyin.cmstudio.basic.authorize.form.RegistrationForm" alias="RegistrationForm" />
-	</typeAliases>
+	</typeAliases> -->
 
 	<mappers>
 		<mapper resource="com/charmyin/cmstudio/basic/authorize/persistence/IdentityMapper_PostgreSQL.xml" />
+		<mapper resource="com/charmyin/cmstudio/basic/authorize/persistence/MenuMapper.xml" />
 	</mappers>
 </configuration>
