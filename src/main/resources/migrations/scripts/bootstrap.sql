@@ -91,8 +91,9 @@ comment on constraint fk_shiro_role_id on shiro_role_permission is 'shiro_role_p
 
 
 --树级菜单条目详细表
-create table basic_menu (id serial not null, name varchar(20), parent_id bigint, link_url varchar(300) not null, order_number int default 999999, remark varchar(200), full_permission varchar(300), read_permission varchar(300), primary key(id));
+create table basic_menu (id serial not null, name varchar(20), parent_id integer, link_url varchar(300) not null, order_number int default 999999, remark varchar(200), full_permission varchar(300), read_permission varchar(300), primary key(id));
 ALTER TABLE basic_menu ADD CONSTRAINT fk_basic_menu_parent_id FOREIGN KEY (parent_id) REFERENCES basic_menu (id);
+ALTER SEQUENCE basic_menu_id_seq RESTART WITH 1 INCREMENT BY 1;
 comment on table basic_menu is '树级菜单条目详细表';
 comment on column basic_menu.id is '树形菜单条目唯一标识';
 comment on column basic_menu.name is '树形菜单名称（最长为20个字符）';

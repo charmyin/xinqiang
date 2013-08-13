@@ -27,8 +27,8 @@ xsi:schemaLocation="
 	<!-- Configures the @Controller programming model -->
 	<mvc:annotation-driven />
 
-	<!-- Enable transaction demarcation with annotations 
-	<tx:annotation-driven />-->
+	<!-- Enable transaction demarcation with annotations -->
+	<tx:annotation-driven />
 	
 	<!-- Enable component scanning and autowire (beware that this does not enable 
 		MyBatis mapper scanning!) -->
@@ -61,6 +61,10 @@ xsi:schemaLocation="
 		<!-- <property name="typeAliasesPackage" value="com.charmyin.cmstudio.basic.authorize.domain" /> -->
 		<property name="configLocation"
 			value="classpath:mybatis-config.xml" />
+	</bean>
+	
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+	    <constructor-arg index="0" ref="sqlSessionFactory" />
 	</bean>
 
 	<!-- Get the Datasource -->

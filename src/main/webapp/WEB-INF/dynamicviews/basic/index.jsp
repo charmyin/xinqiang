@@ -16,6 +16,9 @@
 	<!--Start importing the jeasyui files -->
 	<cmstudio:importJsCss name="jeasyui" version="${jeasyui_version}"/>
 	<!--End importing the jeasyui files -->
+	<!--Start importing the jeasyui files -->
+	<cmstudio:importJsCss name="ztree" version="${ztree_version}"/>
+	<!--End importing the jeasyui files -->
 
 	<script type="text/javascript">
 	
@@ -31,26 +34,26 @@
 			var isNotExisted = true;//tab不存在
 			var tabs = $("#divTab_Main").tabs('tabs');
 			for( var i=0; i<tabs.length; i++){
-				if('divTab_Main_' + node.id == $(tabs[i]).attr('id')){
+				if('divTab_Main_' + node.tId == $(tabs[i]).attr('id')){
 					$("#divTab_Main").tabs('select', i);	
 					isNotExisted = false;//tab已存在
 				}
 			}
 			if(isNotExisted){
 				$('#divTab_Main').tabs('add', {
-					id: 'divTab_Main_' + node.id,//tab的Id格式为divTab_Main_12
+					id: 'divTab_Main_' + node.tId,//tab的Id格式为divTab_Main_12
 					title: node.text,
-					content: '<iframe id="iframeTab_'+ node.id+'" src="'+ node.attributes['url']+'" style="border:none; overflow:auto;width:100%;height:99%;"></iframe>',// '',
+					content: '<iframe id="iframeTab_'+ node.tId+'" src="'+ node.attributes['linkUrl']+'" style="border:none; overflow:auto;width:100%;height:99%;"></iframe>',// '',
 					closable: true,
 					fit: true,
 					tools:[{
 						iconCls: 'icon-mini-refresh',
 						handler: function(){
-							$('#iframeTab_' + node.id).attr("src",$('#iframeTab_' + node.id).attr("src"));
+							$('#iframeTab_' + node.tId).attr("src",$('#iframeTab_' + node.tId).attr("src"));
 						}
 					}]
 				});
-				$('#divTab_Main_'+ node.id ).css({'padding':'0', 'margin':'0', 'overflow':'auto' });
+				$('#divTab_Main_'+ node.tId ).css({'padding':'0', 'margin':'0', 'overflow':'auto' });
 			}
 		}
  
@@ -65,7 +68,39 @@
 				});
 			}
 		
-			//监听点击左侧树状目录后打开右侧tab事件		
+			//加载tree
+			var zTreeObj;
+			var setting = {
+					async:{
+						enable:true,
+						url:"menuparent/1/menu",
+						type:"get"
+					},
+					data:{
+						key:{
+							 
+						},
+						simpleData:{
+							enable:true,
+							idKey:"id",
+							pIdKey:"parentId",
+							rootPid:1
+						}
+					},
+					callback:{
+						onClick:function (event,treeId,node) {
+							var boo = $("#ulCatalogueTree_Main").tree("isLeaf", node.target);
+							if(boo){
+								openMainTab(node);
+							}
+						}
+					}
+					
+			};
+			
+			zTreeObj = $.fn.zTree.init($("#ulCatalogueTree_Main"), setting);
+			
+			/* //监听点击左侧树状目录后打开右侧tab事件		
 			$("#ulCatalogueTree_Main").tree({
 				//单击后右侧tab现对应的界面
 				onClick: function (node) {
@@ -74,7 +109,12 @@
 						openMainTab(node);
 					}
 				}
-			});
+			}); */
+			
+			
+			
+			
+			
 			
 			//当加载完tabs后，需要监听页面主tabs的事件	
 			if(typeof(event) !== 'string' && $.inArray("tabs",event) !== -1){
@@ -140,7 +180,7 @@
       	<div region="west" split="true" id="divRegionWest_Main" title="Navigator 是个导航栏" style='width:280px; height:auto;'>
       		<div class="easyui-accordion" id="divAccordion_main" data-options="fit:true">
       			<div title="模版子系统" id="divPanelModule_main" data-option="iconCls:'icon-ok'" style="width:100%; overflow-x:hidden; overflow-y:auto;">
-						<ul id="ulCatalogueTree_Main" class="easyui-tree" data-options="animate:true, method:'get'" url="resources/js/basic/main/tree_data.json"></ul><!---->
+						<div id="ulCatalogueTree_Main" class="ztree"></div><!---->
 				</div>
 				
 				<div title="开发人员工具" data-option="iconCls:'icon-help'" style="padding:10px;">

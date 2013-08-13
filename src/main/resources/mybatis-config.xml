@@ -10,7 +10,7 @@
 	</typeAliases> -->
 
 	<mappers>
-		<mapper resource="com/charmyin/cmstudio/basic/authorize/persistence/IdentityMapper_PostgreSQL.xml" />
-		<mapper resource="com/charmyin/cmstudio/basic/authorize/persistence/MenuMapper.xml" />
+		<mapper resource="com/charmyin/cmstudio/basic/authorize/persistence/IdentityMapper_pgsql.xml" />
+		<mapper resource="com/charmyin/cmstudio/basic/authorize/persistence/MenuMapper_pgsql.xml" />
 	</mappers>
 </configuration>
