@@ -23,13 +23,12 @@ public class MenuController {
 	
 	@Resource
 	MenuService menuService;
-	
-	
 
 	@RequestMapping("/menu/all")
 	@ResponseBody
 	public List<Menu> getAllMenu(){
 		List<Menu> menuList = menuService.getAllMenu();
+		menuList.remove(0);
 		return menuList;
 	}
 	

@@ -65,7 +65,6 @@ public class MenuT{
 		Menu menu = new Menu();
 		menu.setName("dddd");
 		menu.setOrderNumber(1);
-		menu.setParentId(1);
 		menu.setRemark("It's a link for google");
 		menu.setLinkUrl("www.google.com.hk");
 		menuMapper.insertMenu(menu);

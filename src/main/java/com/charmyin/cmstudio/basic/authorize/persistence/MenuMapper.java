@@ -19,7 +19,6 @@ public interface MenuMapper {
 	 * Get all menus from menu role 
 	 * @return
 	 */
-	@Select("SELECT * FROM basic_menu")
 	public List<Menu> getAllMenu();
 	
 	/**

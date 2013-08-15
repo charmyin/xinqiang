@@ -18,6 +18,12 @@
 		ID, NAME, PARENT_ID, LINK_URL, ORDER_NUMBER, REMARK, FULL_PERMISSION, READ_PERMISSION
 	</sql>
 	
+	<select id="getAllMenu" resultMap="MenuResultMap">
+		SELECT 
+			<include refid="Menu_Column_List" />
+		FROM  BASIC_MENU
+	</select>
+	
 	<select id="getMenuEqual" resultMap="MenuResultMap" parameterType="com.charmyin.cmstudio.basic.authorize.vo.Menu">
 		SELECT 
 			<include refid="Menu_Column_List" />
