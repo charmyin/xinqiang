@@ -6,25 +6,24 @@
  ***/
 
 #loginwindow{
-	width:500px; 
-	height:300px; 
-	padding:2px;
+	width:482px; 
+	height:265px;
 	top:100px;
 }
 
 #userconfirmDiv{
 	width:278px;
-	height:195px;
+	height:160px;
 }
 
 div[region=west]{
 	width:200px;
-	background:url(../../../../resources/img/basic/authorize/loginfit.jpg) no-repeat; 
+	background:url(../../../../resources/img/basic/authorize/loginfit.jpg) no-repeat;
 	margin:0px;
 }
 
 #authForm{
-	height:145px;
+	height:150px;
 	margin:0px;
 }
 
@@ -33,6 +32,7 @@ div[region=west]{
 	margin:0px 0px 0px 0px;
 	padding:10px 0px 0px 0px;
 	background:url(../../../../resources/img/basic/authorize/loginbg.jpg) no-repeat;
+	height:150px;
 }
 
 #formUl .inputText{

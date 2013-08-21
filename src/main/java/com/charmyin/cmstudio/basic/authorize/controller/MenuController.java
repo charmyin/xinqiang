@@ -28,7 +28,6 @@ public class MenuController {
 	@ResponseBody
 	public List<Menu> getAllMenu(){
 		List<Menu> menuList = menuService.getAllMenu();
-		menuList.remove(0);
 		return menuList;
 	}
 	

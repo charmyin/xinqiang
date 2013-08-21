@@ -12,7 +12,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title> ${application_title} </title>
+		<title> ${application_name_cn} </title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<!-- 指向http://xxx.xxx.xxx:xxxx/cmstudio/ -->
 		<cmstudio:htmlBase/>
@@ -32,11 +32,11 @@
 			<div class="easyui-layout" fit="true" style="overflow:hidden;">
 				<div region="west">
 				</div>
-				<div region="center" style="width:250px">
+				<div region="center">
 					<div class="easyui-tabs" fit="true">
 					 	<div title="身份认证" iconCls="icon-save">
 					 			<div id="userconfirmDiv">
-				 					<form id="authForm" name="authForm" action="/${server_name}/" method="post">
+				 					<form id="authForm" name="authForm" action="#" method="post">
 				 						<ul id="formUl">
 				 							<li class="inputText">
 				 								<label for="inputUsername">用户名:</label>

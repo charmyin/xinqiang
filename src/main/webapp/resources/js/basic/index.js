@@ -38,59 +38,79 @@ var  openMainTab = function (node){
 			}
 		}
  
-		
-		
-		$(function () {
-			//console.log(event);
-	//去除加载mask效果
-	if($("#divLoading_Main").length > 0){
-		$('#divLoading_Main').fadeOut("slow", function () {
-			$(this).remove();
-		});
-	}
-
-	//加载tree
-	var zTreeObj;
-	var setting = {
-			async:{
-				enable:true,
-				url:"menu/all",
-				type:"get"						
-			},
-			data:{
-				simpleData:{
+	//doc加载后执行
+	$(function () {
+		//去除加载mask效果
+		if($("#divLoading_Main").length > 0){
+			$('#divLoading_Main').fadeOut("slow", function () {
+				$(this).remove();
+			});
+		}
+	
+		//加载tree
+		var zTreeObj;
+		var divDevelopToolTreeObj;
+		var moduleSystemTreeObj;
+		var menuTreeSetting= {
+				/*async:{
 					enable:true,
-					idKey:"id",
-					pIdKey:"parentId",
-					rootPId:0
-				}
-			},
-			callback:{
-				onClick:function (event,treeId,node) {
-					var boo = node.isParent;
-					if(!boo){
-						openMainTab(node);
+					url:"menu/all",
+					type:"get"						
+				},*/
+				data:{
+					simpleData:{
+						enable:true,
+						idKey:"id",
+						pIdKey:"parentId"
+					}
+				},
+				callback:{
+					onClick:function (event,treeId,node) {
+						var boo = node.isParent;
+						if(!boo){
+							openMainTab(node);
+						}
 					}
 				}
-			}
-	};
-	zTreeObj = $.fn.zTree.init($("#ulCatalogueTree_Main"), setting);
-	
-	//Change the theme
-	$(".divOnChangeTheme").click(function () {
-		changeTheme($(this).attr('value'));
-	});
-	var changeTheme = function (theme){
-		//link.attr('href', '/easyui/themes/'+theme+'/easyui.css');
-	}
-	
-	//Logout the system
-	$("#logout").click(function(){
-		$.messager.confirm('退出提示', '确定退出系统？', function(r){
-			if (r){
-				window.location.href="identity/logout";
-			}
+		};
+		
+		$.ajax({
+		  type: "GET",
+		  url: "menu/all"
+		}).done(function( msg ) {
+		  //Load the system manage tree
+		  zTreeObj = $.fn.zTree.init($("#divSystemManage_main_tree"), menuTreeSetting, msg);
+		  var newNode = zTreeObj.getNodeByParam("id","2");
+		  zTreeObj.removeNode(zTreeObj.getNodes()[0]);
+		  zTreeObj.addNodes(null, newNode.children);
+		  
+		  divDevelopToolTreeObj = $.fn.zTree.init($("#divDevelopTool_tree"), menuTreeSetting, msg);
+		  var newNode1 = divDevelopToolTreeObj.getNodeByParam("id","4");
+		  divDevelopToolTreeObj.removeNode(divDevelopToolTreeObj.getNodes()[0]);
+		  divDevelopToolTreeObj.addNodes(null, newNode1.children);
+		  
+		  moduleSystemTreeObj = $.fn.zTree.init($("#moduleSystem_tree"), menuTreeSetting, msg);
+		  var newNode2 = moduleSystemTreeObj.getNodeByParam("id","6");
+		  moduleSystemTreeObj.removeNode(moduleSystemTreeObj.getNodes()[0]);
+		  moduleSystemTreeObj.addNodes(null, newNode2.children);
+		
 		});
 		
+		//Change the theme
+		$(".divOnChangeTheme").click(function () {
+			changeTheme($(this).attr('value'));
+		});
+		var changeTheme = function (theme){
+			//link.attr('href', '/easyui/themes/'+theme+'/easyui.css');
+		}
+		
+		//Logout the system
+		$("#logout").click(function(){
+			$.messager.confirm('退出提示', '确定退出系统？', function(r){
+				if (r){
+					window.location.href="identity/logout";
+				}
+			});
+			
+		});
 	});
-});

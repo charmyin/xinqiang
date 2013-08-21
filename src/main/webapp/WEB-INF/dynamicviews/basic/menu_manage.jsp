@@ -31,7 +31,7 @@
 					enable: true,
 					idKey: "id",
 					pIdKey: "pId",
-					rootPId: 0
+					rootPId: "aaa"
 				}
 			}
 		};
@@ -45,7 +45,6 @@
 		
 		$(function(){
 			menu_tree = $.fn.zTree.init($("#menu_tree"), menu_tree_setting, treeNodes);
-			
 		});
 		
 	</script>

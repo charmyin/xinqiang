@@ -1,18 +1,10 @@
 package com.charmyin.cmstudio.basic.authorize.controller;
 
-import java.text.DateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.charmyin.cmstudio.basic.authorize.domain.Identity;
 import com.charmyin.cmstudio.basic.authorize.service.IdentityService;
 
 /**
@@ -34,8 +25,8 @@ public class HomeController {
 
 	  @Autowired(required = true)
 	  IdentityService identityService;
-	  @Autowired(required = true)
-	  DataSource dataSource;
+/*	  @Autowired(required = true)
+	  DataSource dataSource;*/
 
 
 	  /**
