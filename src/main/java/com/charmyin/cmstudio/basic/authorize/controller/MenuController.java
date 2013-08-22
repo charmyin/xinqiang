@@ -24,6 +24,10 @@ public class MenuController {
 	@Resource
 	MenuService menuService;
 
+	/**
+	 * Get all menu items in database
+	 * @return all menu items JSON type data
+	 */
 	@RequestMapping("/menu/all")
 	@ResponseBody
 	public List<Menu> getAllMenu(){
@@ -32,12 +36,28 @@ public class MenuController {
 	}
 	
 	//TODO The parentId parse exception has not been handled~
+	/**
+	 * Get child menu under one parent menu (Not include all the children and grand children, just the next level children)
+	 * @param parentId 
+	 * @return Menu items' JSON type data under the parent;  
+	 */
 	@RequestMapping(value="/menuparent/{parentId}/menu", method=RequestMethod.GET)
 	@ResponseBody
 	public List<Menu> getMenuByParent(@PathVariable int parentId){
 		List<Menu> menuList = menuService.getChildrenMenus(parentId);
 		return menuList;
 	}
+	
+	
+	/**
+	 * Direct to the menuManage jsp file
+	 * @return jsp file path
+	 */
+	@RequestMapping(value="/menu/manage")
+	public String manageMenu(){
+		return "basic/menu/menuManage";
+	}	
+	
 	
 	
 	public MenuService getMenuService() {

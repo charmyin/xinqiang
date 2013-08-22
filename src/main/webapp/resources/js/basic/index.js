@@ -47,16 +47,14 @@ var  openMainTab = function (node){
 			});
 		}
 	
-		//加载tree
-		var zTreeObj;
+		//system manage tree
+		var systemManageTreeObj;
+		//system develop tool tree
 		var divDevelopToolTreeObj;
+		//system develop tool tree
 		var moduleSystemTreeObj;
+		
 		var menuTreeSetting= {
-				/*async:{
-					enable:true,
-					url:"menu/all",
-					type:"get"						
-				},*/
 				data:{
 					simpleData:{
 						enable:true,
@@ -79,16 +77,18 @@ var  openMainTab = function (node){
 		  url: "menu/all"
 		}).done(function( msg ) {
 		  //Load the system manage tree
-		  zTreeObj = $.fn.zTree.init($("#divSystemManage_main_tree"), menuTreeSetting, msg);
-		  var newNode = zTreeObj.getNodeByParam("id","2");
-		  zTreeObj.removeNode(zTreeObj.getNodes()[0]);
-		  zTreeObj.addNodes(null, newNode.children);
+		  systemManageTreeObj = $.fn.zTree.init($("#divSystemManage_main_tree"), menuTreeSetting, msg);
+		  var newNode = systemManageTreeObj.getNodeByParam("id","2");
+		  systemManageTreeObj.removeNode(systemManageTreeObj.getNodes()[0]);
+		  systemManageTreeObj.addNodes(null, newNode.children);
 		  
+		  //Load the system develop tool tree
 		  divDevelopToolTreeObj = $.fn.zTree.init($("#divDevelopTool_tree"), menuTreeSetting, msg);
 		  var newNode1 = divDevelopToolTreeObj.getNodeByParam("id","4");
 		  divDevelopToolTreeObj.removeNode(divDevelopToolTreeObj.getNodes()[0]);
 		  divDevelopToolTreeObj.addNodes(null, newNode1.children);
 		  
+		  //Load the Module Samples tree
 		  moduleSystemTreeObj = $.fn.zTree.init($("#moduleSystem_tree"), menuTreeSetting, msg);
 		  var newNode2 = moduleSystemTreeObj.getNodeByParam("id","6");
 		  moduleSystemTreeObj.removeNode(moduleSystemTreeObj.getNodes()[0]);

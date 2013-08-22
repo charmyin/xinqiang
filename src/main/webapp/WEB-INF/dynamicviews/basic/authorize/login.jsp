@@ -48,7 +48,7 @@
 				 							</li>
 				 							<li id="liValiCode">
 				 								<label style="" for="inputValiCode">验证码:</label>
-				 								<img src="resources/img/basic/authorize/validateCode1.jpg" id="imgValiCode"/>
+				 								<img src="resources/css/basic/authorize/images/validateCode1.jpg" id="imgValiCode"/>
 					 							<input class="easyui-validatebox" id="inputValiCode" name="valiCode" placeholder="验证码" data-options="required:true, validType:'fixedLength[5]'" />
 				 							</li>
 				 							<li class="liConfig">

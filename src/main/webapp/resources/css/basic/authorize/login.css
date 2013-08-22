@@ -18,7 +18,7 @@
 
 div[region=west]{
 	width:200px;
-	background:url(../../../../resources/img/basic/authorize/loginfit.jpg) no-repeat;
+	background:url(images/loginfit.jpg) no-repeat;
 	margin:0px;
 }
 
@@ -31,7 +31,7 @@ div[region=west]{
 	list-style-type:none; 
 	margin:0px 0px 0px 0px;
 	padding:10px 0px 0px 0px;
-	background:url(../../../../resources/img/basic/authorize/loginbg.jpg) no-repeat;
+	background:url(images/loginbg.jpg) no-repeat;
 	height:150px;
 }
 
@@ -159,5 +159,5 @@ div[region=west]{
 }
 
 #divLoading span{
-	background:url(../../../../resources/img/basic/authorize/loading.gif) no-repeat left center; padding-left: 20px;
+	background:url(../../../img/common/loading.gif) no-repeat left center; padding-left: 20px;
 }

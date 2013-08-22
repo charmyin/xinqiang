@@ -25,9 +25,6 @@ public class HomeController {
 
 	  @Autowired(required = true)
 	  IdentityService identityService;
-/*	  @Autowired(required = true)
-	  DataSource dataSource;*/
-
 
 	  /**
 	   * Does some simple work to find the current shiro subject gets a list of
@@ -36,53 +33,6 @@ public class HomeController {
 	  @RequestMapping(method = RequestMethod.GET, value = { "/", "/index" })
 	  public String home(Locale locale, Model model, HttpServletRequest request) {
 	    logger.info("Welcome home! the client locale is " + locale.toString());
-
-	    /*
-	    // This gets the current subject from shiro
-	    Subject currentUser = SecurityUtils.getSubject();
-	    request.getSession().setAttribute("","");
-	    // I was going to have more services, who knows .. maybe we will add
-	    // more.
-	    List<String> services = new ArrayList<String>();
-	    // My SQL class org.apache.commons.dbcp.BasicDataSource
-//	    if (dataSource instanceof BasicDataSource) {
-//	      services.add("Data Source: " + ((BasicDataSource) dataSource).getUrl());
-//	    } else if (dataSource instanceof SimpleDriverDataSource) {
-//	      services.add("Data Source: " + ((SimpleDriverDataSource) dataSource).getUrl());
-//	    }
-
-	    services.add("PostgreSQL: " + dataSource.getClass());
-
-	    // Just to prove we can do it.
-	    Date date = new Date();
-	    DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-
-	    String formattedDate = dateFormat.format(date);
-
-	    model.addAttribute("serverTime", formattedDate);
-
-	    // Lets get an identity object
-	    Identity thisIdentity = null;
-
-	    // Remembered (from cookie) is different from authenticated in Shiro
-	    if (currentUser.isRemembered()) {
-	      logger.info("Remembered PRINCIPAL: " + currentUser.getPrincipal());
-	      thisIdentity = identityService.getIdentity(currentUser.getPrincipal().toString());
-
-	      // Authenticated, we really do believe they are who they claim to
-	      // be!
-	    } else if (currentUser.isAuthenticated()) {
-	      logger.info("Authenticated PRINCIPAL: " + currentUser.getPrincipal());
-	      thisIdentity = identityService.getIdentity(currentUser.getPrincipal().toString());
-	    }
-
-	    // Pass this to the jsp.
-	    model.addAttribute("currentUser", currentUser);
-	    model.addAttribute("identity", thisIdentity);
-	    model.addAttribute("serverTime", formattedDate);
-	    model.addAttribute("services", services);
-	    //return "home";
-*/	    
 	    return "basic/index";
 	  }
 	

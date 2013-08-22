@@ -16,9 +16,9 @@
 	<!--Start importing the jeasyui files -->
 	<cmstudio:importJsCss name="jeasyui" version="${jeasyui_version}"/>
 	<!--End importing the jeasyui files -->
-	<!--Start importing the jeasyui files -->
+	<!--Start importing the ztree files -->
 	<cmstudio:importJsCss name="ztree" version="${ztree_version}"/>
-	<!--End importing the jeasyui files -->
+	<!--End importing the ztree files -->
 	<script type="text/javascript" src="resources/js/basic/index.js"></script>
   </head>
   
@@ -26,7 +26,7 @@
       <div class="easyui-layout" id="divLayout_Main" data-options="fit:true" style="overflow:hidden;">
       	<!-- <div region='north' title="Zebone 前端集成开发平台(EasyUI)" style="width:100%; height:100px;background:blue;"> -->
       	<div region='north' style="width:100%; height:75px;background:blue;">
-      		<div style="height:100%; width:100%; background:url(resources/img/basic/main/head.jpg) no-repeat #8badcc; ">
+      		<div id="div_index_head">
       			<div style="float:right; padding:24px 20px 0 0;">
       				<a href="" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-sum'">桌面版</a>
       				<a id="aMenubutton_Main" href="#" class="easyui-menubutton" data-options="menu:'#mm1', iconCls:'icon-tip'" >切换主题</a>
@@ -46,14 +46,13 @@
       	<div region="west" split="true" id="divRegionWest_Main" title="导航栏" style='width:280px; height:auto;'>
       		<div class="easyui-accordion" id="divAccordion_main" data-options="fit:true">
       			<div title="系统管理" id="divSystemManage_main" data-option="iconCls:'icon-ok'" style="width:100%; overflow-x:hidden; overflow-y:auto;">
-						<div id="divSystemManage_main_tree" class="ztree"></div><!---->
+						<div id="divSystemManage_main_tree" class="ztree"></div>
 				</div>
-				
-				<div title="开发人员工具"  data-option="iconCls:'icon-help'" style="padding:10px;">
-					 <div id="divDevelopTool_tree" class="ztree"></div><!---->
+				<div title="开发人员工具"  data-option="iconCls:'icon-help'">
+					 <div id="divDevelopTool_tree" class="ztree"></div>
 				</div>
-				<div title="模版子系统" data-option="iconCls:'icon-search'" style="padding:10px;">
-					<div id="moduleSystem_tree" class="ztree">
+				<div title="模版子系统" data-option="iconCls:'icon-search'" >
+					<div id="moduleSystem_tree" class="ztree"></div>
 				</div>
       		</div>
       	</div>

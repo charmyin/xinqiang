@@ -5,6 +5,6 @@ encoding//src/main/java/com/charmyin/cmstudio/basic/authorize/form/RegistrationF
 encoding//src/main/resources=UTF-8
 encoding//src/main/resources/application-spring.properties=UTF-8
 encoding//src/main/resources/servletcontext.properties=UTF-8
-encoding//src/main/webapp/WEB-INF/dynamicviews/basic/menu_manage.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/dynamicviews/basic/menu/menuManage.jsp=UTF-8
 encoding//src/test/resources=UTF-8
 encoding/<project>=UTF-8
