@@ -29,7 +29,12 @@ public class MenuServiceImpl implements MenuService {
 		List<Menu> menuList = menuMapper.getMenuEqual(menu);
 		return menuList;
 	}
-
+	
+	@Override
+	public void insertMenu(Menu menu){
+		menuMapper.insertMenu(menu);
+	}
+	
 	@Override
 	public void updateMenu(Menu menu) {
 		menuMapper.updateMenu(menu);

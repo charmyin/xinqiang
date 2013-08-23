@@ -27,6 +27,12 @@ public interface MenuService {
 	public void updateMenu(Menu menu);
 	
 	/**
+	 * Insert Menu 
+	 * @param menu
+	 */
+	public void insertMenu(Menu menu);
+	
+	/**
 	 * Delete menu by id array (int)
 	 * @param int array Menu Ids
 	 */

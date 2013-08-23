@@ -91,7 +91,7 @@
 				<if test="linkUrl!= null">
 					LINK_URL,
 				</if>
-				<if test="orderNumber!= null">
+				<if test="orderNumber >= 0">
 					ORDER_NUMBER,
 				</if>
 				<if test="remark!= null">
@@ -117,7 +117,7 @@
 				<if test="linkUrl!= null">
 					#{linkUrl, jdbcType=VARCHAR},
 				</if>
-				<if test="orderNumber!= 0">
+				<if test="orderNumber >= 0">
 					#{orderNumber, jdbcType=INTEGER},
 				</if>
 				<if test="remark!= null">

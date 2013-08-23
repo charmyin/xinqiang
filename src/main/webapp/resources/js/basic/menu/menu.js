@@ -5,7 +5,7 @@
  ***/
 
 //Global all menu treeObj and setting
-var allMenuTreeOjb;
+var allMenuTreeObj;
 var allMenuTreeSetting = {
 		data:{
 			simpleData:{
@@ -16,10 +16,10 @@ var allMenuTreeSetting = {
 		},
 		callback:{
 			onClick:function (event,treeId,node) {
-				var boo = node.isParent;
-				if(!boo){
-					openMainTab(node);
-				}
+				//Load menuGrid by selected tree node's id as parentId
+				$("#menuGrid").datagrid({
+					url:'menuparent/'+node.id+'/menu'
+				});
 			}
 		}
 };
@@ -43,26 +43,61 @@ function loadAllMenuTree(){
 
 /********************************************************Initial the page*****************************************************/
 $(function(){
+	//载入所有树形控件
 	loadAllMenuTree();
+
+	//Load grid
+	$("#menuGrid").datagrid({
+		url:'menuparent/1/menu', 
+		method:'get',
+		toolbar:'#toolbar',
+		pagination:'true',
+		collapsible:true,
+		title:'载入中...',
+		rownumbers:true, 
+		autoSizeColumn:true, 
+		singleSelect:'true',
+		columns:[[
+		          {field:'id', title:'菜单编号' },
+		          {field:'name', title:'名称'},
+		          {field:'parentId', title:'父级菜单'},
+		          {field:'linkUrl', title:'链接地址'},
+		          {field:'remark', title:'备注'}
+		]],
+		onLoadSuccess: function(msg){
+			var selectedTreeNodes = allMenuTreeObj.getSelectedNodes();
+			if(selectedTreeNodes.length>0){
+				$(".panel-title").html(selectedTreeNodes[0].name);
+			}else{
+				$(".panel-title").html(allMenuTreeObj.getNodes()[0].name);
+			}
+		},
+		onLoadError: function(msge){
+			$.messager.alert('错误信息','服务器连接已断开或服务器内部错误！','error');
+		}
+	});
+	
+	//Load grid
+	//$("#menuGrid").datagrid("load");
 	
 });
 
 var url;
 
-function newUser(){
-    $('#dlg').dialog('open').dialog('setTitle','New User');
+function newMenu(){
+    $('#dlg').dialog('open').dialog('setTitle','新建菜单');
     $('#fm').form('clear');
-    url = 'save_user.php';
+    url = 'menu/save';
 }
-function editUser(){
-    var row = $('#dg').datagrid('getSelected');
+function editMenu(){
+    var row = $('#menuGrid').datagrid('getSelected');
     if (row){
-        $('#dlg').dialog('open').dialog('setTitle','Edit User');
+        $('#dlg').dialog('open').dialog('setTitle','修改菜单:'+row.name);
         $('#fm').form('load',row);
-        url = 'update_user.php?id='+row.id;
+        url = 'menu/update?'+row.id;
     }
 }
-function saveUser(){
+function saveMenu(){
     $('#fm').form('submit',{
         url: url,
         onSubmit: function(){
@@ -77,17 +112,17 @@ function saveUser(){
                 });
             } else {
                 $('#dlg').dialog('close');        // close the dialog
-                $('#dg').datagrid('reload');    // reload the user data
+                $('#menuGrid').datagrid('reload');    // reload the user data
             }
         }
     });
 }
-function destroyUser(){
-    var row = $('#dg').datagrid('getSelected');
+function destroyMenu(){
+    var row = $('#menuGrid').datagrid('getSelected');
     if (row){
-        $.messager.confirm('Confirm','Are you sure you want to destroy this user?',function(r){
+        $.messager.confirm('提示信息','确定删除选中菜单？',function(r){
             if (r){
-                $.post('destroy_user.php',{id:row.id},function(result){
+                $.post('menu/delete',{id:row.id},function(result){
                     if (result.success){
                         $('#dg').datagrid('reload');    // reload the user data
                     } else {

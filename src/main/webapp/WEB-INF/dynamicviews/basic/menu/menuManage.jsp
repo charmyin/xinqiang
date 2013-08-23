@@ -30,52 +30,42 @@
 	</head>
 	<body>
 		<div class="easyui-layout" fit="true" style="overflow:hidden;">
-			<div data-options="region:'west', title:'菜单管理', split:true" style="width:200px;">
+			<div data-options="region:'west', split:true" style="width:200px;">
 				 <div class="ztree" id="div_allMenu_tree"></div>
 			</div>
-			<div data-options="region:'center', split:true" style="width:200px;">
-		 	    <table id="dg" title="" class="easyui-datagrid" style=""
-			            data-options="url:'menuparent/1/menu', method:'get',toolbar:'#toolbar',pagination:'true',rownumbers:'true', fitColumns:'true' ,singleSelect:'true'">
-			        <thead>
-			            <tr>
-			                <th field="id" width="50">菜单编号</th>
-			                <th field="name" width="50">名称</th>
-			                <th field="parentId" width="50">父级菜单</th>
-			                <th field="remark" width="50">备注</th>
-			            </tr>
-			        </thead>
+			<div data-options="region:'center', split:true">
+		 	    <table id="menuGrid">
 			    </table>
 			    <div id="toolbar">
-			        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newUser()">新建</a>
-			        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editUser()">修改</a>
-			        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyUser()">删除</a>
+			        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newMenu()">新建</a>
+			        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editMenu()">修改</a>
+			        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyMenu()">删除</a>
 			    </div>
-			    <div id="dlg" class="easyui-dialog" style="width:400px;height:280px;padding:10px 20px"
-			            closed="true" buttons="#dlg-buttons">
-			        <div class="ftitle">User Information</div>
-			        <form id="fm" method="post" novalidate>
+			    <div id="dlg" class="easyui-dialog" data-options="closed:'true',buttons:'#dlg-buttons'">
+			        <div class="ftitle">菜单信息</div>
+			        <form id="fm" method="post" >
 			            <div class="fitem">
-			                <label>First Name:</label>
-			                <input name="firstname" class="easyui-validatebox" required="true">
+			                <label>名称：</label>
+			                <input name="name" class="easyui-validatebox" required="true">
 			            </div>
 			            <div class="fitem">
-			                <label>Last Name:</label>
-			                <input name="lastname" class="easyui-validatebox" required="true">
+			                <label>父级菜单：</label>
+			                <input name="parentId" class="easyui-validatebox" required="true">
 			            </div>
 			            <div class="fitem">
-			                <label>Phone:</label>
-			                <input name="phone">
+			                <label>链接地址：</label>
+			                <input name="linkUrl" class="easyui-validatebox">
 			            </div>
 			            <div class="fitem">
-			                <label>Email:</label>
-			                <input name="email" class="easyui-validatebox" validType="email">
+			                <label>备注：</label>
+			                <textarea name="remark" placeholder="请输入备注..."></textarea>
 			            </div>
 			        </form>
 			    </div>
 			    <div id="dlg-buttons">
-			        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveUser()">Save</a>
-			        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">Cancel</a>
-			    </div>
+				        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveMenu()">保存</a>
+				        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">取消</a>
+				</div>
 			</div>
 		</div>
 	</body>

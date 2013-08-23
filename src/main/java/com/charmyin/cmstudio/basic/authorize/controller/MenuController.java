@@ -1,8 +1,11 @@
 package com.charmyin.cmstudio.basic.authorize.controller;
 
+import java.util.Enumeration;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.charmyin.cmstudio.basic.authorize.service.MenuService;
 import com.charmyin.cmstudio.basic.authorize.vo.Menu;
+import com.charmyin.cmstudio.web.utils.ResponseUtil;
 
 /**
  * Users' menu operation.
@@ -48,6 +52,37 @@ public class MenuController {
 		return menuList;
 	}
 	
+	/**
+	 * Insert the menu committed from client
+	 * @return 
+	 */
+	@RequestMapping(value="/menu/save", method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> saveMenu(HttpServletRequest request, Menu menu){
+		try{
+			menuService.insertMenu(menu);
+		}catch(Exception e){
+			e.printStackTrace();
+			Map<String, Object> map = ResponseUtil.getFailResultMap();
+			map.put("errorMsg", "保存过程中出错！");
+			return map;
+		}
+		return ResponseUtil.getSuccessResultMap();
+	}
+	
+	@RequestMapping(value="/menu/update", method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> updateMenu(Menu menu){
+		try{
+			menuService.updateMenu(menu);
+		}catch(Exception e){
+			e.printStackTrace();
+			Map<String, Object> map = ResponseUtil.getFailResultMap();
+			map.put("errorMsg", "更新过程中出错！");
+			return map;
+		}
+		return ResponseUtil.getSuccessResultMap();
+	}
 	
 	/**
 	 * Direct to the menuManage jsp file
