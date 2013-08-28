@@ -26,7 +26,7 @@
 		<!--Start importing the ztree files -->
 		<cmstudio:importJsCss name="ztree" version="${ztree_version}"/>
 		<!--End importing the ztree files -->
-		<script type="text/javascript" src="resources/js/basic/menu/menu.js"></script>		 
+		<script type="text/javascript" src="resources/js/basic/menu/menu.js"></script>
 	</head>
 	<body>
 		<div class="easyui-layout" fit="true" style="overflow:hidden;">
@@ -46,11 +46,13 @@
 			        <form id="fm" method="post" >
 			            <div class="fitem">
 			                <label>名称：</label>
+			                <input class="easyui-validatebox" type="hidden" name="nameage"/>
 			                <input name="name" class="easyui-validatebox" required="true">
 			            </div>
 			            <div class="fitem">
 			                <label>父级菜单：</label>
-			                <input name="parentId" class="easyui-validatebox" required="true">
+			                <input name="parentId" class="easyui-validatebox" style="width:86px;" required="false">
+			                <a id="btn_parentId" href="javascript:void(0);" class="easyui-linkbutton">选择</a>
 			            </div>
 			            <div class="fitem">
 			                <label>链接地址：</label>
@@ -67,6 +69,10 @@
 				        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">取消</a>
 				</div>
 			</div>
+		</div>
+		<!-- 选择树 -->
+		<div id="winSelectParentMenu" class="easyui-window" title="My Window" style="width:300px;height:400px" data-options="iconCls:'icon-save',modal:true,closed:true">
+		    <div class="ztree" id="div_SelectSingleMenu_tree"></div>
 		</div>
 	</body>
 </html>

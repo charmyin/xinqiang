@@ -20,12 +20,27 @@ var allMenuTreeSetting = {
 				$("#menuGrid").datagrid({
 					url:'menuparent/'+node.id+'/menu'
 				});
+				pagerRefreshBtn();
 			}
 		}
 };
 
+function pagerRefreshBtn(){
+	//添加刷新按钮事件
+	var pager = $('#menuGrid').datagrid().datagrid('getPager');    // get the pager of datagrid
+    pager.pagination({
+    	showRefresh:false,
+        buttons:[{
+            iconCls:'icon-reload',
+            handler:function(){
+            	$("#menuGrid").datagrid("load");
+            }
+        }]
+    }); 
+}
+
 //Load all the menu Tree
-function loadAllMenuTree(){
+function loadMenuTree(){
 	$.ajax({
 	  type: "GET",
 	  url: "menu/all"
@@ -39,25 +54,57 @@ function loadAllMenuTree(){
 	});
 }
 
-
+//Used for client pagination
+function pagerFilter(data){
+    if (typeof data.length == 'number' && typeof data.splice == 'function'){    // is array
+        data = {
+            total: data.length,
+            rows: data
+        }
+    }
+    var dg = $(this);
+    var opts = dg.datagrid('options');
+    var pager = dg.datagrid('getPager');
+    pager.pagination({
+        onSelectPage:function(pageNum, pageSize){
+            opts.pageNumber = pageNum;
+            opts.pageSize = pageSize;
+            pager.pagination('refresh',{
+                pageNumber:pageNum,
+                pageSize:pageSize
+            });
+            dg.datagrid('loadData',data);
+        }
+    });
+    if (!data.originalRows){
+        data.originalRows = (data.rows);
+    }
+    var start = (opts.pageNumber-1)*parseInt(opts.pageSize);
+    var end = start + parseInt(opts.pageSize);
+    data.rows = (data.originalRows.slice(start, end));
+    return data;
+}
 
 /********************************************************Initial the page*****************************************************/
 $(function(){
-	//载入所有树形控件
-	loadAllMenuTree();
+	//Load the menu tree
+	loadMenuTree();
 
 	//Load grid
 	$("#menuGrid").datagrid({
 		url:'menuparent/1/menu', 
+		loadFilter:pagerFilter,
 		method:'get',
 		toolbar:'#toolbar',
-		pagination:'true',
+		pagination:true,
 		collapsible:true,
 		title:'载入中...',
-		rownumbers:true, 
-		autoSizeColumn:true, 
-		singleSelect:'true',
+		rownumbers:true,
+		singleSelect:false,
+		pageSize:8,
+	    pageList:[8,16,32,48,64],
 		columns:[[
+		          {field:'ck', checkbox:true },
 		          {field:'id', title:'菜单编号' },
 		          {field:'name', title:'名称'},
 		          {field:'parentId', title:'父级菜单'},
@@ -77,11 +124,25 @@ $(function(){
 		}
 	});
 	
-	//Load grid
-	//$("#menuGrid").datagrid("load");
+	//添加刷新按钮
+	pagerRefreshBtn();
 	
+	//Add the parentId
+	$("#btn_parentId").click(function(){
+		var nodes = allMenuTreeObj.getNodes();
+		
+		var setting = {
+						view: {
+							selectedMulti: false
+						}
+					};
+		var SelectSingleMenuTreeObj = $.fn.zTree.init($("#div_SelectSingleMenu_tree"), setting, nodes);
+		
+		$("#winSelectParentMenu").window("open");
+	});
 });
 
+//MenuCrud url 
 var url;
 
 function newMenu(){
@@ -94,7 +155,7 @@ function editMenu(){
     if (row){
         $('#dlg').dialog('open').dialog('setTitle','修改菜单:'+row.name);
         $('#fm').form('load',row);
-        url = 'menu/update?'+row.id;
+        url = 'menu/update?id='+row.id;
     }
 }
 function saveMenu(){
@@ -104,11 +165,15 @@ function saveMenu(){
             return $(this).form('validate');
         },
         success: function(result){
-            var result = eval('('+result+')');
             if (result.errorMsg){
                 $.messager.show({
-                    title: 'Error',
-                    msg: result.errorMsg
+                	title: '提示<span style="color:red;">!</span>',
+                    msg: "<div style='text-align:center;margin-top:10px;'>请选择要删除的行！</div>",
+                    style:{
+                		right:'',
+                		top:document.body.scrollTop+document.documentElement.scrollTop,
+                		bottom:''
+                	}
                 });
             } else {
                 $('#dlg').dialog('close');        // close the dialog
@@ -118,21 +183,54 @@ function saveMenu(){
     });
 }
 function destroyMenu(){
-    var row = $('#menuGrid').datagrid('getSelected');
-    if (row){
+    var rows = $('#menuGrid').datagrid('getSelections');
+    var rowsLength = rows.length;
+    if (rowsLength>0){
         $.messager.confirm('提示信息','确定删除选中菜单？',function(r){
             if (r){
-                $.post('menu/delete',{id:row.id},function(result){
-                    if (result.success){
-                        $('#dg').datagrid('reload');    // reload the user data
+            	var idsString='';
+            	for(var i=0; i<rows.length; i++){
+            		if((i+1)==rowsLength){
+            			idsString+=rows[i].id;
+            		}else{
+            			idsString+=(rows[i].id+',');
+            		}
+            	}
+            	$.post('menu/deleteByIds',{ids:idsString},function(result){
+                    if (result.suc){
+                    	$.messager.show({
+                        	title: '提示',
+                            msg: "<div style='text-align:center;margin-top:10px;'>删除成功!</div>",
+                            style:{
+                        		right:'',
+                        		top:document.body.scrollTop+document.documentElement.scrollTop,
+                        		bottom:''
+                        	}
+                        });
+                        $('#menuGrid').datagrid('reload');    // reload the user data
                     } else {
                         $.messager.show({    // show error message
-                            title: 'Error',
-                            msg: result.errorMsg
+                            title: '提示<span style="color:red;">!</span>',
+                            msg: "<div style='text-align:center;margin-top:10px;'>"+result.errorMsg+"</div>",
+                            style:{
+                        		right:'',
+                        		top:document.body.scrollTop+document.documentElement.scrollTop,
+                        		bottom:''
+                        	}
                         });
                     }
-                },'json');
+                });
             }
+        });
+    }else{
+    	$.messager.show({    // show error message
+            title: '提示<span style="color:red;">!</span>',
+            msg: "<div style='text-align:center;margin-top:10px;'>请选择要删除的行！</div>",
+            style:{
+        		right:'',
+        		top:document.body.scrollTop+document.documentElement.scrollTop,
+        		bottom:''
+        	}
         });
     }
 }
