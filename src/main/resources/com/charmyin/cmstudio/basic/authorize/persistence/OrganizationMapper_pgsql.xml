@@ -2,32 +2,29 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.charmyin.cmstudio.basic.authorize.persistence.MenuMapper">
-	<resultMap id="MenuResultMap" type="com.charmyin.cmstudio.basic.authorize.vo.Menu">
+<mapper namespace="com.charmyin.cmstudio.basic.authorize.persistence.OrganizationMapper">
+	<resultMap id="OrganizationResultMap" type="com.charmyin.cmstudio.basic.authorize.vo.Organization">
 		<id column="ID" property="id" jdbcType="INTEGER"/>
 		<result column="NAME" property="name" jdbcType="VARCHAR"/>
 		<result column="PARENT_ID" property="parentId" jdbcType="INTEGER"/>
-		<result column="LINK_URL" property="linkUrl" jdbcType="VARCHAR"/>
 		<result column="ORDER_NUMBER" property="orderNumber" jdbcType="INTEGER"/>
 		<result column="REMARK" property="remark" jdbcType="VARCHAR"/>
-		<result column="FULL_PERMISSION" property="fullPermission" jdbcType="VARCHAR"/>
-		<result column="READ_PERMISSION" property="readPermission" jdbcType="VARCHAR"/>
 	</resultMap>
 
-	<sql id="Menu_Column_List" >
-		ID, NAME, PARENT_ID, LINK_URL, ORDER_NUMBER, REMARK, FULL_PERMISSION, READ_PERMISSION
+	<sql id="Organization_Column_List" >
+		ID, NAME, PARENT_ID, ORDER_NUMBER, REMARK
 	</sql>
 	
-	<select id="getAllMenu" resultMap="MenuResultMap">
+	<select id="getAllOrganization" resultMap="OrganizationResultMap">
 		SELECT 
-			<include refid="Menu_Column_List" />
-		FROM  BASIC_MENU
+			<include refid="Organization_Column_List" />
+		FROM  BASIC_ORGANIZATION
 	</select>
 	
-	<select id="getMenuEqual" resultMap="MenuResultMap" parameterType="com.charmyin.cmstudio.basic.authorize.vo.Menu">
+	<select id="getOrganizationEqual" resultMap="OrganizationResultMap" parameterType="com.charmyin.cmstudio.basic.authorize.vo.Organization">
 		SELECT 
-			<include refid="Menu_Column_List" />
-		FROM  BASIC_MENU
+			<include refid="Organization_Column_List" />
+		FROM  BASIC_ORGANIZATION
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
 				<if test="id != 0">
 					AND ID=#{id, jdbcType=INTEGER}
@@ -38,46 +35,31 @@
 				<if test="parentId!= 0">
 					AND PARENT_ID=#{parentId, jdbcType=INTEGER}
 				</if>
-				<if test="linkUrl!= null">
-					AND LINK_URL=#{linkUrl, jdbcType=VARCHAR}
-				</if>
 				<if test="orderNumber!= 0">
 					AND ORDER_NUMBER=#{orderNumber, jdbcType=INTEGER}
 				</if>
 				<if test="remark!= null">
 					AND REMARK=#{remark, jdbcType=VARCHAR}
 				</if>
-				<if test="fullPermission!= null">
-					AND FULL_PERMISSION=#{fullPermission, jdbcType=VARCHAR}
-				</if>
-				<if test="readPermission!= null">
-					AND READ_PERMISSION=#{readPermission jdbcType=VARCHAR}
-				</if>
 		</trim>
 	</select>
 	
-	<select id="getMenuLike" parameterType="com.charmyin.cmstudio.basic.authorize.vo.Menu"  resultMap="MenuResultMap" >
+	<select id="getOrganizationLike" parameterType="com.charmyin.cmstudio.basic.authorize.vo.Organization"  resultMap="OrganizationResultMap" >
 		SELECT 
-			<include refid="Menu_Column_List" />
-		FROM  BASIC_MENU
+			<include refid="Organization_Column_List" />
+		FROM  BASIC_ORGANIZATION
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
 				<if test="name!= null">
 					AND NAME LIKE '%'||#{name, jdbcType=VARCHAR}||'%'
 				</if>
-				<if test="linkUrl!= null">
-					AND LINK_URL LIKE '%'||#{linkUrl, jdbcType=VARCHAR}||'%'
-				</if>
 				<if test="remark!= null">
 					AND REMARK LIKE '%'||#{remark, jdbcType=VARCHAR}||'%'
-				</if>
-				<if test="readPermission!= null">
-					AND READ_PERMISSION LIKE '%'||#{readPermission jdbcType=VARCHAR}||'%'
 				</if>
 		</trim>
 	</select>
 
-	<insert id="insertMenu" parameterType="com.charmyin.cmstudio.basic.authorize.vo.Menu">
-		INSERT INTO BASIC_MENU 
+	<insert id="insertOrganization" parameterType="com.charmyin.cmstudio.basic.authorize.vo.Organization">
+		INSERT INTO BASIC_ORGANIZATION 
 			<trim prefix="(" suffix=")" suffixOverrides=",">
 				<!-- <if test="id != null">
 					ID,
@@ -88,20 +70,11 @@
 				<if test="parentId!= 0">
 					PARENT_ID,
 				</if>
-				<if test="linkUrl!= null">
-					LINK_URL,
-				</if>
 				<if test="orderNumber >= 0">
 					ORDER_NUMBER,
 				</if>
 				<if test="remark!= null">
 					REMARK,
-				</if>
-				<if test="fullPermission!= null">
-					FULL_PERMISSION,
-				</if>
-				<if test="readPermission!= null">
-					READ_PERMISSION,
 				</if>
 			</trim>
 			<trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -114,26 +87,17 @@
 				<if test="parentId!= 0">
 					#{parentId, jdbcType=INTEGER},
 				</if>
-				<if test="linkUrl!= null">
-					#{linkUrl, jdbcType=VARCHAR},
-				</if>
 				<if test="orderNumber >= 0">
 					#{orderNumber, jdbcType=INTEGER},
 				</if>
 				<if test="remark!= null">
 					#{remark, jdbcType=VARCHAR},
 				</if>
-				<if test="fullPermission!= null">
-					#{fullPermission, jdbcType=VARCHAR},
-				</if>
-				<if test="readPermission!= null">
-					#{readPermission jdbcType=VARCHAR},
-				</if>
 			</trim>
 	</insert>
 	
-	<update id="updateMenu" parameterType="com.charmyin.cmstudio.basic.authorize.vo.Menu">
-		UPDATE BASIC_MENU
+	<update id="updateOrganization" parameterType="com.charmyin.cmstudio.basic.authorize.vo.Organization">
+		UPDATE BASIC_ORGANIZATION
 		<trim prefix="SET" suffixOverrides=",">
 			<if test="id != null">
 				ID=#{id, jdbcType=INTEGER},
@@ -144,27 +108,18 @@
 			<if test="parentId!= 0">
 				PARENT_ID=#{parentId, jdbcType=INTEGER},
 			</if>
-			<if test="linkUrl!= null">
-				LINK_URL=#{linkUrl, jdbcType=VARCHAR},
-			</if>
 			<if test="orderNumber!= 0">
 				ORDER_NUMBER=#{orderNumber, jdbcType=INTEGER},
 			</if>
 			<if test="remark!= null">
 				REMARK=#{remark, jdbcType=VARCHAR},
 			</if>
-			<if test="fullPermission!= null">
-				FULL_PERMISSION=#{fullPermission, jdbcType=VARCHAR},
-			</if>
-			<if test="readPermission!= null">
-				READ_PERMISSION=#{readPermission jdbcType=VARCHAR},
-			</if>		
 		</trim>
 		WHERE id=#{id, jdbcType=BIGINT};
 	</update>
 	
-	<delete id="deleteMenu" parameterType="int">
-		DELETE FROM BASIC_MENU WHERE ID=#{id, jdbcType=INTEGER}
+	<delete id="deleteOrganization" parameterType="int">
+		DELETE FROM BASIC_ORGANIZATION WHERE ID=#{id, jdbcType=INTEGER}
 	</delete>
 
 </mapper>

@@ -12,5 +12,7 @@
 	<mappers>
 		<mapper resource="com/charmyin/cmstudio/basic/authorize/persistence/IdentityMapper_pgsql.xml" />
 		<mapper resource="com/charmyin/cmstudio/basic/authorize/persistence/MenuMapper_pgsql.xml" />
+		<mapper resource="com/charmyin/cmstudio/basic/authorize/persistence/OrganizationMapper_pgsql.xml" />
+		<mapper resource="com/charmyin/cmstudio/basic/authorize/persistence/RoleMapper_pgsql.xml" />
 	</mappers>
 </configuration>

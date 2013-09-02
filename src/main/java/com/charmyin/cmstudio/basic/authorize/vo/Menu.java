@@ -1,5 +1,10 @@
 package com.charmyin.cmstudio.basic.authorize.vo;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 /**
  * PO class used for users' menus
  * @author charmyin
@@ -8,21 +13,29 @@ package com.charmyin.cmstudio.basic.authorize.vo;
 public class Menu {
 	
 	//Menu id
-	private int id;
+	private Integer id;
 	
 	//Menu name used to show on the tree
+	@NotNull(message = "密码不允许为空")
+	@Size(min=1, max=20, message="名称长度应大于1小于20")
 	private String name;
 	
 	//Parent id
-	private int parentId;
+	@Min(value=1, message="父节点id需大于等于1")
+	@Max(value=999999, message="序号需小于999999")
+	private Integer parentId;
 	
 	//The url which is linked to the page
+	@Size(max=300, message="URL长度应小于300")
 	private String linkUrl;
 	
 	//The order of the menu in the tree list.Maybe it's better to be "int"
-	private int orderNumber;
+	@Min(value=0, message="序号需大于0")
+	@Max(value=999999, message="序号需小于999999")
+	private Integer orderNumber;
 	
 	//The remark to add description of this menu 
+	@Size(max=200, message="备注长度应小于200")
 	private String remark;
 	
 	//Full permission to get this menu can read and write
@@ -32,7 +45,7 @@ public class Menu {
 	private String readPermission;
 	
 	public int getId() {
-		return id;
+		return id==null?0:id;
 	}
 	public void setId(int id) {
 		this.id = id;
@@ -44,7 +57,7 @@ public class Menu {
 		this.name = name;
 	}
 	public int getParentId() {
-		return parentId;
+		return parentId==null?0:parentId;
 	}
 	public void setParentId(int parentId) {
 		this.parentId = parentId;
@@ -56,7 +69,7 @@ public class Menu {
 		this.linkUrl = linkUrl;
 	}
 	public int getOrderNumber() {
-		return orderNumber;
+		return orderNumber==null?0:orderNumber;
 	}
 	public void setOrderNumber(int orderNumber) {
 		this.orderNumber = orderNumber;

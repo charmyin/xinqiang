@@ -17,57 +17,57 @@
 --INSERT INTO shiro_user_role (user_id, role_id) VALUES ((SELECT id FROM shiro_user where userid = 'TestUser' ), (SELECT id FROM shiro_role where name = 'Test' ));
 
 --//PostgreSQL
-drop table if exists basic_role_menu_for_authorization;
-drop table if exists basic_role_menu;
-drop table if exists menu_permission;
-drop table if exists basic_menu;
-drop table if exists shiro_role_permission;
-drop table if exists shiro_user_role;
-drop table if exists shiro_role;
-drop table if exists shiro_user;
-drop table if exists basic_department;
+drop table if exists basic_role_menu_for_authorization CASCADE;
+drop table if exists basic_role_menu CASCADE;
+drop table if exists menu_permission CASCADE;
+drop table if exists basic_menu CASCADE;
+drop table if exists shiro_role_permission CASCADE;
+drop table if exists shiro_user_role CASCADE;
+drop table if exists shiro_role CASCADE;
+drop table if exists shiro_user CASCADE;
+drop table if exists basic_organization CASCADE;
 
 
 --组织机构表
-create table basic_department (id serial not null, name varchar(50), parent_id bigint, order_number int default 999999, remark varchar(200), primary key(id));
-alter table basic_department add constraint fk_basic_department_parent_id foreign key (parent_id) references basic_department (id);
-comment on table basic_department is '组织机构表';
-comment on column basic_department.id is '部门唯一标识（从0逐1递增）';
-comment on column basic_department.name is '部门名称（最大长度为50）';
-comment on column basic_department.parent_id is '父级部门id（长整型）';
-comment on column basic_department.order_number is '用于排序的序号，默认为99999，数值越小，排序靠前（整型）';
-comment on column basic_department.remark is '部门备注信息（最大长度为200）';
-comment on constraint fk_basic_department_parent_id on basic_department is 'basic_department。parent_id的外键约束，指向basic_department。id';
-
+create table basic_organization (id serial not null, name varchar(40), parent_id bigint, order_number int default 999999, remark varchar(200), primary key(id));
+alter table basic_organization add constraint fk_basic_organization_parent_id foreign key (parent_id) references basic_organization (id);
+comment on table basic_organization is '组织机构表';
+comment on column basic_organization.id is '部门唯一标识（从0逐1递增）';
+comment on column basic_organization.name is '部门名称（最大长度为50）';
+comment on column basic_organization.parent_id is '父级部门id（长整型）';
+comment on column basic_organization.order_number is '用于排序的序号，默认为999999，数值越大，排序靠前（整型）';
+comment on column basic_organization.remark is '部门备注信息（最大长度为200）';
+comment on constraint fk_basic_organization_parent_id on basic_organization is 'basic_organization。parent_id的外键约束，指向basic_organization。id';
+INSERT INTO BASIC_ORGANIZATION ( NAME, REMARK ) values ( '组织架构','组织架构备注' ) ;
 
 --用户表
-CREATE TABLE shiro_user (id SERIAL NOT NULL, userid VARCHAR(100) NOT NULL UNIQUE, name varchar(50), department_id bigint, email VARCHAR(100) NOT NULL UNIQUE, passphrase VARCHAR(100) NOT NULL, salt VARCHAR(100) NOT NULL, state boolean default true, date_created TIMESTAMP NOT NULL, remark varchar(200), PRIMARY KEY (id));
-alter table shiro_user add constraint fk_shiro_user_department_id foreign key (department_id) references basic_department (id);
+CREATE TABLE shiro_user (id SERIAL NOT NULL, login_id VARCHAR(40) NOT NULL UNIQUE, name varchar(50), organization_id bigint, email VARCHAR(100) NOT NULL UNIQUE, passphrase VARCHAR(100) NOT NULL, salt VARCHAR(100) NOT NULL, state boolean default true, date_created TIMESTAMP NOT NULL, remark varchar(200), PRIMARY KEY (id));
+alter table shiro_user add constraint fk_shiro_user_organization_id foreign key (organization_id) references basic_organization (id);
 comment on table shiro_user is '用户表';
 comment on column shiro_user.id is '用户唯一标识（从0逐1递增）';
 comment on column shiro_user.userid is '用户登录账号（具有唯一性，最大长度为100）';
 comment on column shiro_user.name is '用户名（人名可重复，最大长度为50）';
-comment on column shiro_user.department_id is '所属部门（长整型）';
+comment on column shiro_user.organization_id is '所属部门（长整型）';
 comment on column shiro_user.email is 'email地址（具有唯一性，最大长度为100）';
 comment on column shiro_user.passphrase is '密码（明文至少为8位，此为加密后的文字，最大长度为100）';
 comment on column shiro_user.salt is '密码调料（最大长度为100）';
 comment on column shiro_user.state is '用户状态，boolean类型，true为激活状态，false为锁定状态，默认为true';
 comment on column shiro_user.date_created is '用户创建时间';
 comment on column shiro_user.remark is '用户备注';
-comment on constraint fk_shiro_user_department_id on shiro_user is 'shiro_user.department_id的外键，指向basic_department';
-
+comment on constraint fk_shiro_user_organization_id on shiro_user is 'shiro_user.organization_id的外键，指向basic_organization';
+insert into shiro_user (userid, name, email, passphrase, salt, state, date_created) values ('adminadmin','adminadmin','adminadmin@gmail.com', 'tSGnqbyVA6bk8WtgttwAscc2Qe1V6pSC3vFTXViQ0LIlQ07V2Lwn0vk7Voao5C5Lma2P3rnsagtEQ+G+xOFfcw==', '3+trVcGAkXok5VFMNw4yrw==', TRUE, '2013-06-25 14:54:22.646');
 
 --角色表
-CREATE TABLE shiro_role (id SERIAL NOT NULL, name VARCHAR(50) NOT NULL, description VARCHAR(200), department_id bigint, remark varchar(200), state boolean default true, PRIMARY KEY (id));
-alter table shiro_role add constraint fk_shiro_role_department_id foreign key (department_id) references basic_department(id);
+CREATE TABLE shiro_role (id SERIAL NOT NULL, name VARCHAR(50) NOT NULL, description VARCHAR(200), organization_id bigint, remark varchar(200), state boolean default true, PRIMARY KEY (id));
+alter table shiro_role add constraint fk_shiro_role_organization_id foreign key (organization_id) references basic_organization(id);
 comment on table shiro_role is '角色表';
 comment on column shiro_role.id is '角色唯一标识（从0逐1递增）';
 comment on column shiro_role.name is '角色名称（最大长度为五十）';
 comment on column shiro_role.description is '角色描述(最大长度为200)';
-comment on column shiro_role.department_id is '所属部门id（长整型）';
+comment on column shiro_role.organization_id is '所属部门id（长整型）';
 comment on column shiro_role.remark is '角色备注（最大长度为200）';
 comment on column shiro_role.state is '角色状态（boolean类型）true为激活状态，false为锁定状态，默认为true';
-comment on constraint fk_shiro_role_department_id on shiro_role is 'shiro_role.department_id外键，指向basic_department.id';
+comment on constraint fk_shiro_role_organization_id on shiro_role is 'shiro_role.organization_id外键，指向basic_organization.id';
 
 
 --用户角色关联表
@@ -91,20 +91,24 @@ comment on constraint fk_shiro_role_id on shiro_role_permission is 'shiro_role_p
 
 
 --树级菜单条目详细表
-create table basic_menu (id serial not null, name varchar(20), parent_id integer, link_url varchar(300) not null, order_number int default 0, remark varchar(200), full_permission varchar(300), read_permission varchar(300), primary key(id));
+create table basic_menu (id serial not null, name varchar(20), parent_id integer, link_url varchar(300) not null, order_number int default 999999, remark varchar(200), full_permission varchar(300), read_permission varchar(300), primary key(id));
 ALTER TABLE basic_menu ADD CONSTRAINT fk_basic_menu_parent_id FOREIGN KEY (parent_id) REFERENCES basic_menu (id);
 comment on table basic_menu is '树级菜单条目详细表';
 comment on column basic_menu.id is '树形菜单条目唯一标识';
 comment on column basic_menu.name is '树形菜单名称（最长为20个字符）';
 comment on column basic_menu.parent_id is '父级菜单唯一标识（外键）';
-comment on column basic_menu.order_number is '用于排序的序号，默认为99999，数值越大，排序靠前（整型）';
+comment on column basic_menu.order_number is '用于排序的序号，默认为999999，数值越大，排序靠前（整型）';
 comment on column basic_menu.remark is '树形菜单备注说明';
 comment on column basic_menu.full_permission is '可执行所有操作权限，由分号分隔，如：account:create；account:read';
 comment on column basic_menu.read_permission is '可执行读取的操作权限，由分号分隔，如：account:create；account:read';
 comment on constraint fk_basic_menu_parent_id on basic_menu is 'basic_menu.parent_id外键，指向basicmenu.id';
 insert into basic_menu (name, link_url) values ('root','') ;
-insert into basic_menu (name, parent_id, link_url) values ('基础管理',1,''); 
-insert into basic_menu (name, parent_id, link_url) values ('菜单管理',2,''); 
+insert into basic_menu (name, parent_id, link_url) values ('系统管理',1,''); 
+insert into basic_menu (name, parent_id, link_url) values ('开发人员管理',1,''); 
+insert into basic_menu (name, parent_id, link_url) values ('模板子系统',1,''); 
+insert into basic_menu (name, parent_id, link_url) values ('权限管理',2,'menu/manage'); 
+insert into basic_menu (name, parent_id, link_url) values ('菜单资源管理',5,'menu/manage'); 
+
 
 --菜单权限表
 create table basic_menu_permission(menu_id int not null, permission varchar(100) not null, primary key(menu_id, permission));

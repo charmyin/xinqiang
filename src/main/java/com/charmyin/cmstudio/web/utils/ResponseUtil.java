@@ -30,4 +30,21 @@ public class ResponseUtil {
 		failResultMap.put("suc", false);
 		return failResultMap;
 	}
+	
+	/**
+	 * Get the Success String return for ie
+	 * @return
+	 */
+	public static String getSuccessResultString(){
+		return "{'suc':true}";
+	}
+	
+	/**
+	 * Get the failed String result for ie
+	 * @param msg
+	 * @return
+	 */
+	public static String getFailResultString(String msg){
+		return "{'suc':false, 'errorMsg':'"+msg+"'}";
+	}
 }

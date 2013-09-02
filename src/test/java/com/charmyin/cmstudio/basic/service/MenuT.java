@@ -27,7 +27,7 @@ public class MenuT{
 	@Test
 	public void getMenuEqual() {
 		Menu menu1 = new Menu();
-		menu1.setName("google");
+		menu1.setParentId(1);
 		List<Menu> menuList = menuMapper.getMenuEqual(menu1);
 		
 		for(Menu menu : menuList){

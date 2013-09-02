@@ -84,13 +84,13 @@ var  openMainTab = function (node){
 		  
 		  //Load the system develop tool tree
 		  divDevelopToolTreeObj = $.fn.zTree.init($("#divDevelopTool_tree"), menuTreeSetting, msg);
-		  var newNode1 = divDevelopToolTreeObj.getNodeByParam("id","4");
+		  var newNode1 = divDevelopToolTreeObj.getNodeByParam("id","3");
 		  divDevelopToolTreeObj.removeNode(divDevelopToolTreeObj.getNodes()[0]);
 		  divDevelopToolTreeObj.addNodes(null, newNode1.children);
 		  
 		  //Load the Module Samples tree
 		  moduleSystemTreeObj = $.fn.zTree.init($("#moduleSystem_tree"), menuTreeSetting, msg);
-		  var newNode2 = moduleSystemTreeObj.getNodeByParam("id","6");
+		  var newNode2 = moduleSystemTreeObj.getNodeByParam("id","4");
 		  moduleSystemTreeObj.removeNode(moduleSystemTreeObj.getNodes()[0]);
 		  moduleSystemTreeObj.addNodes(null, newNode2.children);
 		

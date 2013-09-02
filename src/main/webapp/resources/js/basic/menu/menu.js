@@ -3,8 +3,11 @@
  * datetime: 2013-2-26 21:00
  * title: Control the menuManage.jsp ~
  ***/
+//the tree used for choosing a parent menu 
+var selectSingleMenuTreeObj;
 
 //Global all menu treeObj and setting
+var selectedNodeId;
 var allMenuTreeObj;
 var allMenuTreeSetting = {
 		data:{
@@ -20,22 +23,18 @@ var allMenuTreeSetting = {
 				$("#menuGrid").datagrid({
 					url:'menuparent/'+node.id+'/menu'
 				});
-				pagerRefreshBtn();
+				selectedNodeId = allMenuTreeObj.getSelectedNodes()[0].id;
 			}
 		}
 };
 
+//添加刷新按钮事件
 function pagerRefreshBtn(){
-	//添加刷新按钮事件
 	var pager = $('#menuGrid').datagrid().datagrid('getPager');    // get the pager of datagrid
     pager.pagination({
-    	showRefresh:false,
-        buttons:[{
-            iconCls:'icon-reload',
-            handler:function(){
-            	$("#menuGrid").datagrid("load");
-            }
-        }]
+    	onBeforeRefresh:function(){
+    		$("#menuGrid").datagrid("reload");
+    	}
     }); 
 }
 
@@ -51,6 +50,18 @@ function loadMenuTree(){
 	  var rootNode = allMenuTreeObj.getNodeByParam("id","1");
 	  rootNode.name = $("title").html();
 	  allMenuTreeObj.refresh();
+	  //if selected a node, then append it ,else append the root node 
+	  var selectedNode;
+	  if(selectedNodeId){
+		  selectedNode = allMenuTreeObj.getNodeByParam("id",selectedNodeId);
+	  }else{
+		  selectedNode = allMenuTreeObj.getNodes()[0];
+	  }
+	  allMenuTreeObj.expandNode(selectedNode,true,false,false,false);
+	  //Select the node which id is selectedNodeId, then trigger the click event on it
+	  allMenuTreeObj.selectNode(selectedNode);
+	  //sometime it require the server twice, I wonder~
+	  $("#"+selectedNode.tId+"_a").trigger("click");
 	});
 }
 
@@ -66,6 +77,9 @@ function pagerFilter(data){
     var opts = dg.datagrid('options');
     var pager = dg.datagrid('getPager');
     pager.pagination({
+    	onBeforeRefresh:function(){
+    		dg.datagrid("reload");
+    	},
         onSelectPage:function(pageNum, pageSize){
             opts.pageNumber = pageNum;
             opts.pageSize = pageSize;
@@ -85,14 +99,31 @@ function pagerFilter(data){
     return data;
 }
 
+//When choosed the parent menu, click "sure", then trigger this event
+function selectTreeNodeSure(){
+	//Find the checked node, give the id and name to input, then close the dialog~
+	var nodes = selectSingleMenuTreeObj.getCheckedNodes();
+	//If select nothing, do nothing on clicking sure~
+	if(nodes.length==0){
+		return false;
+	}
+	$("#input_parentId").val(nodes[0].name);
+	$("#hidden_parentId").val(nodes[0].id);
+	$("#input_parentId").focus();
+	$("#div_winSelectParentMenu").dialog("close");
+}
+
+
 /********************************************************Initial the page*****************************************************/
 $(function(){
+	//Disable cache
+	jQuery.ajaxSetup({ cache: false });
+	//载入成功后，刷新左边树
 	//Load the menu tree
 	loadMenuTree();
-
 	//Load grid
 	$("#menuGrid").datagrid({
-		url:'menuparent/1/menu', 
+	//	url:'menuparent/1/menu', 
 		loadFilter:pagerFilter,
 		method:'get',
 		toolbar:'#toolbar',
@@ -125,33 +156,52 @@ $(function(){
 	});
 	
 	//添加刷新按钮
-	pagerRefreshBtn();
+	//pagerRefreshBtn();
 	
-	//Add the parentId
+	//Show parentId select dialog;Select the parentId
 	$("#btn_parentId").click(function(){
+		//Initial the tree
 		var nodes = allMenuTreeObj.getNodes();
-		
 		var setting = {
-						view: {
-							selectedMulti: false
-						}
-					};
-		var SelectSingleMenuTreeObj = $.fn.zTree.init($("#div_SelectSingleMenu_tree"), setting, nodes);
-		
-		$("#winSelectParentMenu").window("open");
+						   view: {
+							   selectedMulti: false
+						   },
+						   check:{
+							   enable:true,
+							   chkStyle:"radio",
+							   radioType:"all"
+						   }
+					   };
+		selectSingleMenuTreeObj = $.fn.zTree.init($("#div_SelectSingleMenu_tree"), setting, nodes);
+		//Open the dialog
+		$("#div_winSelectParentMenu").dialog("open").dialog('setTitle','选择父级菜单');
+		//expand the node of selectSingleMenuTreeObj
+		var selectedNodeTemp = selectSingleMenuTreeObj.getNodeByParam("id",selectedNodeId);
+		selectSingleMenuTreeObj.expandNode(selectedNodeTemp);
+		selectSingleMenuTreeObj.checkNode(selectedNodeTemp,true,false);
 	});
 });
 
-//MenuCrud url 
+//MenuCrud dialog
 var url;
+
+//Initial the parentId
+function initianParentId(){
+	//Input the value and hidden value of parentId input 
+	var selectedNode = allMenuTreeObj.getNodeByParam("id",selectedNodeId);
+	$("#hidden_parentId").val(selectedNodeId);
+	$("#input_parentId").val(selectedNode.name);
+}
 
 function newMenu(){
     $('#dlg').dialog('open').dialog('setTitle','新建菜单');
     $('#fm').form('clear');
+    initianParentId();
     url = 'menu/save';
 }
 function editMenu(){
     var row = $('#menuGrid').datagrid('getSelected');
+    initianParentId();
     if (row){
         $('#dlg').dialog('open').dialog('setTitle','修改菜单:'+row.name);
         $('#fm').form('load',row);
@@ -162,13 +212,15 @@ function saveMenu(){
     $('#fm').form('submit',{
         url: url,
         onSubmit: function(){
-            return $(this).form('validate');
+        	//组件验证，未通过则返回false
+        	return $(this).form('validate');
         },
-        success: function(result){
+        success: function(resultString){
+        	var result = eval("("+resultString+")");
             if (result.errorMsg){
                 $.messager.show({
                 	title: '提示<span style="color:red;">!</span>',
-                    msg: "<div style='text-align:center;margin-top:10px;'>请选择要删除的行！</div>",
+                    msg: "<div style='text-align:center;margin-top:10px;'>"+result.errorMsg+"</div>",
                     style:{
                 		right:'',
                 		top:document.body.scrollTop+document.documentElement.scrollTop,
@@ -177,7 +229,9 @@ function saveMenu(){
                 });
             } else {
                 $('#dlg').dialog('close');        // close the dialog
-                $('#menuGrid').datagrid('reload');    // reload the user data
+                selectedNodeId = $("#hidden_parentId").val();
+                //Reload left tree and refresh the datagrid
+                loadMenuTree();
             }
         }
     });
@@ -207,7 +261,8 @@ function destroyMenu(){
                         		bottom:''
                         	}
                         });
-                        $('#menuGrid').datagrid('reload');    // reload the user data
+                    	//Reload left tree and refresh the datagrid
+                    	loadMenuTree();
                     } else {
                         $.messager.show({    // show error message
                             title: '提示<span style="color:red;">!</span>',
@@ -218,6 +273,7 @@ function destroyMenu(){
                         		bottom:''
                         	}
                         });
+                        
                     }
                 });
             }

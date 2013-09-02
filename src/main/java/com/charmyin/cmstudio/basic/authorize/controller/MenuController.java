@@ -5,10 +5,13 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.charmyin.cmstudio.basic.authorize.service.MenuService;
 import com.charmyin.cmstudio.basic.authorize.vo.Menu;
 import com.charmyin.cmstudio.common.utils.ArrayUtil;
+import com.charmyin.cmstudio.common.utils.JSRErrorUtil;
 import com.charmyin.cmstudio.web.utils.ResponseUtil;
 
 /**
@@ -61,18 +65,24 @@ public class MenuController {
 	 * Insert the menu committed from client
 	 * @return 
 	 */
-	@RequestMapping(value="/menu/save", method=RequestMethod.POST)
+	@RequestMapping(value="/menu/save", method=RequestMethod.POST, produces = "text/plain;charset=UTF-8")
 	@ResponseBody
-	public Map<String, Object> saveMenu(HttpServletRequest request, Menu menu){
+	public String saveMenu(HttpServletRequest request,HttpServletResponse response, @Valid Menu menu, BindingResult result){
+		
+		if (result.hasErrors()) {
+			response.setCharacterEncoding("utf-8");
+			response.setHeader("Accept-Charset", "utf-8");
+			return JSRErrorUtil.getErrorString(result);
+	    }
+		
 		try{
 			menuService.insertMenu(menu);
 		}catch(Exception e){
 			e.printStackTrace();
-			Map<String, Object> map = ResponseUtil.getFailResultMap();
-			map.put("errorMsg", "保存过程中出错！");
-			return map;
+			return ResponseUtil.getFailResultString("保存过程中出错！");
 		}
-		return ResponseUtil.getSuccessResultMap();
+		return ResponseUtil.getSuccessResultString();
+	 
 	}
 	
 	/**
@@ -80,18 +90,23 @@ public class MenuController {
 	 * @param menu
 	 * @return
 	 */
-	@RequestMapping(value="/menu/update", method=RequestMethod.POST)
+	@RequestMapping(value="/menu/update", method=RequestMethod.POST, produces=""
+			+ "text/plain")
 	@ResponseBody
-	public Map<String, Object> updateMenu(Menu menu){
+	public String updateMenu(@Valid Menu menu, BindingResult result){
+		
+		if (result.hasErrors()) {
+			return ResponseUtil.getFailResultString(JSRErrorUtil.getErrorString(result));
+	    }
+		
 		try{
 			menuService.updateMenu(menu);
 		}catch(Exception e){
 			e.printStackTrace();
-			Map<String, Object> map = ResponseUtil.getFailResultMap();
-			map.put("errorMsg", "更新过程中出错！");
-			return map;
+			return ResponseUtil.getFailResultString("更新过程中出错！");
 		}
-		return ResponseUtil.getSuccessResultMap();
+		
+		return ResponseUtil.getSuccessResultString();
 	}
 	
 	/**
@@ -129,6 +144,7 @@ public class MenuController {
 			map.put("errorMsg", "删除过程中出错！");
 			return map;
 		}
+		
 		return ResponseUtil.getSuccessResultMap();
 	}
 	

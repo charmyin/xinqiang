@@ -6,7 +6,7 @@
 
 	<resultMap id="identityResult" type="com.charmyin.cmstudio.basic.authorize.domain.Identity">
 		<result property="id" column="id" />
-		<result property="userid" column="userid" />
+		<result property="loginId" column="login_id" />
 		<result property="salt" column="salt" />
 		<result property="email" column="email" />
 		<result property="created" column="date_created" />
@@ -15,7 +15,7 @@
 
 	<insert id="registerIdentity" parameterType="com.charmyin.cmstudio.basic.authorize.form.RegistrationForm" 
 		useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-		INSERT INTO shiro_user (userid, passphrase, salt, email, date_created)
+		INSERT INTO shiro_user (login_id, passphrase, salt, email, date_created)
 		VALUES (#{username}, #{passphrase}, #{salt}, #{email}, NOW()) ;
 		<!-- 
 		<selectKey keyProperty="id" resultType="Integer" order="AFTER">
@@ -24,14 +24,14 @@
 	</insert>
 
 	<select id="getIdentityById" parameterType="int" resultMap="identityResult">
-		SELECT id, userid, salt, email, date_created FROM shiro_user WHERE id
+		SELECT id, login_id, salt, email, date_created FROM shiro_user WHERE id
 		= #{id}
 	</select>
 
 	<select id="getIdentityByUserId" parameterType="String"
 		resultMap="identityResult">
-		SELECT id, userid, salt, email, date_created FROM shiro_user
-		WHERE userid =
+		SELECT id, login_id, salt, email, date_created FROM shiro_user
+		WHERE login_id =
 		#{userId}
 	</select>
 
