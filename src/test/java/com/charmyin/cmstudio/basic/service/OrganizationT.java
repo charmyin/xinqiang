@@ -63,9 +63,9 @@ public class OrganizationT{
 	@Test
 	public void insertOrganization() {
 		Organization organization = new Organization();
-		organization.setName("dddd");
+		organization.setName("root");
 		organization.setOrderNumber(1);
-		organization.setRemark("It's a link for google");
+		organization.setRemark("Root node");
 		organizationMapper.insertOrganization(organization);
 	}
 	

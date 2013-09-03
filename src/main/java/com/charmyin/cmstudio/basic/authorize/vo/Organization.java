@@ -2,6 +2,7 @@ package com.charmyin.cmstudio.basic.authorize.vo;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
@@ -13,6 +14,7 @@ public class Organization {
 	
 	private Integer id;
 	
+	@NotNull
 	@Size(max=200, message="备注长度应小于200")
 	private String name;
 	
@@ -20,7 +22,7 @@ public class Organization {
 	@Max(value=999999, message="序号需小于999999")
 	private Integer parentId;
 	
-	@Min(value=0, message="父节点id需大于等于0")
+	@Min(value=0, message="序号需大于0")
 	@Max(value=999999, message="序号需小于999999")
 	private Integer orderNumber;
 	
@@ -28,7 +30,7 @@ public class Organization {
 	private String remark;
 
 	public Integer getId() {
-		return id;
+		return id==null?0:id;
 	}
 
 	public void setId(Integer id) {

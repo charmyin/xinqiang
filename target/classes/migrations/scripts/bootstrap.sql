@@ -41,11 +41,11 @@ comment on constraint fk_basic_organization_parent_id on basic_organization is '
 INSERT INTO BASIC_ORGANIZATION ( NAME, REMARK ) values ( '组织架构','组织架构备注' ) ;
 
 --用户表
-CREATE TABLE shiro_user (id SERIAL NOT NULL, login_id VARCHAR(40) NOT NULL UNIQUE, name varchar(50), organization_id bigint, email VARCHAR(100) NOT NULL UNIQUE, passphrase VARCHAR(100) NOT NULL, salt VARCHAR(100) NOT NULL, state boolean default true, date_created TIMESTAMP NOT NULL, remark varchar(200), PRIMARY KEY (id));
+CREATE TABLE shiro_user (id SERIAL NOT NULL, login_id VARCHAR(50) NOT NULL UNIQUE, name varchar(50), organization_id bigint, email VARCHAR(100) NOT NULL UNIQUE, passphrase VARCHAR(100) NOT NULL, salt VARCHAR(100) NOT NULL, state boolean default true, date_created TIMESTAMP NOT NULL, remark varchar(200), PRIMARY KEY (id));
 alter table shiro_user add constraint fk_shiro_user_organization_id foreign key (organization_id) references basic_organization (id);
 comment on table shiro_user is '用户表';
 comment on column shiro_user.id is '用户唯一标识（从0逐1递增）';
-comment on column shiro_user.userid is '用户登录账号（具有唯一性，最大长度为100）';
+comment on column shiro_user.userid is '用户登录账号（具有唯一性，最大长度为50）';
 comment on column shiro_user.name is '用户名（人名可重复，最大长度为50）';
 comment on column shiro_user.organization_id is '所属部门（长整型）';
 comment on column shiro_user.email is 'email地址（具有唯一性，最大长度为100）';

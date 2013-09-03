@@ -16,7 +16,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<cmstudio:htmlBase/>
 		<link rel="shortcut icon" type="image/x-icon" href="resources/${icon_name}"/>
-		<link rel="stylesheet" type="text/css" href="resources/css/basic/organization/organization.css" />
+		<link rel="stylesheet" type="text/css" href="resources/css/basic/role/role.css" />
 		<!--Start importing the jquery files -->
 		<cmstudio:importJsCss name="jquery" version="${jquery_version}"/>
 		<!--End import the jquery files -->
@@ -26,7 +26,7 @@
 		<!--Start importing the ztree files -->
 		<cmstudio:importJsCss name="ztree" version="${ztree_version}"/>
 		<!--End importing the ztree files -->
-		<script type="text/javascript" src="resources/js/basic/organization/organization.js"></script>
+		<script type="text/javascript" src="resources/js/basic/role/role.js"></script>
 	</head>
 	<body>
 		<div class="easyui-layout" fit="true" style="overflow:hidden;">

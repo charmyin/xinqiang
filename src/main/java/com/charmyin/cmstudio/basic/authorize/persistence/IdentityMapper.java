@@ -19,7 +19,7 @@ public interface IdentityMapper {
 	
 	public Identity getIdentityById(@Param("id") int id);
 	
-	public Identity getIdentityByUserId(@Param("userId") String userId);
+	public Identity getIdentityByUserId(@Param("loginId") String loginId);
 	
 	public Integer registerIdentity(RegistrationForm registration);
 }

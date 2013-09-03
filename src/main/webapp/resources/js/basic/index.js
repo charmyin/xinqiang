@@ -24,7 +24,7 @@ var  openMainTab = function (node){
 		$('#divTab_Main').tabs('add', {
 			id: 'divTab_Main_' + node.tId,//tab的Id格式为divTab_Main_12
 			title: node.name,
-			content: '<iframe id="iframeTab_'+ node.tId+'" src="'+ node.linkUrl+'" style="border:none; overflow:auto;width:100%;height:99%;"></iframe>',// '',
+			content: '<iframe id="iframeTab_'+ node.tId+'" src="'+ node.linkUrl+'" style="border:none; overflow:auto;width:100%;height:99%;" frameBorder="0"></iframe>',// '',
 			closable: true,
 			fit: true,
 			tools:[{

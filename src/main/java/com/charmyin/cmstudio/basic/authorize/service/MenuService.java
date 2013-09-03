@@ -4,6 +4,11 @@ import java.util.List;
 
 import com.charmyin.cmstudio.basic.authorize.vo.Menu;
 
+/**
+ * Menu operation service
+ * @author YinCM
+ * @since  2013-9-3 10:12:00
+ */
 public interface MenuService {
 	
 	/**

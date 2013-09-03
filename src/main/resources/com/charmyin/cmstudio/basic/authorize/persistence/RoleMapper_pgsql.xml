@@ -19,13 +19,13 @@
 	<select id="getAllRole" resultMap="RoleResultMap">
 		SELECT 
 			<include refid="Role_Column_List" />
-		FROM  BASIC_ROLE
+		FROM  SHIRO_ROLE
 	</select>
 	
 	<select id="getRoleEqual" resultMap="RoleResultMap" parameterType="com.charmyin.cmstudio.basic.authorize.vo.Role">
 		SELECT 
 			<include refid="Role_Column_List" />
-		FROM  BASIC_ROLE
+		FROM  SHIRO_ROLE
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
 				<if test="id != 0">
 					AND ID=#{id, jdbcType=INTEGER}
@@ -51,7 +51,7 @@
 	<select id="getRoleLike" parameterType="com.charmyin.cmstudio.basic.authorize.vo.Role"  resultMap="RoleResultMap" >
 		SELECT 
 			<include refid="Role_Column_List" />
-		FROM  BASIC_ROLE
+		FROM  SHIRO_ROLE
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
 				<if test="name!= null">
 					AND NAME LIKE '%'||#{name, jdbcType=VARCHAR}||'%'
@@ -66,7 +66,7 @@
 	</select>
 
 	<insert id="insertRole" parameterType="com.charmyin.cmstudio.basic.authorize.vo.Role">
-		INSERT INTO BASIC_ROLE 
+		INSERT INTO SHIRO_ROLE 
 			<trim prefix="(" suffix=")" suffixOverrides=",">
 				<!-- <if test="id != null">
 					ID,
@@ -110,7 +110,7 @@
 	</insert>
 	
 	<update id="updateRole" parameterType="com.charmyin.cmstudio.basic.authorize.vo.Role">
-		UPDATE BASIC_ROLE
+		UPDATE SHIRO_ROLE
 		<trim prefix="SET" suffixOverrides=",">
 			<if test="id != null">
 				ID=#{id, jdbcType=INTEGER},
@@ -135,7 +135,7 @@
 	</update>
 	
 	<delete id="deleteRole" parameterType="int">
-		DELETE FROM BASIC_ROLE WHERE ID=#{id, jdbcType=INTEGER}
+		DELETE FROM SHIRO_ROLE WHERE ID=#{id, jdbcType=INTEGER}
 	</delete>
 
 </mapper>

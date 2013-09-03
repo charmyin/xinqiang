@@ -23,18 +23,18 @@
 	<select id="getAllUser" resultMap="UserResultMap">
 		SELECT 
 			<include refid="User_Column_List" />
-		FROM  BASIC_USER
+		FROM  SHIRO_USER
 	</select>
 	
 	<select id="getUserEqual" resultMap="UserResultMap" parameterType="com.charmyin.cmstudio.basic.authorize.vo.User">
 		SELECT 
 			<include refid="User_Column_List" />
-		FROM  BASIC_USER
+		FROM  SHIRO_USER
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
 				<if test="id != 0">
 					AND ID=#{id, jdbcType=INTEGER}
 				</if>
-				<if test="parentId!=null">
+				<if test="loginId!=null">
 					AND LOGIN_ID=#{loginId, jdbcType=VARCHAR}
 				</if>
 				<if test="name!=null">
@@ -67,7 +67,7 @@
 	<select id="getUserLike" parameterType="com.charmyin.cmstudio.basic.authorize.vo.User"  resultMap="UserResultMap" >
 		SELECT 
 			<include refid="User_Column_List" />
-		FROM  BASIC_USER
+		FROM  SHIRO_USER
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
 				<if test="name!= null">
 					AND NAME LIKE '%'||#{name, jdbcType=VARCHAR}||'%'
@@ -82,7 +82,7 @@
 	</select>
 
 	<insert id="insertUser" parameterType="com.charmyin.cmstudio.basic.authorize.vo.User">
-		INSERT INTO BASIC_USER 
+		INSERT INTO SHIRO_USER 
 			<trim prefix="(" suffix=")" suffixOverrides=",">
 				<!-- <if test="id != null">
 					ID,
@@ -151,7 +151,7 @@
 	</insert>
 	
 	<update id="updateUser" parameterType="com.charmyin.cmstudio.basic.authorize.vo.User">
-		UPDATE BASIC_USER
+		UPDATE SHIRO_USER
 		<trim prefix="SET" suffixOverrides=",">
 			    <if test="id != 0">
 					ID=#{id, jdbcType=INTEGER}
@@ -188,7 +188,7 @@
 	</update>
 	
 	<delete id="deleteUser" parameterType="int">
-		DELETE FROM BASIC_USER WHERE ID=#{id, jdbcType=INTEGER}
+		DELETE FROM SHIRO_USER WHERE ID=#{id, jdbcType=INTEGER}
 	</delete>
 
 </mapper>

@@ -14,13 +14,14 @@ public class Role {
 	
 	private Integer id;
 	
-	@Size(max=50, message="名称长度应小于50")
+	@NotNull(message = "密码不允许为空")
+	@Size(min=1, max=50, message="名称长度应大于1小于50")
 	private String name;
 	
-	@Size(max=200, message="名称长度应小于200")
+	@Size(max=200, message="描述长度应小于200")
 	private String description;
 	
-	@NotNull
+	@NotNull(message = "密码不允许为空")
 	@Min(value=0, message="所属组织id需大于等于0")
 	@Max(value=999999, message="所属组织id需小于999999")
 	private Integer organizationId;
@@ -31,7 +32,7 @@ public class Role {
 	private String remark;
 
 	public Integer getId() {
-		return id;
+		return id==null?0:id;
 	}
 
 	public void setId(Integer id) {
@@ -63,7 +64,7 @@ public class Role {
 	}
 
 	public Integer getOrganizationId() {
-		return organizationId;
+		return organizationId==null?0:organizationId;
 	}
 
 	public void setOrganizationId(Integer organizationId) {

@@ -32,7 +32,7 @@
 		resultMap="identityResult">
 		SELECT id, login_id, salt, email, date_created FROM shiro_user
 		WHERE login_id =
-		#{userId}
+		#{loginId}
 	</select>
 
 </mapper>
