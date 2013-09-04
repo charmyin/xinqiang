@@ -59,8 +59,12 @@
 			                <input name="linkUrl" class="easyui-validatebox">
 			            </div>
 			            <div class="fitem">
+			                <label>所需权限：</label>
+			                <textarea name="fullPermission" class="easyui-validatebox" placeholder="权限需用逗号','分开..."></textarea>
+			            </div>
+			            <div class="fitem">
 			                <label>备注：</label>
-			                <textarea name="remark" placeholder="请输入备注..."></textarea>
+			                <textarea name="remark" required="true" placeholder="请输入备注..."></textarea>
 			            </div>
 			        </form>
 			    </div>

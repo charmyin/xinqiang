@@ -1,6 +1,6 @@
 <%
 /**
- * This is the Organization Manage page~ 
+ * This is the Role Manage page~ 
  * @author charmyin
  * @since 2013-8-19
  * @serial 1.0
@@ -32,10 +32,9 @@
 		<div class="easyui-layout" fit="true" style="overflow:hidden;">
 			<div data-options="region:'west', split:true" style="width:200px;">
 				 <div class="ztree" id="div_allOrganization_tree"></div>
-				 
 			</div>
 			<div data-options="region:'center', split:true">
-		 	    <table id="organizationGrid">
+		 	    <table id="roleGrid">
 			    </table>
 			    <div id="toolbar">
 			        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newForm()">新建</a>
@@ -50,13 +49,17 @@
 			                <input name="name" class="easyui-validatebox" required="true">
 			            </div>
 			            <div class="fitem">
-			                <label>父级菜单：</label>
-			                <input type="hidden" name="parentId" id="hidden_parentId" class="easyui-validatebox" style="display:hidden;" >
-			                <input id="input_parentId" class="easyui-validatebox" readonly>
+			                <label>所属组织：</label>
+			                <input type="hidden" name="organizationId" id="hidden_organizationId" class="easyui-validatebox" style="display:hidden;" >
+			                <input id="input_organizationId" class="easyui-validatebox" readonly>
 			            </div>
 			            <div class="fitem">
-			                <label>排序号</label>
-			                <input name="orderNumber" class="easyui-validatebox">
+			                <label>描述</label>
+			                <input name="description" class="easyui-validatebox">
+			            </div>
+			            <div class="fitem">
+			                <label>所需权限：</label>
+			                <textarea name="permission" class="easyui-validatebox" placeholder="权限需用逗号','分开..."></textarea>
 			            </div>
 			            <div class="fitem">
 			                <label>备注：</label>

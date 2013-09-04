@@ -32,7 +32,7 @@ var allOrganizationTreeSetting = {
 					toolbar:'#toolbar',
 					pagination:true,
 					collapsible:true,
-					title:node.name,
+					title:"组织架构管理&nbsp----&nbsp"+node.name,
 					rownumbers:true,
 					singleSelect:false,
 					pageSize:8,
@@ -45,24 +45,8 @@ var allOrganizationTreeSetting = {
 					          {field:'orderNumber', title:'排序'},
 					          {field:'remark', title:'备注'}
 					]],
-					onLoadSuccess: function(msg){
-					},
 					onLoadError: function(msge){
 						$.messager.alert('错误信息','服务器连接已断开或服务器内部错误！','error');
-					},
-					onBeforeLoad:function(param){
-						if(selectedTreeNodes==undefined){
-							return;
-						}
-						var selectedTreeNodes = allOrganizationTreeObj.getSelectedNodes();
-						if(selectedTreeNodes.length>0){
-							$("#organizationGrid").datagrid("options").title = selectedTreeNodes[0].name;
-						}else{
-							$("#organizationGrid").datagrid("options").title = allOrganizationTreeObj.getNodes()[0].name;
-						}
-						//alert(param);
-						$("#organizationGrid").datagrid("options").title = "aaaaaaaaaa";
-
 					}
 				});
 			}
@@ -190,6 +174,17 @@ function saveForm(){
                 });
             } else {
                 $('#dlg').dialog('close');        // close the dialog
+                
+                $.messager.show({
+                	title: '提示',
+                    msg: "<div style='text-align:center;margin-top:10px;'>保存成功!</div>",
+                    style:{
+                		right:'',
+                		top:document.body.scrollTop+document.documentElement.scrollTop,
+                		bottom:''
+                	}
+                });
+                
                 selectedNodeId = $("#hidden_parentId").val();
                 //Reload left tree and refresh the datagrid
                 loadOrganizationTree();

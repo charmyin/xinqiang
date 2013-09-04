@@ -34,7 +34,7 @@
 					AND NAME=#{name, jdbcType=VARCHAR}
 				</if>
 				<if test="description != 0">
-					AND DESCRIPTION=#{description, jdbcType=INTEGER}
+					AND DESCRIPTION=#{description, jdbcType=VARCHAR}
 				</if>
 				<if test="organizationId != 0">
 					AND ORGANIZATION_ID=#{organizationId, jdbcType=INTEGER}
@@ -95,7 +95,7 @@
 					#{name, jdbcType=VARCHAR},
 				</if>
 				<if test="description!=null">
-					#{description, jdbcType=INTEGER},
+					#{description, jdbcType=VARCHAR},
 				</if>
 				<if test="organizationId != 0">
 					#{organizationId, jdbcType=INTEGER},
@@ -118,11 +118,11 @@
 			<if test="name!= null">
 				NAME=#{name, jdbcType=VARCHAR},
 			</if>
-			<if test="parentId!= 0">
-				PARENT_ID=#{parentId, jdbcType=INTEGER},
+			<if test="description!=null">
+				DESCRIPTION = #{description, jdbcType=VARCHAR},
 			</if>
-			<if test="orderNumber!= 0">
-				ORDER_NUMBER=#{orderNumber, jdbcType=INTEGER},
+			<if test="organizationId != 0">
+				ORGANIZATION_ID = #{organizationId, jdbcType=INTEGER},
 			</if>
 			<if test="remark!= null">
 				REMARK=#{remark, jdbcType=VARCHAR},

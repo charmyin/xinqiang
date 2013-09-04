@@ -5,10 +5,10 @@
  ***/
 
 //Global the item name
-var itemName="组织机构";
+var itemName="角色";
 
 //Global all organization treeObj and setting
-var selectedNodeId;
+var selectedNodeId;//The selected node's object id of left tree
 var allOrganizationTreeObj;
 var allOrganizationTreeSetting = {
 		data:{
@@ -25,14 +25,14 @@ var allOrganizationTreeSetting = {
 //					url:'organizationparent/'+node.id+'/all'
 //				});
 				selectedNodeId = node.id;
-				$("#organizationGrid").datagrid({
-					url:'organizationparent/'+node.id+'/all', 
+				$("#roleGrid").datagrid({
+					url:'roles/orgId/'+node.id+'/all', 
 					loadFilter:pagerFilter,
 					method:'get',
 					toolbar:'#toolbar',
 					pagination:true,
 					collapsible:true,
-					title:node.name,
+					title:"角色管理&nbsp----&nbsp"+node.name,
 					rownumbers:true,
 					singleSelect:false,
 					pageSize:8,
@@ -41,28 +41,11 @@ var allOrganizationTreeSetting = {
 					          {field:'ck', checkbox:true },
 					          {field:'id', title:'编号' },
 					          {field:'name', title:'名称'},
-					          {field:'parentId', title:'父级菜单'},
-					          {field:'orderNumber', title:'排序'},
+					          {field:'description', title:'描述'},
 					          {field:'remark', title:'备注'}
 					]],
-					onLoadSuccess: function(msg){
-					},
 					onLoadError: function(msge){
 						$.messager.alert('错误信息','服务器连接已断开或服务器内部错误！','error');
-					},
-					onBeforeLoad:function(param){
-						if(selectedTreeNodes==undefined){
-							return;
-						}
-						var selectedTreeNodes = allOrganizationTreeObj.getSelectedNodes();
-						if(selectedTreeNodes.length>0){
-							$("#organizationGrid").datagrid("options").title = selectedTreeNodes[0].name;
-						}else{
-							$("#organizationGrid").datagrid("options").title = allOrganizationTreeObj.getNodes()[0].name;
-						}
-						//alert(param);
-						$("#organizationGrid").datagrid("options").title = "aaaaaaaaaa";
-
 					}
 				});
 			}
@@ -150,23 +133,23 @@ var url;
 function initParentId(){
 	//Input the value and hidden value of parentId input 
 	var selectedNode = allOrganizationTreeObj.getNodeByParam("id",selectedNodeId);
-	$("#hidden_parentId").val(selectedNodeId);
-	$("#input_parentId").val(selectedNode.name);
+	$("#hidden_organizationId").val(selectedNodeId);
+	$("#input_organizationId").val(selectedNode.name);
 }
 
 function newForm(){
     $('#dlg').dialog('open').dialog('setTitle','新建'+itemName+'');
     $('#fm').form('clear');
     initParentId();
-    url = 'organization/save';
+    url = 'role/save';
 }
 function editForm(){
     var row = $('#organizationGrid').datagrid('getSelected');
-    initParentId();
+    initOrganizationId();
     if (row){
         $('#dlg').dialog('open').dialog('setTitle','修改'+itemName+':'+row.name);
         $('#fm').form('load',row);
-        url = 'organization/update?id='+row.id;
+        url = 'role/update?id='+row.id;
     }
 }
 function saveForm(){
@@ -190,6 +173,17 @@ function saveForm(){
                 });
             } else {
                 $('#dlg').dialog('close');        // close the dialog
+                
+                $.messager.show({
+                	title: '提示',
+                    msg: "<div style='text-align:center;margin-top:10px;'>保存成功!</div>",
+                    style:{
+                		right:'',
+                		top:document.body.scrollTop+document.documentElement.scrollTop,
+                		bottom:''
+                	}
+                });
+                
                 selectedNodeId = $("#hidden_parentId").val();
                 //Reload left tree and refresh the datagrid
                 loadOrganizationTree();
@@ -198,7 +192,7 @@ function saveForm(){
     });
 }
 function destroySelectedItems(){
-    var rows = $('#organizationGrid').datagrid('getSelections');
+    var rows = $('#roleGrid').datagrid('getSelections');
     var rowsLength = rows.length;
     if (rowsLength>0){
         $.messager.confirm('提示信息','确定删除选中'+itemName+'？',function(r){
@@ -211,7 +205,7 @@ function destroySelectedItems(){
             			idsString+=(rows[i].id+',');
             		}
             	}
-            	$.post('organization/deleteByIds',{ids:idsString},function(result){
+            	$.post('role/deleteByIds',{ids:idsString},function(result){
                     if (result.suc){
                     	$.messager.show({
                         	title: '提示',

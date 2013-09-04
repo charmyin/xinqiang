@@ -57,7 +57,7 @@ public class RoleController {
 		List<Role> roleList = roleService.getAllRole();
 		return roleList;
 	}
- 
+	
 	/**
 	 * Update role
 	 * @param role
@@ -141,6 +141,13 @@ public class RoleController {
 		}
 		
 		return ResponseUtil.getSuccessResultMap();
+	}
+	//TODO
+	@RequestMapping("/role/orgId/{organizationId}/all")
+	@ResponseBody
+	public List<Role> getRoleByOrganizationId(@PathVariable("organizationId") Integer organizationId){
+		List<Role> roleList = roleService.getRoleByOrganizationId(organizationId);
+		return roleList;
 	}
 	
 	public RoleService getRoleService() {

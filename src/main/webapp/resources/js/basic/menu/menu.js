@@ -20,23 +20,39 @@ var allMenuTreeSetting = {
 		callback:{
 			onClick:function (event,treeId,node) {
 				//Load menuGrid by selected tree node's id as parentId
-				$("#menuGrid").datagrid({
-					url:'menuparent/'+node.id+'/menu'
-				});
 				selectedNodeId = allMenuTreeObj.getSelectedNodes()[0].id;
+				
+				//Load grid
+				$("#menuGrid").datagrid({
+						url:'menuparent/'+node.id+'/menu',
+						loadFilter:pagerFilter,
+						method:'get',
+						toolbar:'#toolbar',
+						pagination:true,
+						collapsible:true,
+						title:"菜单资源管理&nbsp----&nbsp"+node.name,
+						rownumbers:true,
+						singleSelect:false,
+						pageSize:8,
+					    pageList:[8,16,32,48,64],
+						columns:[[
+						          {field:'ck', checkbox:true },
+						          {field:'id', title:'菜单编号' },
+						          {field:'name', title:'名称'},
+						          {field:'parentId', title:'父级菜单'},
+						          {field:'linkUrl', title:'链接地址'},
+						          {field:'fullPermission', title:'所需权限'},
+						          {field:'remark', title:'备注'}
+						]],
+						onLoadError: function(msge){
+							$.messager.alert('错误信息','服务器连接已断开或服务器内部错误！','error');
+						}
+					});
+					
+				
 			}
 		}
 };
-
-//添加刷新按钮事件
-function pagerRefreshBtn(){
-	var pager = $('#menuGrid').datagrid().datagrid('getPager');    // get the pager of datagrid
-    pager.pagination({
-    	onBeforeRefresh:function(){
-    		$("#menuGrid").datagrid("reload");
-    	}
-    }); 
-}
 
 //Load all the menu Tree
 function loadMenuTree(){
@@ -121,42 +137,6 @@ $(function(){
 	//载入成功后，刷新左边树
 	//Load the menu tree
 	loadMenuTree();
-	//Load grid
-	$("#menuGrid").datagrid({
-	//	url:'menuparent/1/menu', 
-		loadFilter:pagerFilter,
-		method:'get',
-		toolbar:'#toolbar',
-		pagination:true,
-		collapsible:true,
-		title:'载入中...',
-		rownumbers:true,
-		singleSelect:false,
-		pageSize:8,
-	    pageList:[8,16,32,48,64],
-		columns:[[
-		          {field:'ck', checkbox:true },
-		          {field:'id', title:'菜单编号' },
-		          {field:'name', title:'名称'},
-		          {field:'parentId', title:'父级菜单'},
-		          {field:'linkUrl', title:'链接地址'},
-		          {field:'remark', title:'备注'}
-		]],
-		onLoadSuccess: function(msg){
-			var selectedTreeNodes = allMenuTreeObj.getSelectedNodes();
-			if(selectedTreeNodes.length>0){
-				$(".panel-title").html(selectedTreeNodes[0].name);
-			}else{
-				$(".panel-title").html(allMenuTreeObj.getNodes()[0].name);
-			}
-		},
-		onLoadError: function(msge){
-			$.messager.alert('错误信息','服务器连接已断开或服务器内部错误！','error');
-		}
-	});
-	
-	//添加刷新按钮
-	//pagerRefreshBtn();
 	
 	//Show parentId select dialog;Select the parentId
 	$("#btn_parentId").click(function(){
@@ -230,6 +210,15 @@ function saveMenu(){
             } else {
                 $('#dlg').dialog('close');        // close the dialog
                 selectedNodeId = $("#hidden_parentId").val();
+                $.messager.show({
+                	title: '提示',
+                    msg: "<div style='text-align:center;margin-top:10px;'>保存成功!</div>",
+                    style:{
+                		right:'',
+                		top:document.body.scrollTop+document.documentElement.scrollTop,
+                		bottom:''
+                	}
+                });
                 //Reload left tree and refresh the datagrid
                 loadMenuTree();
             }
