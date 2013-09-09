@@ -27,6 +27,7 @@
 		<cmstudio:importJsCss name="ztree" version="${ztree_version}"/>
 		<!--End importing the ztree files -->
 		<script type="text/javascript" src="resources/js/basic/menu/menu.js"></script>
+		<script type="text/javascript" src="resources/js/basic/menu/menuPermission.js"></script>
 	</head>
 	<body>
 		<div class="easyui-layout" fit="true" style="overflow:hidden;">
@@ -59,8 +60,17 @@
 			                <input name="linkUrl" class="easyui-validatebox">
 			            </div>
 			            <div class="fitem">
-			                <label>所需权限：</label>
-			                <textarea name="fullPermission" class="easyui-validatebox" placeholder="权限需用逗号','分开..."></textarea>
+			            	<label>所需权限：</label>
+			            	<div style="height:200px;overflow:auto;">
+				                <!--  <textarea name="fullPermission" class="easyui-validatebox" placeholder="权限需用逗号','分开..."></textarea> -->
+				                <table id="menuPermissionGrid"></table>
+				                <div id="menuPermissionGridTB" style="height:auto">
+							        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="append()">新增</a>
+							        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="removeit()">删除</a>
+							        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true" onclick="accept()">保存</a>
+							        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-undo',plain:true" onclick="reject()">撤销修改</a>
+							    </div>
+			            	</div>
 			            </div>
 			            <div class="fitem">
 			                <label>备注：</label>

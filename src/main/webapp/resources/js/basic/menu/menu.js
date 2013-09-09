@@ -49,7 +49,26 @@ var allMenuTreeSetting = {
 						}
 					});
 					
-				
+				//Load Menu permission grid
+				$("#menuPermissionGrid").datagrid({
+					iconCls: 'icon-edit',
+					singleSelect: true,
+					rownumbers:true,
+					toolbar: '#menuPermissionGridTB',
+					method: 'get',
+					url:'',
+					columns:[[
+				       {field:'permission',title:'Shiro权限',width:100, align:'center',editor:{
+				    	   type:'validatebox',
+				    	   options:{
+                               required:true
+                           }
+				       }},
+				       {field:'remark',title:'说明',width:140, align:'center', editor:'text'},
+				       {field:'menuId',title:'菜单ID', hidden:true}
+					]],
+					onClickRow: onClickRow
+				});
 			}
 		}
 };
@@ -189,6 +208,9 @@ function editMenu(){
     }
 }
 function saveMenu(){
+	
+	
+	
     $('#fm').form('submit',{
         url: url,
         onSubmit: function(){

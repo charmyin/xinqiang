@@ -26,7 +26,7 @@ var allOrganizationTreeSetting = {
 //				});
 				selectedNodeId = node.id;
 				$("#roleGrid").datagrid({
-					url:'roles/orgId/'+node.id+'/all', 
+					url:'role/orgId/'+node.id+'/all', 
 					loadFilter:pagerFilter,
 					method:'get',
 					toolbar:'#toolbar',

@@ -110,11 +110,12 @@ insert into basic_menu (name, parent_id, link_url) values ('权限管理',2,'men
 insert into basic_menu (name, parent_id, link_url) values ('菜单资源管理',5,'menu/manage'); 
 
 
---菜单权限表 --------暂时不用~直接采用menu里面的fullpermission
-create table basic_menu_permission(menu_id int not null, permission varchar(100) not null, primary key(menu_id, permission));
+--菜单权限表 
+create table basic_menu_permission(id SERIAL NOT NULL,menu_id int not null, permission varchar(100) not null, primary key(id));
 alter table basic_menu_permission add constraint fk_basic_menu_permission_menu_id foreign key (menu_id) references basic_menu(id);
-comment on table basic_menu_permission is '菜单权限表，用于描述某一菜单所包含的的权限(暂时只考虑，一个菜单只包含一种权限，即所有子链接或功能，公用该权限)' --------暂时不用~直接采用menu里面的fullpermission;
-comment on column basic_menu_permission.menu_id is '菜单条目唯一标识';
+comment on table basic_menu_permission is '菜单权限表，用于描述某一菜单所包含的的权限(暂时只考虑，一个菜单只包含一种权限，即所有子链接或功能，公用该权限)' 
+comment on column basic_menu.id is '菜单权限条目唯一标识';
+comment on column basic_menu_permission.menu_id is '菜单条目唯一标识,外键';
 comment on column basic_menu_permission.permission is '权限，单行只允许存入单个权限，如果有多个，需要分开单独存储多行。最大长度为100。';
 comment on constraint fk_basic_menu_permission_menu_id on basic_menu_permission is 'basic_menu_permission.menu_id外键，指向basic_menu.id';
 
