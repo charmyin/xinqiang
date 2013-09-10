@@ -38,7 +38,8 @@ public class Menu {
 	@Size(max=200, message="备注长度应小于200")
 	private String remark;
 	
-	//Full permission to get this menu can read and write
+	//Full permission to get this menu can read and write, it's json array
+	@Size(max=1000, message="权限过多或者权限字符串过长")
 	private String fullPermission;
 	
 	//Read permission to get this menu just can read

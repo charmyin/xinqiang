@@ -48,7 +48,21 @@
     </div>*/	
 
 
-
+function getPermissionString(){
+	
+	var gridData = $('#menuPermissionGrid').datagrid('getData');
+	//检验grid数据有效性
+	for(var i=0; i<gridData.total; i++){
+		//存在校验未通过
+		var result = $('#menuPermissionGrid').datagrid('validateRow',i);
+		if(!result){
+			return false;
+		}
+	}
+	//确认无误，保存状态，使得可以获取编辑中的数据
+	accept();
+	return JSON.stringify(gridData.rows);
+}
 
 var editIndex = undefined;
 function endEditing(){
@@ -76,7 +90,7 @@ function onClickRow(index){
 }
 function append(){
     if (endEditing()){
-        $('#menuPermissionGrid').datagrid('appendRow',{status:'P'});
+        $('#menuPermissionGrid').datagrid('appendRow',{});
         editIndex = $('#menuPermissionGrid').datagrid('getRows').length-1;
         $('#menuPermissionGrid').datagrid('selectRow', editIndex).datagrid('beginEdit', editIndex);
     }

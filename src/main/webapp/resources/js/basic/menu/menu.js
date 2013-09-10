@@ -185,32 +185,44 @@ $(function(){
 var url;
 
 //Initial the parentId
-function initianParentId(){
+function initParentId(){
 	//Input the value and hidden value of parentId input 
 	var selectedNode = allMenuTreeObj.getNodeByParam("id",selectedNodeId);
 	$("#hidden_parentId").val(selectedNodeId);
 	$("#input_parentId").val(selectedNode.name);
 }
-
 function newMenu(){
+	//清空权限grid
+	$('#menuPermissionGrid').datagrid('loadData',[]);
     $('#dlg').dialog('open').dialog('setTitle','新建菜单');
     $('#fm').form('clear');
-    initianParentId();
+    initParentId();
     url = 'menu/save';
 }
 function editMenu(){
     var row = $('#menuGrid').datagrid('getSelected');
-    initianParentId();
+    initParentId();
     if (row){
+    	if(row.fullPermission){
+    		//载入权限
+        	$('#menuPermissionGrid').datagrid('loadData',eval(row.fullPermission));
+    	}else{
+    		//清空权限grid
+    		$('#menuPermissionGrid').datagrid('loadData',[]);
+    	}
         $('#dlg').dialog('open').dialog('setTitle','修改菜单:'+row.name);
         $('#fm').form('load',row);
         url = 'menu/update?id='+row.id;
     }
 }
 function saveMenu(){
-	
-	
-	
+	//获取权限json字符串，如果校验未通过返回false
+	var permissionString = getPermissionString();
+	if(permissionString){
+		$("#hidden_FullPermission").val(permissionString);
+	}else{
+		return false;
+	}
     $('#fm').form('submit',{
         url: url,
         onSubmit: function(){

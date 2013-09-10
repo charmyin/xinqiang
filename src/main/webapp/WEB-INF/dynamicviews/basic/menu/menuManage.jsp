@@ -60,6 +60,7 @@
 			                <input name="linkUrl" class="easyui-validatebox">
 			            </div>
 			            <div class="fitem">
+			            	<input type="hidden" name="fullPermission" id="hidden_FullPermission" class="easyui-validatebox" style="display:hidden;" >
 			            	<label>所需权限：</label>
 			            	<div style="height:200px;overflow:auto;">
 				                <!--  <textarea name="fullPermission" class="easyui-validatebox" placeholder="权限需用逗号','分开..."></textarea> -->

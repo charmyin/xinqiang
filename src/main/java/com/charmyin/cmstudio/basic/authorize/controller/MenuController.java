@@ -111,7 +111,6 @@ public class MenuController {
 			e.printStackTrace();
 			return ResponseUtil.getFailResultString("更新过程中出错！");
 		}
-		
 		return ResponseUtil.getSuccessResultString();
 	}
 	
