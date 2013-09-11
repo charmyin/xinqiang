@@ -58,36 +58,36 @@ comment on constraint fk_shiro_user_organization_id on shiro_user is 'shiro_user
 insert into shiro_user (userid, name, email, passphrase, salt, state, date_created) values ('adminadmin','adminadmin','adminadmin@gmail.com', 'tSGnqbyVA6bk8WtgttwAscc2Qe1V6pSC3vFTXViQ0LIlQ07V2Lwn0vk7Voao5C5Lma2P3rnsagtEQ+G+xOFfcw==', '3+trVcGAkXok5VFMNw4yrw==', TRUE, '2013-06-25 14:54:22.646');
 
 --角色表
-CREATE TABLE shiro_role (id SERIAL NOT NULL, name VARCHAR(50) NOT NULL, description VARCHAR(200), organization_id bigint, remark varchar(200), state boolean default true, PRIMARY KEY (id));
+CREATE TABLE shiro_role (name VARCHAR(50) NOT NULL, description VARCHAR(200), organization_id bigint, permission varchar(300), remark varchar(200), state boolean default true, PRIMARY KEY (name));
 alter table shiro_role add constraint fk_shiro_role_organization_id foreign key (organization_id) references basic_organization(id);
 comment on table shiro_role is '角色表';
-comment on column shiro_role.id is '角色唯一标识（从0逐1递增）';
-comment on column shiro_role.name is '角色名称（最大长度为五十）';
+comment on column shiro_role.name is '角色名称（最大长度为50,唯一标识）';
 comment on column shiro_role.description is '角色描述(最大长度为200)';
 comment on column shiro_role.organization_id is '所属部门id（长整型）';
+comment on column shiro_role.permission is '角色权限（最大长度为300）';
 comment on column shiro_role.remark is '角色备注（最大长度为200）';
 comment on column shiro_role.state is '角色状态（boolean类型）true为激活状态，false为锁定状态，默认为true';
 comment on constraint fk_shiro_role_organization_id on shiro_role is 'shiro_role.organization_id外键，指向basic_organization.id';
 
 
 --用户角色关联表
-CREATE TABLE shiro_user_role (user_id SERIAL NOT NULL , role_id BIGINT NOT NULL, PRIMARY KEY (user_id, role_id));
+CREATE TABLE shiro_user_role (user_id SERIAL NOT NULL , role_name VARCHAR(50) NOT NULL, PRIMARY KEY (user_id, role_name));
 ALTER TABLE shiro_user_role ADD CONSTRAINT fk_shiro_user_role_user_id FOREIGN KEY (user_id) REFERENCES shiro_user (id);
-ALTER TABLE shiro_user_role ADD CONSTRAINT fk_shiro_user_role_role_id FOREIGN KEY (role_id) REFERENCES shiro_role (id);
+ALTER TABLE shiro_user_role ADD CONSTRAINT fk_shiro_user_role_role_name FOREIGN KEY (role_name) REFERENCES shiro_role (name);
 comment on table shiro_user_role is '用户id与其角色id关联表';
 comment on column shiro_user_role.user_id is '用户唯一标识';
-comment on column shiro_user_role.role_id is '角色唯一标识';
+comment on column shiro_user_role.role_name is '角色唯一标识';
 comment on constraint fk_shiro_user_role_user_id on shiro_user_role is 'shiro_user_role.user_id外键，指向shiro_user.id';
-comment on constraint fk_shiro_user_role_role_id on shiro_user_role is 'shiro_user_role.role_id外键，指向shiro_role.id';
+comment on constraint fk_shiro_user_role_role_name on shiro_user_role is 'shiro_user_role.role_name外键，指向shiro_role.id';
 
 
 --角色权限关联表  --------暂时不用~直接采用menu里面的fullpermission
-CREATE TABLE shiro_role_permission (role_id BIGINT NOT NULL, permission VARCHAR(100) NOT NULL, PRIMARY KEY (role_id, permission));
-ALTER TABLE shiro_role_permission ADD CONSTRAINT fk_shiro_role_id FOREIGN KEY (role_id) REFERENCES shiro_role (id);
-comment on table shiro_role_permission is '角色id与权限关联表 --------暂时不用~直接采用menu里面的fullpermission';
-comment on column shiro_role_permission.role_id is '角色唯一标识';
-comment on column shiro_role_permission.permission is '权限，单行只允许存入单个权限，如果有多个，需要分开单独存储多行。最大长度为100。';
-comment on constraint fk_shiro_role_id on shiro_role_permission is 'shiro_role_permission.role_id外键，指向shiro_role.id';
+--CREATE TABLE shiro_role_permission (role_id BIGINT NOT NULL, permission VARCHAR(100) NOT NULL, PRIMARY KEY (role_id, permission));
+--ALTER TABLE shiro_role_permission ADD CONSTRAINT fk_shiro_role_id FOREIGN KEY (role_id) REFERENCES shiro_role (id);
+--comment on table shiro_role_permission is '角色id与权限关联表 --------暂时不用~直接采用menu里面的fullpermission';
+--comment on column shiro_role_permission.role_id is '角色唯一标识';
+--comment on column shiro_role_permission.permission is '权限，单行只允许存入单个权限，如果有多个，需要分开单独存储多行。最大长度为100。';
+--comment on constraint fk_shiro_role_id on shiro_role_permission is 'shiro_role_permission.role_id外键，指向shiro_role.id';
 
 
 --树级菜单条目详细表
@@ -111,36 +111,35 @@ insert into basic_menu (name, parent_id, link_url) values ('菜单资源管理',
 
 
 --菜单权限表 
-create table basic_menu_permission(id SERIAL NOT NULL,menu_id int not null, permission varchar(100) not null, primary key(id));
-alter table basic_menu_permission add constraint fk_basic_menu_permission_menu_id foreign key (menu_id) references basic_menu(id);
-comment on table basic_menu_permission is '菜单权限表，用于描述某一菜单所包含的的权限(暂时只考虑，一个菜单只包含一种权限，即所有子链接或功能，公用该权限)' 
-comment on column basic_menu.id is '菜单权限条目唯一标识';
-comment on column basic_menu_permission.menu_id is '菜单条目唯一标识,外键';
-comment on column basic_menu_permission.permission is '权限，单行只允许存入单个权限，如果有多个，需要分开单独存储多行。最大长度为100。';
-comment on constraint fk_basic_menu_permission_menu_id on basic_menu_permission is 'basic_menu_permission.menu_id外键，指向basic_menu.id';
-
+--create table basic_menu_permission(id SERIAL NOT NULL,menu_id int not null, permission varchar(100) not null, primary key(id));
+--alter table basic_menu_permission add constraint fk_basic_menu_permission_menu_id foreign key (menu_id) references basic_menu(id);
+--comment on table basic_menu_permission is '菜单权限表，用于描述某一菜单所包含的的权限(暂时只考虑，一个菜单只包含一种权限，即所有子链接或功能，公用该权限)' 
+--comment on column basic_menu.id is '菜单权限条目唯一标识';
+--comment on column basic_menu_permission.menu_id is '菜单条目唯一标识,外键';
+--comment on column basic_menu_permission.permission is '权限，单行只允许存入单个权限，如果有多个，需要分开单独存储多行。最大长度为100。';
+--comment on constraint fk_basic_menu_permission_menu_id on basic_menu_permission is 'basic_menu_permission.menu_id外键，指向basic_menu.id';
 
 --角色菜单表
-create table basic_role_menu(role_id int not null, menu_id int not null, primary key(role_id, menu_id));
-alter table basic_role_menu add constraint fk_basic_role_menu_role_id foreign key (role_id) references shiro_role(id);
+create table basic_role_menu(role_name varchar(50) not null, menu_id int not null, primary key(role_name, menu_id));
+alter table basic_role_menu add constraint fk_basic_role_menu_role_name foreign key (role_name) references shiro_role(name);
 alter table basic_role_menu add constraint fk_basic_role_menu_menu_id foreign key (menu_id) references basic_menu(id);
 comment on table basic_role_menu is '角色所用关联的菜单表';
-comment on column basic_role_menu.role_id is '角色唯一标识（外键）';
+comment on column basic_role_menu.role_name is '角色唯一标识（外键）';
 comment on column basic_role_menu.menu_id is '菜单条目唯一标识（外键）';
-comment on constraint fk_basic_role_menu_role_id on basic_role_menu is 'basic_role_menu.role_id外键，指向shiro_role.id';
+comment on constraint fk_basic_role_menu_role_name on basic_role_menu is 'basic_role_menu.role_name外键，指向shiro_role.id';
 comment on constraint fk_basic_role_menu_menu_id on basic_role_menu is 'basic_role_menu.menu_id外键，指向basic_menu.id';
 
 
 --角色可授权菜单表
-create table basic_role_menu_for_authorization(role_id int not null, menu_id int not null, primary key(role_id, menu_id));
-alter table basic_role_menu_for_authorization add constraint fk_basic_role_menu_for_authorization_role_id foreign key (role_id) references shiro_role(id);
-alter table basic_role_menu_for_authorization add constraint fk_basic_role_menu_for_authorization_menu_id foreign key (menu_id) references basic_menu(id);
-comment on table basic_role_menu_for_authorization is '角色可授权菜单表';
-comment on column basic_role_menu_for_authorization.role_id is '角色唯一标识（外键）';
-comment on column basic_role_menu_for_authorization.menu_id is '菜单条目唯一标识（外键）';
-comment on constraint fk_basic_role_menu_for_authorization_role_id on basic_role_menu_for_authorization is 'basic_role_menu_for_authorization.role_id外键，指向shiro_role.id';
-comment on constraint fk_basic_role_menu_for_authorization_menu_id on basic_role_menu_for_authorization is 'basic_role_menu_for_authorization.menu_id外键，指向basic_menu.id';
-
+--create table basic_role_menu_for_authorization(role_id int not null, menu_id int not null, primary key(role_id, menu_id));
+--alter table basic_role_menu_for_authorization add constraint fk_basic_role_menu_for_authorization_role_id foreign key (role_id) references shiro_role(id);
+--alter table basic_role_menu_for_authorization add constraint fk_basic_role_menu_for_authorization_menu_id foreign key (menu_id) references basic_menu(id);
+--comment on table basic_role_menu_for_authorization is '角色可授权菜单表';
+--comment on column basic_role_menu_for_authorization.role_id is '角色唯一标识（外键）';
+--comment on column basic_role_menu_for_authorization.menu_id is '菜单条目唯一标识（外键）';
+--comment on constraint fk_basic_role_menu_for_authorization_role_id on basic_role_menu_for_authorization is 'basic_role_menu_for_authorization.role_id外键，指向shiro_role.id';
+--comment on constraint fk_basic_role_menu_for_authorization_menu_id on basic_role_menu_for_authorization is 'basic_role_menu_for_authorization.menu_id外键，指向basic_menu.id';
+--
 
 --通用数据字典
 --create table system_data_dictionary 

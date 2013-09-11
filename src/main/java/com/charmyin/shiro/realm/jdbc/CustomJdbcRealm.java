@@ -338,11 +338,12 @@ public class CustomJdbcRealm extends AuthorizingRealm {
             conn = dataSource.getConnection();
 
             // Retrieve roles and permissions from database
-            roleSetObjects = getRoleNamesForUser(conn, username);
+            roleSetObjects = getRoleFieldSetsForUser(conn, username);
+           //获取role所包含的权限
             if (permissionsLookupEnabled) {
             	//TODO if roleSetObjects is null, is it will throw an exception
             	//get permission by Role id
-                permissions = getPermissions(conn, (Set<String>)roleSetObjects[0]);
+                permissions = getMenuPermissions(conn, (Set<String>)roleSetObjects[0]);
             }
 
         } catch (SQLException e) {
@@ -364,12 +365,20 @@ public class CustomJdbcRealm extends AuthorizingRealm {
 
     }
 
-    protected Object[] getRoleNamesForUser(Connection conn, String username) throws SQLException {
+    /**
+     * 获取用户所拥有的roleName，roleIds和对应role所拥有的权限
+     * @param conn
+     * @param username
+     * @return Object[] roleSetObjects，(they are type of Set<String>) ，roleSetObjects[0]--roleIds, roleSetObjects[1]--roleNames, roleSetObjects[2]--rolePermissions
+     * @throws SQLException
+     */
+    protected Object[] getRoleFieldSetsForUser(Connection conn, String username) throws SQLException {
         PreparedStatement ps = null;
         ResultSet rs = null;
         Object[] roleSetObjects = new Object[2];
         Set<String> roleNames = new LinkedHashSet<String>();
         Set<String> roleIds = new LinkedHashSet<String>();
+        Set<String> rolePermissions = new LinkedHashSet<String>();
         try {
             ps = conn.prepareStatement(userRolesQuery);
             ps.setString(1, username);
@@ -382,11 +391,12 @@ public class CustomJdbcRealm extends AuthorizingRealm {
 
             	String roleId = rs.getString(1);
                 String roleName = rs.getString(2);
-               
+                String rolePermission = rs.getString(3);
                 // Add the role to the list of names if it isn't null
                 if (roleName != null) {
                     roleNames.add(roleName);
                     roleIds.add(roleId);
+                    rolePermissions.add(rolePermission);
                 } else {
                     if (log.isWarnEnabled()) {
                         log.warn("Null role name found while retrieving role names for user [" + username + "]");
@@ -405,25 +415,24 @@ public class CustomJdbcRealm extends AuthorizingRealm {
     //每个用户有多个角色role,每个角色有多个菜单menu,每个菜单menu含有多个权限permission； role本身也含有权限permission
     //TODO
     //这里应该考虑使用缓存，后期再说
-    protected Set<String> getPermissions(Connection conn, Collection<String> roleNames) throws SQLException {
-        PreparedStatement ps = null;
+    protected Set<String> getMenuPermissions(Connection conn, Collection<String> roleIds) throws SQLException {
+        PreparedStatement psRoleMenuPermission = null;
+        PreparedStatement psRolePermission = null;
         Set<String> permissions = new LinkedHashSet<String>();
         try {
-            ps = conn.prepareStatement(permissionsQuery);
+        	psRolePermission = conn.prepareStatement(permissionsQuery);
+        	psRoleMenuPermission = conn.prepareStatement(permissionsQuery);
             log.info("Get permission in database~");
-            for (String roleName : roleNames) {
+            //获取role所包含的menu的权限
+            for (String roleId : roleIds) {
 
-                ps.setString(1, roleName);
+            	psRolePermission.setString(1, roleId);
 
                 ResultSet rs = null;
-                //获取role所包含的menu的权限
                 
-                
-                
-                //获取role所包含的权限
                 try {
                     // Execute query
-                    rs = ps.executeQuery();
+                    rs = psRoleMenuPermission.executeQuery();
 
                     // Loop over results and add each returned role to a set
                     while (rs.next()) {
@@ -439,7 +448,8 @@ public class CustomJdbcRealm extends AuthorizingRealm {
 
             }
         } finally {
-            JdbcUtils.closeStatement(ps);
+            JdbcUtils.closeStatement(psRoleMenuPermission);
+            JdbcUtils.closeStatement(psRolePermission);
         }
 
         return permissions;
