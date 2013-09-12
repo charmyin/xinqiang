@@ -20,12 +20,15 @@
 
 package com.charmyin.shiro.realm.jdbc;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -45,8 +48,14 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.apache.shiro.util.JdbcUtils;
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.charmyin.cmstudio.basic.authorize.vo.Permission;
 
 
 /**
@@ -324,7 +333,7 @@ public class CustomJdbcRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 
-        //null usernames are invalid
+    	 //null usernames are invalid
         if (principals == null) {
             throw new AuthorizationException("PrincipalCollection method argument cannot be null.");
         }
@@ -332,18 +341,15 @@ public class CustomJdbcRealm extends AuthorizingRealm {
         String username = (String) getAvailablePrincipal(principals);
 
         Connection conn = null;
-        Object[] roleSetObjects = null;
+        Set<String> roleNames = null;
         Set<String> permissions = null;
         try {
             conn = dataSource.getConnection();
 
             // Retrieve roles and permissions from database
-            roleSetObjects = getRoleFieldSetsForUser(conn, username);
-           //获取role所包含的权限
+            roleNames = getRoleNamesForUser(conn, username);
             if (permissionsLookupEnabled) {
-            	//TODO if roleSetObjects is null, is it will throw an exception
-            	//get permission by Role id
-                permissions = getMenuPermissions(conn, (Set<String>)roleSetObjects[0]);
+                permissions = getPermissions(conn, username, roleNames);
             }
 
         } catch (SQLException e) {
@@ -358,11 +364,9 @@ public class CustomJdbcRealm extends AuthorizingRealm {
             JdbcUtils.closeConnection(conn);
         }
 
-        //RoleName
-        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo((Set<String>)roleSetObjects[1]);
+        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo(roleNames);
         info.setStringPermissions(permissions);
         return info;
-
     }
 
     /**
@@ -372,13 +376,10 @@ public class CustomJdbcRealm extends AuthorizingRealm {
      * @return Object[] roleSetObjects，(they are type of Set<String>) ，roleSetObjects[0]--roleIds, roleSetObjects[1]--roleNames, roleSetObjects[2]--rolePermissions
      * @throws SQLException
      */
-    protected Object[] getRoleFieldSetsForUser(Connection conn, String username) throws SQLException {
-        PreparedStatement ps = null;
+    protected Set<String> getRoleNamesForUser(Connection conn, String username) throws SQLException {
+    	PreparedStatement ps = null;
         ResultSet rs = null;
-        Object[] roleSetObjects = new Object[2];
         Set<String> roleNames = new LinkedHashSet<String>();
-        Set<String> roleIds = new LinkedHashSet<String>();
-        Set<String> rolePermissions = new LinkedHashSet<String>();
         try {
             ps = conn.prepareStatement(userRolesQuery);
             ps.setString(1, username);
@@ -389,69 +390,84 @@ public class CustomJdbcRealm extends AuthorizingRealm {
             // Loop over results and add each returned role to a set
             while (rs.next()) {
 
-            	String roleId = rs.getString(1);
-                String roleName = rs.getString(2);
-                String rolePermission = rs.getString(3);
+                String roleName = rs.getString(1);
+
                 // Add the role to the list of names if it isn't null
                 if (roleName != null) {
                     roleNames.add(roleName);
-                    roleIds.add(roleId);
-                    rolePermissions.add(rolePermission);
                 } else {
                     if (log.isWarnEnabled()) {
                         log.warn("Null role name found while retrieving role names for user [" + username + "]");
                     }
                 }
             }
-            roleSetObjects[0] = roleIds;
-            roleSetObjects[1] = roleNames;
         } finally {
             JdbcUtils.closeResultSet(rs);
             JdbcUtils.closeStatement(ps);
         }
-        return roleSetObjects;
+        return roleNames;
     }
 
     //每个用户有多个角色role,每个角色有多个菜单menu,每个菜单menu含有多个权限permission； role本身也含有权限permission
     //TODO
     //这里应该考虑使用缓存，后期再说
-    protected Set<String> getMenuPermissions(Connection conn, Collection<String> roleIds) throws SQLException {
-        PreparedStatement psRoleMenuPermission = null;
-        PreparedStatement psRolePermission = null;
+    protected Set<String> getPermissions(Connection conn, String username, Collection<String> roleNames) throws SQLException {
+    	PreparedStatement ps = null;
+    	//未处理的权限，为json格式的数据"[{"permission":"aaaa:bbb:ddd","remark":"bbb"},{"permission":"ddd","remark":"eeee"}]"
+        Set<String> rawPermissions = new LinkedHashSet<String>();
+        
+        //已经处理过的权限
         Set<String> permissions = new LinkedHashSet<String>();
         try {
-        	psRolePermission = conn.prepareStatement(permissionsQuery);
-        	psRoleMenuPermission = conn.prepareStatement(permissionsQuery);
-            log.info("Get permission in database~");
-            //获取role所包含的menu的权限
-            for (String roleId : roleIds) {
+            ps = conn.prepareStatement(permissionsQuery);
+            for (String roleName : roleNames) {
 
-            	psRolePermission.setString(1, roleId);
+                ps.setString(1, roleName);
 
                 ResultSet rs = null;
-                
+
                 try {
                     // Execute query
-                    rs = psRoleMenuPermission.executeQuery();
+                    rs = ps.executeQuery();
 
                     // Loop over results and add each returned role to a set
                     while (rs.next()) {
-
-                        String permissionString = rs.getString(1);
-
+                        String permissionString = rs.getString(2);
+                        String menuPermissionString = rs.getString(1);
+                        // Add the menuPermission to the set of menuPermissions
+                        rawPermissions.add(menuPermissionString);
                         // Add the permission to the set of permissions
-                        permissions.add(permissionString);
+                        rawPermissions.add(permissionString);
                     }
                 } finally {
                     JdbcUtils.closeResultSet(rs);
                 }
-
             }
         } finally {
-            JdbcUtils.closeStatement(psRoleMenuPermission);
-            JdbcUtils.closeStatement(psRolePermission);
+            JdbcUtils.closeStatement(ps);
         }
-
+        //分解permissions
+        ObjectMapper mapper = new ObjectMapper();
+        List<Permission> permissionsList = new ArrayList<Permission>();
+        try {
+        	//分解所有存储的json权限
+        	for(String str: rawPermissions){
+        		permissionsList.addAll((List<Permission>)mapper.readValue(str, new TypeReference<List<Permission>>() {}));
+        	}
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        //permissions.addAll();
+        for(Permission p : permissionsList){
+        	permissions.add(p.getPermission());
+        }
         return permissions;
     }
     

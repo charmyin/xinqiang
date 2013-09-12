@@ -85,7 +85,7 @@
 		<property name="dataSource" ref="dataSource"/>
 		<property name="authenticationQuery" value="select passphrase, CONCAT('${shiro.applicationSalt}', ':', salt) as salt from shiro_user where login_id = ?"/>
 		<property name="userRolesQuery" value="SELECT shiro_role.name, permission FROM shiro_role R LEFT JOIN shiro_user_role ON shiro_role.name = shiro_user_role.role_name LEFT JOIN shiro_user ON shiro_user_role.user_id = shiro_user.id WHERE login_id = ?"/>
-		<property name="permissionsQuery" value="SELECT full_permission FROM basic_role_menu left join basic_menu on menu_id=id WHERE role_name=?"/>
+		<property name="permissionsQuery" value="SELECT full_permission, permission FROM basic_role_menu left join basic_menu on menu_id=id WHERE role_name=?"/>
 		<property name="permissionsLookupEnabled" value="true"/>
 		<property name="saltStyle" value="COLUMN"/>
 		<property name="credentialsMatcher" ref="sha512Matcher"/>
