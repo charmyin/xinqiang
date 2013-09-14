@@ -101,7 +101,7 @@ public class OrganizationController {
 	 */
 	@RequestMapping(value="/organization/save", method=RequestMethod.POST, produces = "text/plain;charset=UTF-8")
 	@ResponseBody
-	public String saveOrganization(HttpServletRequest request,HttpServletResponse response, @Valid Organization organization, BindingResult result){
+	public String saveOrganization( @Valid Organization organization, BindingResult result){
 		
 		if (result.hasErrors()) {
 			return JSRErrorUtil.getErrorString(result);

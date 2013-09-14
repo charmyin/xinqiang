@@ -12,8 +12,6 @@ import javax.validation.constraints.Size;
  */
 public class Role {	
 	
-	private Integer id;
-	
 	@NotNull(message = "密码不允许为空")
 	@Size(min=1, max=50, message="名称长度应大于1小于50")
 	private String name;
@@ -31,12 +29,15 @@ public class Role {
 	@Size(max=200, message="备注长度应小于200")
 	private String remark;
 
-	public Integer getId() {
-		return id==null?0:id;
+	@Size(max=1000, message="权限过多或者权限字符串过长")
+	private String permission;
+
+	public String getPermission() {
+		return permission;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
+	public void setPermission(String permission) {
+		this.permission = permission;
 	}
 
 	public String getName() {

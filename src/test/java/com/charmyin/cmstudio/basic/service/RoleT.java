@@ -36,7 +36,6 @@ public class RoleT{
 	@Test
 	public void updateRole(){
 		Role role = new Role();
-		role.setId(5);
 		role.setName("love");
 		roleMapper.updateRole(role);
 	}
@@ -54,15 +53,14 @@ public class RoleT{
 
 	@Test
 	public void getRoleById() {
-		Role role = roleMapper.getRoleById(1);
-		System.out.println(role.getId()+"=="+role.getName());
+		//Role role = roleMapper.getRoleById(1);
+		//System.out.println("=="+role.getName());
 	}
 
 	@Test
 	public void insertRole() {
 		Role role = new Role();
 		role.setName("dddd");
-		role.setId(5);
 		role.setState(true);
 		role.setDescription("用来这样那样还有这样");
 		role.setRemark("It's a link for google");
@@ -108,7 +106,7 @@ public class RoleT{
 	public void deleteRole() {
 		int[] ids = {3};
 		for(int id : ids){
-			roleMapper.deleteRole(id);
+			//roleMapper.deleteRole(id);
 		}
 		Role role = new Role();
 		role.setName("ddddd");

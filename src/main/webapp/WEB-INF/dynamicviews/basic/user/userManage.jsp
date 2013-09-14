@@ -1,6 +1,6 @@
 <%
 /**
- * This is the Role Manage page~ 
+ * This is the Organization Manage page~ 
  * @author charmyin
  * @since 2013-8-19
  * @serial 1.0
@@ -16,7 +16,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<cmstudio:htmlBase/>
 		<link rel="shortcut icon" type="image/x-icon" href="resources/${icon_name}"/>
-		<link rel="stylesheet" type="text/css" href="resources/css/basic/role/role.css" />
+		<link rel="stylesheet" type="text/css" href="resources/css/basic/organization/organization.css" />
 		<!--Start importing the jquery files -->
 		<cmstudio:importJsCss name="jquery" version="${jquery_version}"/>
 		<!--End import the jquery files -->
@@ -26,16 +26,16 @@
 		<!--Start importing the ztree files -->
 		<cmstudio:importJsCss name="ztree" version="${ztree_version}"/>
 		<!--End importing the ztree files -->
-		<script type="text/javascript" src="resources/js/basic/role/role.js"></script>
-		<script type="text/javascript" src="resources/js/basic/role/rolePermission.js"></script>
+		<script type="text/javascript" src="resources/js/basic/organization/organization.js"></script>
 	</head>
 	<body>
 		<div class="easyui-layout" fit="true" style="overflow:hidden;">
 			<div data-options="region:'west', split:true" style="width:200px;">
 				 <div class="ztree" id="div_allOrganization_tree"></div>
+				 
 			</div>
 			<div data-options="region:'center', split:true">
-		 	    <table id="roleGrid">
+		 	    <table id="organizationGrid">
 			    </table>
 			    <div id="toolbar">
 			        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newForm()">新建</a>
@@ -43,34 +43,19 @@
 			        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroySelectedItems()">删除</a>
 			    </div>
 			    <div id="dlg" class="easyui-dialog" data-options="closed:'true',buttons:'#dlg-buttons'">
-			        <div class="ftitle">角色信息</div>
+			        <div class="ftitle">菜单信息</div>
 			        <form id="fm" method="post" >
 			            <div class="fitem">
-			                <label>名称：</label>
+			                <label>用户账号：</label>
 			                <input name="name" class="easyui-validatebox" required="true">
 			            </div>
 			            <div class="fitem">
-			                <label>所属组织：</label>
-			                <input type="hidden" name="organizationId" id="hidden_organizationId" class="easyui-validatebox" style="display:hidden;" >
-			                <input id="input_organizationId" class="easyui-validatebox" readonly>
+			                <label>用户昵称：</label>
+			                <input id="input_parentId" class="easyui-validatebox" readonly>
 			            </div>
 			            <div class="fitem">
-			                <label>描述:</label>
-			                <input name="description" class="easyui-validatebox">
-			            </div>
-			            <div class="fitem">
-			                <input type="hidden" name="permission" id="hidden_permission" class="easyui-validatebox" style="display:hidden;" >
-			            	<label>所需权限：</label>
-			            	<div style="height:200px;overflow:auto;">
-				                <!--  <textarea name="fullPermission" class="easyui-validatebox" placeholder="权限需用逗号','分开..."></textarea> -->
-				                <table id="permissionGrid"></table>
-				                <div id="permissionGridTB" style="height:auto">
-							        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="append()">新增</a>
-							        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="removeit()">删除</a>
-							        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true" onclick="accept()">保存</a>
-							        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-undo',plain:true" onclick="reject()">撤销修改</a>
-							    </div>
-			            	</div>
+			                <label>排序号</label>
+			                <input name="orderNumber" class="easyui-validatebox">
 			            </div>
 			            <div class="fitem">
 			                <label>备注：</label>

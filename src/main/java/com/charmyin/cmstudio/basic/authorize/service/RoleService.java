@@ -1,5 +1,6 @@
 package com.charmyin.cmstudio.basic.authorize.service;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -30,14 +31,15 @@ public interface RoleService {
 	/**
 	 * Insert Role 
 	 * @param role
+	 * @throws SQLException 
 	 */
-	public void insertRole(Role role);
+	public void insertRole(Role role) throws SQLException;
 	
 	/**
-	 * Delete role by id array (int)
-	 * @param int array Role Ids
+	 * Delete role by name array (name)
+	 * @param name array Role Names
 	 */
-	public void deleteRole(int[] ids);
+	public void deleteRole(String[] names);
 	
 	/**
 	 * SearchRole by role fields
@@ -54,11 +56,11 @@ public interface RoleService {
 	public List<Role> getRoleByOrganizationId(Integer orgId);
 	
 	/**
-	 * Get role item by its id
-	 * @param id
+	 * Get role item by its name
+	 * @param name
 	 * @return Role Object
 	 */
-	public Role getRoleById(int id);
+	public Role getRoleByName(String name);
 	
  
 }

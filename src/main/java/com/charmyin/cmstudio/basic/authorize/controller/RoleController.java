@@ -87,7 +87,7 @@ public class RoleController {
 	 */
 	@RequestMapping(value="/role/save", method=RequestMethod.POST, produces = "text/plain;charset=UTF-8")
 	@ResponseBody
-	public String saveRole(HttpServletRequest request,HttpServletResponse response, @Valid Role role, BindingResult result){
+	public String saveRole(@Valid Role role, BindingResult result){
 		
 		if (result.hasErrors()) {
 			return JSRErrorUtil.getErrorString(result);
@@ -108,31 +108,21 @@ public class RoleController {
 	 * @param ids eg."1,2,3,4,5"
 	 * @return
 	 */
-	@RequestMapping(value="/role/deleteByIds", method=RequestMethod.POST)
+	@RequestMapping(value="/role/deleteByNames", method=RequestMethod.POST)
 	@ResponseBody
 	@Transactional
-	public Map<String, Object> deleteRoleByIds(@RequestParam("ids") String ids){
+	//TODO 长度异常，这里是否要去考虑,测试的时候考虑
+	public Map<String, Object> deleteRoleByNames(@RequestParam("names") String names){
 		//ids can not be null
-		if(ids==null || ids.isEmpty()){
+		if(names==null || names.isEmpty()){
 			Map<String, Object> map = ResponseUtil.getFailResultMap();
-			map.put("errorMsg", "删除数据，id不允许为空！");
+			map.put("errorMsg", "删除数据，name不允许为空！");
 			return map;
 		}
 		
-		String[] idsArrayNotEmpty = ArrayUtil.removeEmptyString(ids.split(","));
-		
-		int[] idsIntArray = new int[idsArrayNotEmpty.length];
+		String[] namesArrayNotEmpty = ArrayUtil.removeEmptyString(names.split(","));
 		try{
-			for(int i=0; i<idsArrayNotEmpty.length;i++){
-				int idInt = Integer.parseInt(idsArrayNotEmpty[i]);
-				idsIntArray[i] = idInt;
-			}
-			roleService.deleteRole(idsIntArray);
-		}catch(NumberFormatException ne){
-			logger.error("提交id值错误!"+ne.getMessage());
-			Map<String, Object> map = ResponseUtil.getFailResultMap();
-			map.put("errorMsg", "提交id值错误!");
-			return map;
+			roleService.deleteRole(namesArrayNotEmpty);
 		}catch(Exception e){
 			logger.error(e.getMessage());
 			Map<String, Object> map = ResponseUtil.getFailResultMap();
@@ -142,6 +132,7 @@ public class RoleController {
 		
 		return ResponseUtil.getSuccessResultMap();
 	}
+	
 	//TODO
 	@RequestMapping("/role/orgId/{organizationId}/all")
 	@ResponseBody

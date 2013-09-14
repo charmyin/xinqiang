@@ -20,7 +20,8 @@ var allMenuTreeSetting = {
 		callback:{
 			onClick:function (event,treeId,node) {
 				//Load menuGrid by selected tree node's id as parentId
-				selectedNodeId = allMenuTreeObj.getSelectedNodes()[0].id;
+				//Set the node id which by clicked~
+				selectedNodeId = node.id;
 				
 				//Load grid
 				$("#menuGrid").datagrid({

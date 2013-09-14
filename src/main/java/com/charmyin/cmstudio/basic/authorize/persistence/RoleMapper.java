@@ -40,8 +40,8 @@ public interface RoleMapper {
 	 * @param id
 	 * @return
 	 */
-	@Select("SELECT * FROM SHIRO_ROLE WHERE id=#{id, jdbcType=BIGINT}")
-	public Role getRoleById(int id);
+	@Select("SELECT * FROM SHIRO_ROLE WHERE name=#{name, jdbcType=VARCHAR}")
+	public Role getRoleById(String name);
 	
 	/**
 	 * Insert a piece of role to table
@@ -60,5 +60,5 @@ public interface RoleMapper {
 	 * Delete roles by id string array
 	 * @param ids
 	 */
-	public void deleteRole(int id);
+	public void deleteRole(String name);
 }

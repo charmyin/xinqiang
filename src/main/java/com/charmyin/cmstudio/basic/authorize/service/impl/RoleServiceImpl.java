@@ -1,5 +1,6 @@
 package com.charmyin.cmstudio.basic.authorize.service.impl;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -28,7 +29,7 @@ public class RoleServiceImpl implements RoleService {
 	}
 	
 	@Override
-	public void insertRole(Role role){
+	public void insertRole(Role role) throws SQLException{
 		roleMapper.insertRole(role);
 	}
 	
@@ -38,9 +39,9 @@ public class RoleServiceImpl implements RoleService {
 	}
 
 	@Override
-	public void deleteRole(int[] ids) {
-		for(int id : ids){
-			roleMapper.deleteRole(id);
+	public void deleteRole(String[] names) {
+		for(String name : names){
+			roleMapper.deleteRole(name);
 		}
 	}
 
@@ -51,8 +52,8 @@ public class RoleServiceImpl implements RoleService {
 	}
 
 	@Override
-	public Role getRoleById(int id) {
-		Role role = roleMapper.getRoleById(id);
+	public Role getRoleByName(String name) {
+		Role role = roleMapper.getRoleById(name);
 		return role;
 	}
 
