@@ -16,7 +16,7 @@
 	<insert id="registerIdentity" parameterType="com.charmyin.cmstudio.basic.authorize.form.RegistrationForm" 
 		useGeneratedKeys="true" keyProperty="id" keyColumn="id">
 		INSERT INTO shiro_user (login_id, passphrase, salt, email, date_created)
-		VALUES (#{username}, #{passphrase}, #{salt}, #{email}, NOW()) ;
+		VALUES (#{loginId}, #{passphrase}, #{salt}, #{email}, NOW()) ;
 		<!-- 
 		<selectKey keyProperty="id" resultType="Integer" order="AFTER">
 			SELECT currval(pg_get_serial_sequence('shiro_user', 'id'));

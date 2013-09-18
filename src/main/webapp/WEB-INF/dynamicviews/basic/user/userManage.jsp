@@ -16,7 +16,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<cmstudio:htmlBase/>
 		<link rel="shortcut icon" type="image/x-icon" href="resources/${icon_name}"/>
-		<link rel="stylesheet" type="text/css" href="resources/css/basic/organization/organization.css" />
+		<link rel="stylesheet" type="text/css" href="resources/css/basic/user/user.css" />
 		<!--Start importing the jquery files -->
 		<cmstudio:importJsCss name="jquery" version="${jquery_version}"/>
 		<!--End import the jquery files -->
@@ -26,16 +26,15 @@
 		<!--Start importing the ztree files -->
 		<cmstudio:importJsCss name="ztree" version="${ztree_version}"/>
 		<!--End importing the ztree files -->
-		<script type="text/javascript" src="resources/js/basic/organization/organization.js"></script>
+		<script type="text/javascript" src="resources/js/basic/user/user.js"></script>
 	</head>
 	<body>
 		<div class="easyui-layout" fit="true" style="overflow:hidden;">
 			<div data-options="region:'west', split:true" style="width:200px;">
 				 <div class="ztree" id="div_allOrganization_tree"></div>
-				 
 			</div>
 			<div data-options="region:'center', split:true">
-		 	    <table id="organizationGrid">
+		 	    <table id="userGrid">
 			    </table>
 			    <div id="toolbar">
 			        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newForm()">新建</a>
@@ -47,15 +46,21 @@
 			        <form id="fm" method="post" >
 			            <div class="fitem">
 			                <label>用户账号：</label>
-			                <input name="name" class="easyui-validatebox" required="true">
+			                <input name="loginId" class="easyui-validatebox" required="true">
 			            </div>
 			            <div class="fitem">
 			                <label>用户昵称：</label>
-			                <input id="input_parentId" class="easyui-validatebox" readonly>
+			                <input name="name" class="easyui-validatebox" required="true">
 			            </div>
 			            <div class="fitem">
-			                <label>排序号</label>
-			                <input name="orderNumber" class="easyui-validatebox">
+			                <label>所属群组：</label>
+			                <input id="input_organizationId" class="easyui-validatebox" readonly>
+			            </div>
+			            <hr/>
+			            <div class="fitem" id="div_initPassphrase">
+			                <label>初始密码:</label>
+			                是<input type="checkbox" name="initPassphrase">(123456)
+			                <hr/>
 			            </div>
 			            <div class="fitem">
 			                <label>备注：</label>

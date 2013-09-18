@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.charmyin.cmstudio.basic.authorize.form.UserForm;
+import com.charmyin.cmstudio.basic.authorize.service.IdentityService;
 import com.charmyin.cmstudio.basic.authorize.service.UserService;
 import com.charmyin.cmstudio.basic.authorize.vo.User;
 import com.charmyin.cmstudio.common.utils.ArrayUtil;
@@ -30,25 +32,27 @@ import com.charmyin.cmstudio.web.utils.ResponseUtil;
 @Controller
 @RequestMapping("/user")
 public class UserController {
-	
 	private Logger logger = Logger.getLogger(UserController.class);
 	
 	@Resource
 	UserService userService;
+	
+	@Resource
+	IdentityService identityService;
 	
 	@RequestMapping(value="/manage", method=RequestMethod.GET)
 	public String manage(){
 		return "/basic/user/userManage";
 	}
 	
-	@RequestMapping(value="/organizationId/{organizationId}/allUser", method=RequestMethod.POST)
+	@RequestMapping(value="/organizationId/{organizationId}/allUser", method=RequestMethod.GET)
 	@ResponseBody
 	public List<User> getUserByOrganization(@PathVariable("organizationId") Integer organizationId){
 		List<User> list = userService.getUserByOrgnizationId(organizationId);
 		return list;
 	}
 	
-	@RequestMapping(value="/save", method=RequestMethod.POST)
+	@RequestMapping(value="/save", method=RequestMethod.POST, produces = "text/plain;charset=UTF-8")
 	@ResponseBody
 	public String saveUser(@Valid User user, BindingResult result){
 		if (result.hasErrors()) {
@@ -56,6 +60,9 @@ public class UserController {
 	    }
 		
 		try{
+			user.setPassphrase("PNpJQ1+YLbCtQfeiVo1KE2EB4liF8Mf2Y4m5r/Fp7+Vp8uKtV6j2e1rMuR2mBV3YiIExjgub54gvBEou+YD8IA==");
+			user.setSalt("ewc8bmJwXRZkLcD5Jq2UzQ==");
+			user.setState(true);
 			userService.insertUser(user);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -64,15 +71,14 @@ public class UserController {
 		return ResponseUtil.getSuccessResultString();
 	}
 	
-	@RequestMapping(value="/update", method=RequestMethod.POST)
+	@RequestMapping(value="/update", method=RequestMethod.POST, produces = "text/plain;charset=UTF-8")
 	@ResponseBody
-	public String updateUser(@Valid User user, BindingResult result){
+	public String updateUser(@Valid UserForm userForm, BindingResult result){
 		if (result.hasErrors()) {
 			return JSRErrorUtil.getErrorString(result);
 	    }
-		
 		try{
-			userService.updateUser(user);
+			userService.updateUser((User)userForm);
 		}catch(Exception e){
 			e.printStackTrace();
 			return ResponseUtil.getFailResultString("更新过程中出错！");
@@ -121,4 +127,22 @@ public class UserController {
 				
 				return ResponseUtil.getSuccessResultMap();
 	}
+
+	public IdentityService getIdentityService() {
+		return identityService;
+	}
+
+	public void setIdentityService(IdentityService identityService) {
+		this.identityService = identityService;
+	}
+
+	public UserService getUserService() {
+		return userService;
+	}
+
+	public void setUserService(UserService userService) {
+		this.userService = userService;
+	}
+	
+	
 }

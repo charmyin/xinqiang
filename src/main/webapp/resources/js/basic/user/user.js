@@ -5,7 +5,7 @@
  ***/
 
 //Global the item name
-var itemName="组织机构";
+var itemName="用户";
 
 //Global all organization treeObj and setting
 var selectedNodeId;
@@ -25,8 +25,8 @@ var allOrganizationTreeSetting = {
 //					url:'organizationparent/'+node.id+'/all'
 //				});
 				selectedNodeId = node.id;
-				$("#organizationGrid").datagrid({
-					url:'organizationparent/'+node.id+'/all', 
+				$("#userGrid").datagrid({
+					url:'user/organizationId/'+node.id+'/allUser', 
 					loadFilter:pagerFilter,
 					method:'get',
 					toolbar:'#toolbar',
@@ -40,9 +40,10 @@ var allOrganizationTreeSetting = {
 					columns:[[
 					          {field:'ck', checkbox:true },
 					          {field:'id', title:'编号' },
-					          {field:'name', title:'名称'},
-					          {field:'parentId', title:'父级菜单'},
-					          {field:'orderNumber', title:'排序'},
+					          {field:'loginId', title:'登录名'},
+					          {field:'name', title:'昵称'},
+					          {field:'dateCreated', title:'注册日期'},
+					          {field:'state', title:'是否禁用'},
 					          {field:'remark', title:'备注'}
 					]],
 					onLoadError: function(msge){
@@ -134,23 +135,27 @@ var url;
 function initParentId(){
 	//Input the value and hidden value of parentId input 
 	var selectedNode = allOrganizationTreeObj.getNodeByParam("id",selectedNodeId);
-	$("#hidden_parentId").val(selectedNodeId);
-	$("#input_parentId").val(selectedNode.name);
+	
+	$("#input_organizationId").val(selectedNode.name);
 }
 
 function newForm(){
     $('#dlg').dialog('open').dialog('setTitle','新建'+itemName+'');
+    $("#div_initPassphrase").hide();
     $('#fm').form('clear');
     initParentId();
-    url = 'organization/save';
+    url = 'user/save';
 }
 function editForm(){
-    var row = $('#organizationGrid').datagrid('getSelected');
+    var row = $('#userGrid').datagrid('getSelected');
     initParentId();
     if (row){
-        $('#dlg').dialog('open').dialog('setTitle','修改'+itemName+':'+row.name);
+        $('#dlg').dialog('open').dialog('setTitle','修改'+itemName+':'+row.loginId);
+        $("#div_initPassphrase").show();
+//        //获取所属群组，修改时显示
+//        var nodes=allOrganizationTreeObj.getSelectedNodes();
         $('#fm').form('load',row);
-        url = 'organization/update?id='+row.id;
+        url = 'user/update?id='+row.id;
     }
 }
 function saveForm(){
@@ -229,7 +234,6 @@ function destroySelectedItems(){
                         		bottom:''
                         	}
                         });
-                        
                     }
                 });
             }

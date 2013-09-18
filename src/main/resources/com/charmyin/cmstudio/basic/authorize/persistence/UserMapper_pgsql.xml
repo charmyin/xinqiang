@@ -10,14 +10,14 @@
 		<result column="ORGANIZATION_ID" property="organizationId" jdbcType="INTEGER"/>
 		<result column="EMAIL" property="email" jdbcType="VARCHAR"/>
 		<result column="PASSPHRASE" property="passphrase" jdbcType="VARCHAR"/>
-		<result column="SALT" property="salt" jdbcType="VARCHAR"/>
-		<result column="STATE" property="state" jdbcType="VARCHAR"/>
-		<result column="DATE_CREATED" property="dataCreated" jdbcType="VARCHAR"/>
+	<!-- 	<result column="SALT" property="salt" jdbcType="VARCHAR"/>
+		<result column="STATE" property="state" jdbcType="VARCHAR"/> -->
+		<result column="DATE_CREATED" property="dateCreated" jdbcType="VARCHAR"/>
 		<result column="REMARK" property="remark" jdbcType="VARCHAR"/>
 	</resultMap>
 
 	<sql id="User_Column_List" >
-		ID, LOGIN_ID, NAME, ORGANIZATION_ID, EMAIL, PASSPHRASE, SALT, STATE, DATE_CREATED, REMARK
+		ID, LOGIN_ID, NAME, ORGANIZATION_ID, EMAIL, STATE, DATE_CREATED, REMARK
 	</sql>
 	
 	<select id="getAllUser" resultMap="UserResultMap">
@@ -45,12 +45,6 @@
 				</if>
 				<if test="email!=null">
 					AND EMAIL=#{email, jdbcType=VARCHAR}
-				</if>
-				<if test="passphrase!=null">
-					AND PASSPHRASE=#{passphrase, jdbcType=VARCHAR}
-				</if>
-				<if test="salt!=null">
-					AND SALT=#{salt, jdbcType=VARCHAR}
 				</if>
 				<if test="state!=null">
 					AND STATE=#{state, jdbcType=BOOLEAN}

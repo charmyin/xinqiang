@@ -18,7 +18,7 @@ public class User {
 	
 	private Integer id;
 	
-	@NotNull(message = "密码不允许为空")
+	@NotNull(message = "登录名不允许为空")
 	@Size(max=50, message="登录名长度应小于50")
 	private String loginId;
 	
@@ -26,12 +26,12 @@ public class User {
 	@Size(max=50, message="用户名称长度应小于50")
 	private String 	name;
  
-	@NotNull(message = "密码不允许为空")
+	@NotNull(message = "所属组织id不允许为空")
 	@Min(value=0, message="所属组织id需大于等于0")
 	@Max(value=999999, message="所属组织id需小于999999")
 	private Integer organizationId;
 	
-	@NotNull(message = "密码不允许为空")
+	@NotNull(message = "Email不允许为空")
 	@Size(max=100, message="Email长度应小于100")
 	@Email(message="邮件格式有误")
 	private String email;

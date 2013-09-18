@@ -10,7 +10,7 @@ import java.util.Date;
 public class Identity {
 	private static final long serialVersionUID = 1L;
 	private int id;
-	private String userid;
+	private String loginId;
 	private String salt;
 	private Date created;
 	private String email;
@@ -32,11 +32,11 @@ public class Identity {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getUserid() {
-		return userid;
+	public String getLoginId() {
+		return loginId;
 	}
-	public void setUserid(String userid) {
-		this.userid = userid;
+	public void setLoginId(String loginId) {
+		this.loginId = loginId;
 	}
 	public String getSalt() {
 		return salt;

@@ -15,7 +15,7 @@ public class LoginForm {
 	private String username;
 	
 	@NotNull(message = "密码不允许为空")
-	@Size(min=8, max=50, message="密码长度必须大于4小于50")
+	@Size(min=4, max=50, message="密码长度必须大于4小于50")
 	private String passphrase;
 
 	public String getUsername() {

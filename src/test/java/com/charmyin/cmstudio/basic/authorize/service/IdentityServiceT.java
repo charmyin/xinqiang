@@ -17,9 +17,9 @@ public class IdentityServiceT {
 	@Test
 	public void testregisterIdentity(){
 		RegistrationForm rg = new RegistrationForm();
-		rg.setPassphrase("aaaaab");
-		rg.setEmail("aaabddb@gmail.com");
-		rg.setUsername("aaaaabb");
+		rg.setPassphrase("123456");
+		rg.setEmail("default@default.com");
+		rg.setLoginId("default");
 		this.identityService.registerIdentity(rg);
 		System.out.println("Successs!!!");
 	}

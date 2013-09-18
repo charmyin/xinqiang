@@ -13,7 +13,7 @@ import org.hibernate.validator.constraints.Email;
 public class RegistrationForm {
 	@NotNull(message = "用户名不能为空！")
 	@Size(min=4, max=50, message="用户名长度必须大4小于50")
-	private String username;
+	private String loginId;
 	
 	@NotNull(message = "用户名不能为空！")
 	@Email(message = "必须为一个有效的电子邮件地址，如：mike@gmail.com")
@@ -25,12 +25,12 @@ public class RegistrationForm {
 	
 	private Integer id;
 	
-	public String getUsername() {
-		return username;
+	public String getLoginId() {
+		return loginId;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setLoginId(String loginId) {
+		this.loginId = loginId;
 	}
 
 	public String getEmail() {
