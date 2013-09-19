@@ -2,6 +2,7 @@ package com.charmyin.cmstudio.basic.authorize.controller;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -32,6 +33,11 @@ import com.charmyin.cmstudio.web.utils.ResponseUtil;
 @Controller
 @RequestMapping("/user")
 public class UserController {
+	
+	//初始化的密码和密码盐分,密码默认为“111111”，six “1”
+	private String salt = "qpOvViSVIY7XyYMpAsJHnQ==";
+	private String passphrase = "9nr6bzUO+BwcJrk8/WQl2XSPb9M10Ra53TEf6TyA9XHqdBWp3AvzjKLPkqWZx6zmARLywD6Mw5lPMYTW/uGwkQ==";
+	
 	private Logger logger = Logger.getLogger(UserController.class);
 	
 	@Resource
@@ -60,9 +66,10 @@ public class UserController {
 	    }
 		
 		try{
-			user.setPassphrase("PNpJQ1+YLbCtQfeiVo1KE2EB4liF8Mf2Y4m5r/Fp7+Vp8uKtV6j2e1rMuR2mBV3YiIExjgub54gvBEou+YD8IA==");
-			user.setSalt("ewc8bmJwXRZkLcD5Jq2UzQ==");
+			user.setPassphrase(passphrase);
+			user.setSalt(salt);
 			user.setState(true);
+			user.setEmail(UUID.randomUUID().toString());
 			userService.insertUser(user);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -77,6 +84,14 @@ public class UserController {
 		if (result.hasErrors()) {
 			return JSRErrorUtil.getErrorString(result);
 	    }
+		//如果需要初始化密码，则初始化；否则赋值为null，忽略上传的密码；
+		if(userForm.getInitPassphrase()!=null && userForm.getInitPassphrase()){
+			userForm.setPassphrase(passphrase);
+			userForm.setSalt(salt);
+		}else{
+			userForm.setPassphrase(null);
+			userForm.setSalt(null);
+		}
 		try{
 			userService.updateUser((User)userForm);
 		}catch(Exception e){

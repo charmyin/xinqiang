@@ -19,12 +19,24 @@ public class RegistrationForm {
 	@Email(message = "必须为一个有效的电子邮件地址，如：mike@gmail.com")
 	private String email;
 	
+	@Size(min=4, max=50, message="用户昵称长度必须大4小于50")
+	private String name;
+	
 	private String passphrase;
 	
 	private String salt;
 	
 	private Integer id;
 	
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public String getLoginId() {
 		return loginId;
 	}

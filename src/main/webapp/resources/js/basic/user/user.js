@@ -25,6 +25,8 @@ var allOrganizationTreeSetting = {
 //					url:'organizationparent/'+node.id+'/all'
 //				});
 				selectedNodeId = node.id;
+				//初始化新增和修改页面的隐藏值
+				initParentId();
 				$("#userGrid").datagrid({
 					url:'user/organizationId/'+node.id+'/allUser', 
 					loadFilter:pagerFilter,
@@ -135,21 +137,23 @@ var url;
 function initParentId(){
 	//Input the value and hidden value of parentId input 
 	var selectedNode = allOrganizationTreeObj.getNodeByParam("id",selectedNodeId);
-	
-	$("#input_organizationId").val(selectedNode.name);
+	$("#hidden_organizationId").val(selectedNodeId);
+	$("#input_organizationName").val(selectedNode.name);
 }
 
 function newForm(){
     $('#dlg').dialog('open').dialog('setTitle','新建'+itemName+'');
     $("#div_initPassphrase").hide();
+    $("#input_loginId").removeAttr("readonly");
     $('#fm').form('clear');
     initParentId();
     url = 'user/save';
 }
 function editForm(){
     var row = $('#userGrid').datagrid('getSelected');
-    initParentId();
     if (row){
+    	initParentId();
+    	$("#input_loginId").attr("readonly","readonly");
         $('#dlg').dialog('open').dialog('setTitle','修改'+itemName+':'+row.loginId);
         $("#div_initPassphrase").show();
 //        //获取所属群组，修改时显示
@@ -190,7 +194,7 @@ function saveForm(){
                 	}
                 });
                 
-                selectedNodeId = $("#hidden_parentId").val();
+                selectedNodeId = $("#hidden_organizationId").val();
                 //Reload left tree and refresh the datagrid
                 loadOrganizationTree();
             }
@@ -198,7 +202,7 @@ function saveForm(){
     });
 }
 function destroySelectedItems(){
-    var rows = $('#organizationGrid').datagrid('getSelections');
+    var rows = $('#userGrid').datagrid('getSelections');
     var rowsLength = rows.length;
     if (rowsLength>0){
         $.messager.confirm('提示信息','确定删除选中'+itemName+'？',function(r){
@@ -211,7 +215,7 @@ function destroySelectedItems(){
             			idsString+=(rows[i].id+',');
             		}
             	}
-            	$.post('organization/deleteByIds',{ids:idsString},function(result){
+            	$.post('user/deleteByIds',{ids:idsString},function(result){
                     if (result.suc){
                     	$.messager.show({
                         	title: '提示',

@@ -46,7 +46,7 @@
 			        <form id="fm" method="post" >
 			            <div class="fitem">
 			                <label>用户账号：</label>
-			                <input name="loginId" class="easyui-validatebox" required="true">
+			                <input name="loginId" id="input_loginId" class="easyui-validatebox" required="true">
 			            </div>
 			            <div class="fitem">
 			                <label>用户昵称：</label>
@@ -54,13 +54,16 @@
 			            </div>
 			            <div class="fitem">
 			                <label>所属群组：</label>
-			                <input id="input_organizationId" class="easyui-validatebox" readonly>
+			                <input id="input_organizationName" class="easyui-validatebox" readonly>
+			                <input type="hidden" name="organizationId" id="hidden_organizationId" class="easyui-validatebox" style="display:hidden;" >
 			            </div>
 			            <hr/>
 			            <div class="fitem" id="div_initPassphrase">
 			                <label>初始密码:</label>
-			                是<input type="checkbox" name="initPassphrase">(123456)
+			                是<input type="checkbox" name="initPassphrase">(111111)
 			                <hr/>
+			                <input type="hidden" name="passphrase" id="hidden_passphrase" class="easyui-validatebox" style="display:hidden;" >
+			                <input type="hidden" name="email" id="hidden_email" class="easyui-validatebox" style="display:hidden;" >
 			            </div>
 			            <div class="fitem">
 			                <label>备注：</label>

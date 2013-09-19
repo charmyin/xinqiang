@@ -103,7 +103,7 @@
 				<if test="state!=null">
 					STATE,
 				</if>
-				<if test="dateCreated!=null">
+				<if test="true">
 					DATE_CREATED,
 				</if>
 				<if test="remark!=null">
@@ -135,8 +135,8 @@
 				<if test="state!=null">
 					#{state, jdbcType=BOOLEAN},
 				</if>
-				<if test="dateCreated!=null">
-					#{dateCreated, jdbcType=TIMESTAMP},
+				<if test="true">
+					NOW(),
 				</if>
 				<if test="remark!=null">
 					#{remark, jdbcType=VARCHAR},
@@ -147,35 +147,35 @@
 	<update id="updateUser" parameterType="com.charmyin.cmstudio.basic.authorize.vo.User">
 		UPDATE SHIRO_USER
 		<trim prefix="SET" suffixOverrides=",">
-			    <if test="id != 0">
+			  <!--   <if test="id != 0">
 					ID=#{id, jdbcType=INTEGER}
-				</if>
-				<if test="loginId!=null">
+				</if> -->
+				<!-- <if test="loginId!=null">
 					LOGIN_ID=#{loginId, jdbcType=VARCHAR}
-				</if>
+				</if> -->
 				<if test="name!=null">
-					NAME=#{name, jdbcType=VARCHAR}
+					NAME=#{name, jdbcType=VARCHAR},
 				</if>
 				<if test="organizationId!=0">
-					ORGANIZATION_ID=#{organizationId, jdbcType=INTEGER}
+					ORGANIZATION_ID=#{organizationId, jdbcType=INTEGER},
 				</if>
 				<if test="email!=null">
-					EMAIL=#{email, jdbcType=VARCHAR}
+					EMAIL=#{email, jdbcType=VARCHAR},
 				</if>
 				<if test="passphrase!=null">
-					PASSPHRASE=#{passphrase, jdbcType=VARCHAR}
+					PASSPHRASE=#{passphrase, jdbcType=VARCHAR},
 				</if>
 				<if test="salt!=null">
-					SALT=#{salt, jdbcType=VARCHAR}
+					SALT=#{salt, jdbcType=VARCHAR},
 				</if>
 				<if test="state!=null">
-					STATE=#{state, jdbcType=BOOLEAN}
+					STATE=#{state, jdbcType=BOOLEAN},
 				</if>
 				<if test="dateCreated!=null">
-					DATE_CREATED=#{dateCreated, jdbcType=TIMESTAMP}
+					DATE_CREATED=#{dateCreated, jdbcType=TIMESTAMP},
 				</if>
 				<if test="remark!=null">
-					REMARK=#{remark, jdbcType=VARCHAR}
+					REMARK=#{remark, jdbcType=VARCHAR},
 				</if>
 		</trim>
 		WHERE id=#{id, jdbcType=BIGINT};

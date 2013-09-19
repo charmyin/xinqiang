@@ -22,8 +22,8 @@ public class User {
 	@Size(max=50, message="登录名长度应小于50")
 	private String loginId;
 	
-	@NotNull(message = "密码不允许为空")
-	@Size(max=50, message="用户名称长度应小于50")
+	@NotNull(message = "用户昵称不允许为空")
+	@Size(max=50, message="用户昵称长度应小于50")
 	private String 	name;
  
 	@NotNull(message = "所属组织id不允许为空")
