@@ -117,7 +117,21 @@ function pagerFilter(data){
     return data;
 }
 
-
+//载入
+function loadRolesForChoose(){
+	var selectedNode = allOrganizationTreeObj.getNodeByParam("id",selectedNodeId);
+	var htmlInner = "";
+	$.ajax({
+	  type: "GET",
+	  url: "role/orgId/"+selectedNode.id+"/all"
+	}).done(function( msg ) {
+		//alert(msg[0].name);
+		for(var i=0; i<msg.length; i++){
+			htmlInner+='<input type="checkbox" class="roleChooseClass" value="'+msg[i].name+'"/>'+msg[i].name;
+		}
+		$("#innerRoleChoose").html(htmlInner);
+	});
+}
 
 
 /********************************************************Initial the page*****************************************************/
@@ -128,6 +142,11 @@ $(function(){
 	//Load the organization tree
 	loadOrganizationTree();
 	//Load grid
+	//选择用户角色
+	$("#btn_roles").click(function(){
+		$('#role-dlg').dialog('open').dialog('setTitle','选择角色');
+		loadRolesForChoose();
+	});
 });
 
 //OrganizationCrud dialog
@@ -201,6 +220,7 @@ function saveForm(){
         }
     });
 }
+
 function destroySelectedItems(){
     var rows = $('#userGrid').datagrid('getSelections');
     var rowsLength = rows.length;
@@ -253,6 +273,22 @@ function destroySelectedItems(){
         	}
         });
     }
+}
+
+//保存选择的role到form隐藏input中
+var saveRole = function(){
+	var roles="";
+	$(".roleChooseClass").each(function(){
+		if($(this).is(':checked')){
+			roles+=($(this).val()+',');
+		}
+	});
+	if(roles!=""){
+		roles = roles.substring(0,roles.length-1);
+		alert(roles);
+	}
+	$("#input_role").val(roles);
+	$('#role-dlg').dialog('close');
 }
 
 

@@ -41,6 +41,7 @@ var allOrganizationTreeSetting = {
 					          {field:'name', title:'名称'},
 					          {field:'description', title:'描述'},
 					          {field:'permission', title:'权限'},
+					          {field:'menu', title:'菜单'},
 					          {field:'remark', title:'备注'}
 					]],
 					onLoadError: function(msge){
@@ -133,6 +134,49 @@ function pagerFilter(data){
     return data;
 }
 
+//菜单树
+var allMenuTreeObj;
+var allMenuTreeSetting = {
+		data:{
+			simpleData:{
+				enable:true,
+				idKey:"id",
+				pIdKey:"parentId"
+			}
+		},
+		check:{
+			enable:true,
+			chkStyle:"checkbox"
+		}
+};
+
+//Load all the menu Tree
+function loadMenuTree(){
+	$.ajax({
+	  type: "GET",
+	  url: "menu/all"
+	}).done(function( msg ) {
+		  //Load the system manage tree
+		  allMenuTreeObj = $.fn.zTree.init($("#div_menu_tree"), allMenuTreeSetting, msg);
+		  //rename the
+		  var rootNode = allMenuTreeObj.getNodeByParam("id","1");
+		  rootNode.name = $("title").html();
+		  allMenuTreeObj.refresh();
+		  allMenuTreeObj.expandAll(true);
+		  
+		//载入form下name中的值
+		var menus = $("#input_menu").val();
+		//如果name中含有值，则选中树中对应的选项
+		if(menus&&menus!=''){
+			var menuArray = menus.split(","); 
+			for(var i=0; i<menuArray.length; i++){
+				var checkNodeTemp = allMenuTreeObj.getNodeByParam("id",menuArray[i]);
+				allMenuTreeObj.checkNode(checkNodeTemp,true);
+			}
+		}
+	});
+}
+
 
 
 
@@ -143,7 +187,12 @@ $(function(){
 	//载入成功后，刷新左边树
 	//Load the organization tree
 	loadOrganizationTree();
-	//Load grid
+	
+	//单击选择菜单按钮事件
+	$("#btn_menus").click(function(){
+		$('#menu-dlg').dialog('open').dialog('setTitle','选择菜单');
+		loadMenuTree();
+	});
 });
 
 //OrganizationCrud dialog
@@ -160,13 +209,14 @@ function initParentId(){
 function newForm(){
 	//清空权限grid
 	$('#permissionGrid').datagrid('loadData',[]);
-	
+	$("#input_name").removeAttr("readonly");
     $('#dlg').dialog('open').dialog('setTitle','新建'+itemName+'');
     $('#fm').form('clear');
     initParentId();
     url = 'role/save';
 }
 function editForm(){
+	$("#input_name").attr("readonly","readonly");
     var row = $('#roleGrid').datagrid('getSelected');
     initParentId();
     if (row){
@@ -230,6 +280,7 @@ function saveForm(){
                 loadOrganizationTree();
             }
         }
+        
     });
 }
 function destroySelectedItems(){
@@ -286,5 +337,36 @@ function destroySelectedItems(){
         });
     }
 }
+
+//保存菜单id至form的menu下，以逗号分隔: 1,3,2,4
+function saveMenu(){
+	//获取选中的节点
+	var nodes = allMenuTreeObj.getCheckedNodes();
+	var nodeStrs = "";
+	for(var i=0; i<nodes.length; i++){
+		//alert(nodes[i].id);
+		if(i==(nodes.length-1)){
+			nodeStrs+=nodes[i].id;
+		}else{
+			nodeStrs+=(nodes[i].id+",");	
+		}
+	}
+	//赋值给form下的menu
+	$("#input_menu").val(nodeStrs);
+	$('#menu-dlg').dialog('close');
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

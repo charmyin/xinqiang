@@ -27,7 +27,6 @@ drop table if exists shiro_role CASCADE;
 drop table if exists shiro_user CASCADE;
 drop table if exists basic_organization CASCADE;
 
-
 --组织机构表
 create table basic_organization (id serial not null, name varchar(40), parent_id bigint, order_number int default 999999, remark varchar(200), primary key(id));
 alter table basic_organization add constraint fk_basic_organization_parent_id foreign key (parent_id) references basic_organization (id);
@@ -37,7 +36,7 @@ comment on column basic_organization.name is '部门名称（最大长度为50�
 comment on column basic_organization.parent_id is '父级部门id（长整型）';
 comment on column basic_organization.order_number is '用于排序的序号，默认为999999，数值越大，排序靠前（整型）';
 comment on column basic_organization.remark is '部门备注信息（最大长度为200）';
-comment on constraint fk_basic_organization_parent_id on basic_organization is 'basic_organization。parent_id的外键约束，指向basic_organization。id';
+comment on constraint fk_basic_organization_parent_id on basic_organization is 'basic_organization。parent_id的外键约束，指向basic_organization.id';
 INSERT INTO BASIC_ORGANIZATION ( NAME, REMARK ) values ( '组织架构','组织架构备注' ) ;
 
 --用户表
@@ -58,13 +57,14 @@ comment on constraint fk_shiro_user_organization_id on shiro_user is 'shiro_user
 insert into shiro_user (userid, name, email, passphrase, salt, state, date_created) values ('adminadmin','adminadmin','adminadmin@gmail.com', 'tSGnqbyVA6bk8WtgttwAscc2Qe1V6pSC3vFTXViQ0LIlQ07V2Lwn0vk7Voao5C5Lma2P3rnsagtEQ+G+xOFfcw==', '3+trVcGAkXok5VFMNw4yrw==', TRUE, '2013-06-25 14:54:22.646');
 
 --角色表
-CREATE TABLE shiro_role (name VARCHAR(50) NOT NULL, description VARCHAR(200), organization_id bigint, permission varchar(300), remark varchar(200), state boolean default true, PRIMARY KEY (name));
+CREATE TABLE shiro_role (name VARCHAR(50) NOT NULL, description VARCHAR(200), organization_id bigint, permission varchar(300), menu VARCHAR(500), remark varchar(200), state boolean default true, PRIMARY KEY (name));
 alter table shiro_role add constraint fk_shiro_role_organization_id foreign key (organization_id) references basic_organization(id);
 comment on table shiro_role is '角色表';
 comment on column shiro_role.name is '角色名称（最大长度为50,唯一标识）';
 comment on column shiro_role.description is '角色描述(最大长度为200)';
 comment on column shiro_role.organization_id is '所属部门id（长整型）';
-comment on column shiro_role.permission is '角色权限（最大长度为300）';
+comment on column shiro_role.permission is '角色权限（最大长度为1000）';
+comment on column shiro_role.permission is '角色所包含的菜单，逗号分隔的菜单id，包含其父节点（最大长度为1000）';
 comment on column shiro_role.remark is '角色备注（最大长度为200）';
 comment on column shiro_role.state is '角色状态（boolean类型）true为激活状态，false为锁定状态，默认为true';
 comment on constraint fk_shiro_role_organization_id on shiro_role is 'shiro_role.organization_id外键，指向basic_organization.id';
@@ -119,15 +119,15 @@ insert into basic_menu (name, parent_id, link_url) values ('菜单资源管理',
 --comment on column basic_menu_permission.permission is '权限，单行只允许存入单个权限，如果有多个，需要分开单独存储多行。最大长度为100。';
 --comment on constraint fk_basic_menu_permission_menu_id on basic_menu_permission is 'basic_menu_permission.menu_id外键，指向basic_menu.id';
 
---角色菜单表
-create table basic_role_menu(role_name varchar(50) not null, menu_id int not null, primary key(role_name, menu_id));
-alter table basic_role_menu add constraint fk_basic_role_menu_role_name foreign key (role_name) references shiro_role(name);
-alter table basic_role_menu add constraint fk_basic_role_menu_menu_id foreign key (menu_id) references basic_menu(id);
-comment on table basic_role_menu is '角色所用关联的菜单表';
-comment on column basic_role_menu.role_name is '角色唯一标识（外键）';
-comment on column basic_role_menu.menu_id is '菜单条目唯一标识（外键）';
-comment on constraint fk_basic_role_menu_role_name on basic_role_menu is 'basic_role_menu.role_name外键，指向shiro_role.id';
-comment on constraint fk_basic_role_menu_menu_id on basic_role_menu is 'basic_role_menu.menu_id外键，指向basic_menu.id';
+----角色菜单表
+--create table basic_role_menu(role_name varchar(50) not null, menu_id int not null, primary key(role_name, menu_id));
+--alter table basic_role_menu add constraint fk_basic_role_menu_role_name foreign key (role_name) references shiro_role(name);
+--alter table basic_role_menu add constraint fk_basic_role_menu_menu_id foreign key (menu_id) references basic_menu(id);
+--comment on table basic_role_menu is '角色所用关联的菜单表';
+--comment on column basic_role_menu.role_name is '角色唯一标识（外键）';
+--comment on column basic_role_menu.menu_id is '菜单条目唯一标识（外键）';
+--comment on constraint fk_basic_role_menu_role_name on basic_role_menu is 'basic_role_menu.role_name外键，指向shiro_role.id';
+--comment on constraint fk_basic_role_menu_menu_id on basic_role_menu is 'basic_role_menu.menu_id外键，指向basic_menu.id';
 
 
 --角色可授权菜单表

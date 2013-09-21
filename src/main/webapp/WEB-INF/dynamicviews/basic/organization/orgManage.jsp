@@ -56,7 +56,7 @@
 			            </div>
 			            <div class="fitem">
 			                <label>排序号</label>
-			                <input name="orderNumber" class="easyui-validatebox">
+			                <input name="orderNumber" class="easyui-numberbox">
 			            </div>
 			            <div class="fitem">
 			                <label>备注：</label>
@@ -69,11 +69,6 @@
 				        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">取消</a>
 				</div>
 			</div>
-		</div>
-		
-		<div id="div_winSelectParentOrganization_btn">
-			<a href="javascript:void(0);" class="easyui-linkbutton" onclick='selectTreeNodeSure();'>确定</a>
-			<a href="javascript:void(0);" class="easyui-linkbutton" onclick="$('#div_winSelectParentOrganization').dialog('close');">取消</a>
 		</div>
 	</body>
 </html>

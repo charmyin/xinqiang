@@ -42,12 +42,12 @@
 			        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editForm()">修改</a>
 			        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroySelectedItems()">删除</a>
 			    </div>
-			    <div id="dlg" class="easyui-dialog" data-options="closed:'true',buttons:'#dlg-buttons'">
+			    <div id="dlg" class="easyui-dialog" data-options="closed:'true',buttons:'#dlg-buttons', modal:true">
 			        <div class="ftitle">角色信息</div>
 			        <form id="fm" method="post" >
 			            <div class="fitem">
 			                <label>名称：</label>
-			                <input name="name" class="easyui-validatebox" required="true">
+			                <input name="name" id="input_name" class="easyui-validatebox" required="true">
 			            </div>
 			            <div class="fitem">
 			                <label>所属组织：</label>
@@ -59,9 +59,14 @@
 			                <input name="description" class="easyui-validatebox">
 			            </div>
 			            <div class="fitem">
+			                <label>菜单:</label>
+			                <a id="btn_menus" href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-ok'">选择</a>
+			                <input id="input_menu" name="menu" class="easyui-validatebox" type="hidden">
+			            </div>
+			            <div class="fitem">
 			                <input type="hidden" name="permission" id="hidden_permission" class="easyui-validatebox" style="display:hidden;" >
 			            	<label>所需权限：</label>
-			            	<div style="height:200px;overflow:auto;">
+			            	<div style="height:150px;overflow:auto;">
 				                <!--  <textarea name="fullPermission" class="easyui-validatebox" placeholder="权限需用逗号','分开..."></textarea> -->
 				                <table id="permissionGrid"></table>
 				                <div id="permissionGridTB" style="height:auto">
@@ -78,16 +83,21 @@
 			            </div>
 			        </form>
 			    </div>
+			    
 			    <div id="dlg-buttons">
-				        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveForm()">保存</a>
-				        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">取消</a>
+			        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveForm()">保存</a>
+			        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">取消</a>
+				</div>
+				
+				<!-- 菜单选择 -->
+				<div id="menu-dlg" class="easyui-dialog" data-options="closed:'true',buttons:'#menu-dlg-buttons', modal:true">
+			        <div style="height:400px;width:300px;" class="ztree" id="div_menu_tree"></div>
+			    </div>
+			    <div id="menu-dlg-buttons">
+			        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveMenu()">保存</a>
+			        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#menu-dlg').dialog('close')">取消</a>
 				</div>
 			</div>
-		</div>
-		
-		<div id="div_winSelectParentOrganization_btn">
-			<a href="javascript:void(0);" class="easyui-linkbutton" onclick='selectTreeNodeSure();'>确定</a>
-			<a href="javascript:void(0);" class="easyui-linkbutton" onclick="$('#div_winSelectParentOrganization').dialog('close');">取消</a>
 		</div>
 	</body>
 </html>

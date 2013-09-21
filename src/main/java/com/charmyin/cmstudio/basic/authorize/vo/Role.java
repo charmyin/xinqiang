@@ -31,6 +31,9 @@ public class Role {
 
 	@Size(max=1000, message="权限过多或者权限字符串过长")
 	private String permission;
+	
+	@Size(max=1000, message="所选菜单过多或者菜单字符串过长")
+	private String menu;
 
 	public String getPermission() {
 		return permission;
@@ -38,6 +41,14 @@ public class Role {
 
 	public void setPermission(String permission) {
 		this.permission = permission;
+	}
+
+	public String getMenu() {
+		return menu;
+	}
+
+	public void setMenu(String menu) {
+		this.menu = menu;
 	}
 
 	public String getName() {

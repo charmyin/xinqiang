@@ -41,7 +41,7 @@
 			        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editForm()">修改</a>
 			        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroySelectedItems()">删除</a>
 			    </div>
-			    <div id="dlg" class="easyui-dialog" data-options="closed:'true',buttons:'#dlg-buttons'">
+			    <div id="dlg" class="easyui-dialog" data-options="closed:'true',buttons:'#dlg-buttons', modal:true">
 			        <div class="ftitle">菜单信息</div>
 			        <form id="fm" method="post" >
 			            <div class="fitem">
@@ -57,10 +57,16 @@
 			                <input id="input_organizationName" class="easyui-validatebox" readonly>
 			                <input type="hidden" name="organizationId" id="hidden_organizationId" class="easyui-validatebox" style="display:hidden;" >
 			            </div>
+			            <div class="fitem">
+			                <label>角色：</label> 
+			                <a id="btn_roles" href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-ok'">选择</a>
+			                <br/>
+			                <input id="input_role" name="roles" type="hidden" class="easyui-validatebox" readonly>
+			            </div>
 			            <hr/>
 			            <div class="fitem" id="div_initPassphrase">
-			                <label>初始密码:</label>
-			                是<input type="checkbox" name="initPassphrase">(111111)
+			                <label>重置密码:</label>
+			                <input type="checkbox" name="initPassphrase">(111111)
 			                <hr/>
 			                <input type="hidden" name="passphrase" id="hidden_passphrase" class="easyui-validatebox" style="display:hidden;" >
 			                <input type="hidden" name="email" id="hidden_email" class="easyui-validatebox" style="display:hidden;" >
@@ -72,15 +78,19 @@
 			        </form>
 			    </div>
 			    <div id="dlg-buttons">
-				        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveForm()">保存</a>
-				        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">取消</a>
+			        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveForm()">保存</a>
+			        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">取消</a>
 				</div>
+				<!-- 角色选择 -->
+				<div id="role-dlg" class="easyui-dialog" data-options="closed:'true',buttons:'#role-dlg-buttons', modal:true">
+			        <div style="height:400px;width:300px;" id="innerRoleChoose"></div>
+			    </div>
+			    <div id="role-dlg-buttons">
+			        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveRole()">保存</a>
+			        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#role-dlg').dialog('close')">取消</a>
+				</div>
+				
 			</div>
-		</div>
-		
-		<div id="div_winSelectParentOrganization_btn">
-			<a href="javascript:void(0);" class="easyui-linkbutton" onclick='selectTreeNodeSure();'>确定</a>
-			<a href="javascript:void(0);" class="easyui-linkbutton" onclick="$('#div_winSelectParentOrganization').dialog('close');">取消</a>
 		</div>
 	</body>
 </html>

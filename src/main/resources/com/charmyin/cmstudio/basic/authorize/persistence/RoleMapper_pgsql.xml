@@ -8,12 +8,13 @@
 		<result column="DESCRIPTION" property="description" jdbcType="VARCHAR"/>
 		<result column="ORGANIZATION_ID" property="organizationId" jdbcType="INTEGER"/>
 		<result column="PERMISSION" property="permission" jdbcType="VARCHAR"/>
+		<result column="MENU" property="menu" jdbcType="VARCHAR"/>
 		<result column="REMARK" property="remark" jdbcType="VARCHAR"/>
 		<result column="STATE" property="state" jdbcType="BOOLEAN"/>
 	</resultMap>
 
 	<sql id="Role_Column_List" >
-		NAME, DESCRIPTION, ORGANIZATION_ID, PERMISSION, REMARK, STATE
+		NAME, DESCRIPTION, ORGANIZATION_ID, PERMISSION, MENU, REMARK, STATE
 	</sql>
 	
 	<select id="getAllRole" resultMap="RoleResultMap">
@@ -38,6 +39,9 @@
 				</if>
 				<if test="permission != null">
 					AND PERMISSION=#{permission, jdbcType=VARCHAR}
+				</if>
+				<if test="menu != null">
+					AND MENU=#{menu, jdbcType=VARCHAR}
 				</if>
 				<if test="remark != null">
 					AND REMARK=#{remark, jdbcType=VARCHAR}
@@ -65,6 +69,9 @@
 				<if test="permission != null">
 					AND LIKE '%' || #{permission, jdbcType=VARCHAR} || '%'
 				</if>
+				<if test="menu != null">
+					AND LIKE '%' || #{menu, jdbcType=VARCHAR} || '%'
+				</if>
 		</trim>
 	</select>
 
@@ -89,6 +96,9 @@
 				<if test="permission != null">
 					PERMISSION,
 				</if>
+				<if test="menu != null">
+					MENU,
+				</if>
 				<if test="state!= null">
 					STATE,
 				</if>
@@ -112,6 +122,9 @@
 				<if test="permission != null">
 					#{permission, jdbcType=VARCHAR},
 				</if>
+				<if test="menu != null">
+					#{menu, jdbcType=VARCHAR},
+				</if>
 				<if test="state!= null">
 					#{state, jdbcType=BOOLEAN},
 				</if>
@@ -132,6 +145,9 @@
 			</if>
 			<if test="permission != null">
 				PERMISSION=#{permission, jdbcType=VARCHAR},
+			</if>
+			<if test="menu != null">
+				MENU=#{menu, jdbcType=VARCHAR},
 			</if>
 			<if test="state!= null">
 				STATE=#{state, jdbcType=BOOLEAN},
