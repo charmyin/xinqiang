@@ -189,7 +189,20 @@ function saveForm(){
         	return $(this).form('validate');
         },
         success: function(resultString){
-        	var result = eval("("+resultString+")");
+        	try{
+        		var result = eval("("+resultString+")");
+        	}catch(error){
+        		$.messager.show({
+                	title: '提示',
+                    msg: result,
+                    style:{
+                		right:'',
+                		top:document.body.scrollTop+document.documentElement.scrollTop,
+                		bottom:''
+                	}
+                });
+        	}
+        	
             if (result.errorMsg){
                 $.messager.show({
                 	title: '提示<span style="color:red;">!</span>',
@@ -285,7 +298,7 @@ var saveRole = function(){
 	});
 	if(roles!=""){
 		roles = roles.substring(0,roles.length-1);
-		alert(roles);
+		//alert(roles);
 	}
 	$("#input_role").val(roles);
 	$('#role-dlg').dialog('close');

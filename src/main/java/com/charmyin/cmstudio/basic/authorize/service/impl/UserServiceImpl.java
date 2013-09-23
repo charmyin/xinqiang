@@ -1,6 +1,11 @@
 package com.charmyin.cmstudio.basic.authorize.service.impl;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -43,7 +48,8 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public void insertUser(User user) {
-		userMapper.insertUser(user);
+		int test = userMapper.insertUser(user);
+		System.out.println(test);
 	}
 
 	@Override
@@ -54,11 +60,55 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public void deleteUser(int[] ids) {
 		for(int id : ids){
+			userMapper.deleteUserRoleByUserId(id);
 			userMapper.deleteUser(id);
 		}
 	}
 
 	
+	@Override
+	public void updateRoles(Integer userId, String roles) {
+		
+		//First delete all the user_role
+		userMapper.deleteUserRoleByUserId(userId);
+		
+		if(roles==null || roles.trim().equals("")){
+			return;
+		}
+		String[] updateRoleNames = roles.split(",");
+		
+		//Then insert all the user_roles
+		//Use the hashset to remove the duplicated names
+		Set<String> nameHashSet = new HashSet<String>();
+		for(String roleName : updateRoleNames){
+			nameHashSet.add(roleName);
+		}
+		Iterator<String> iterator = nameHashSet.iterator();
+		while(iterator.hasNext()){
+			String roleNameDistinct = iterator.next();
+			insertUserRole(userId, roleNameDistinct);
+		}
+	}
+	
+	@Override
+	public void deleteUserRoleByUserId(int userId) {
+		userMapper.deleteUserRoleByUserId(userId);
+	}
+
+	@Override
+	public void insertUserRole(int userId, String roleName){
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("userId", userId);
+		map.put("roleName", roleName);
+		userMapper.insertUserRole(map);
+	}
+	
+	@Override
+	public List<String> getRoleNamesByUserId(int userId) {
+		List<String> roleNamesList = userMapper.getRoleNamesByUserId(userId);
+		return roleNamesList;
+	}
+
 	public UserMapper getUserMapper() {
 		return userMapper;
 	}

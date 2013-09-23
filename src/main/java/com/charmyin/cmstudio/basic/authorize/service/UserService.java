@@ -1,6 +1,7 @@
 package com.charmyin.cmstudio.basic.authorize.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -47,8 +48,34 @@ public interface UserService {
 	public void updateUser(User user);
 	
 	/**
-	 * Delete users by id string array
+	 * Delete users by id string array, at the same time delete all the rows in role_user related to the ids 
 	 * @param ids
 	 */
 	public void deleteUser(int[] ids);
+
+	/**
+	 * Update the roles of an user
+	 * @param id the user id
+	 * @param roles the role names owned by a user ,eg: admin,player,fiddler
+	 */
+	public void updateRoles(Integer id, String roles);
+	
+	/**
+	 * Get roleName list  by user id
+	 * @userId user id
+	 * @return roleName list
+	 */
+	public List<String> getRoleNamesByUserId(int userId);
+	
+	/**
+	 * Delete user_role by user id
+	 * @param userId
+	 */
+	public void deleteUserRoleByUserId(int userId);
+	
+	/**
+	 * insert user role 
+	 * @param map
+	 */
+	public void insertUserRole(int userId, String roleName);
 }

@@ -75,7 +75,11 @@
 		</trim>
 	</select>
 
-	<insert id="insertUser" parameterType="com.charmyin.cmstudio.basic.authorize.vo.User">
+ 
+	<insert id="insertUser" parameterType="com.charmyin.cmstudio.basic.authorize.vo.User" useGeneratedKeys="true" keyProperty="id" keyColumn="ID">
+		<selectKey keyProperty="id" resultType="int" order="BEFORE">
+			SELECT currval('shiro_user_id_seq') as id
+		</selectKey>
 		INSERT INTO SHIRO_USER 
 			<trim prefix="(" suffix=")" suffixOverrides=",">
 				<!-- <if test="id != null">
@@ -184,5 +188,11 @@
 	<delete id="deleteUser" parameterType="int">
 		DELETE FROM SHIRO_USER WHERE ID=#{id, jdbcType=INTEGER}
 	</delete>
-
+	
+	<delete id="deleteUserRoleByUserId" parameterType="int">
+		DELETE FROM SHIRO_USER_ROLE WHERE USER_ID=#{userId, jdbcType=INTEGER}
+	</delete>
+	<insert id="insertUserRole" parameterType="map">
+		INSERT INTO SHIRO_USER_ROLE (USER_ID,ROLE_NAME) VALUES (#{userId, jdbcType=INTEGER},#{roleName, jdbcType=VARCHAR})
+	</insert>
 </mapper>

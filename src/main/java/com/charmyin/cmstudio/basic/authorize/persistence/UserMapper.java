@@ -1,6 +1,7 @@
 package com.charmyin.cmstudio.basic.authorize.persistence;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Select;
 
@@ -48,7 +49,7 @@ public interface UserMapper {
 	 * @param user
 	 * @return
 	 */
-	public void insertUser(User user);
+	public int insertUser(User user);
 	
 	/**
 	 * Update user by user object which must contain id
@@ -61,4 +62,25 @@ public interface UserMapper {
 	 * @param ids
 	 */
 	public void deleteUser(int id);
+
+	/**
+	 * Get roleName list  by user id
+	 * @userId user id
+	 * @return roleName list
+	 */
+	@Select("SELECT * FROM SHIRO_USER_ROLE WHERE USER_ID=#{userId, jdbcType=BIGINT}")
+	public List<String> getRoleNamesByUserId(int userId);
+
+	/**
+	 * Delete user_role by user id
+	 * @param userId
+	 */
+	public void deleteUserRoleByUserId(int userId);
+	
+	/**
+	 * Insert the user_role to table
+	 * @param map
+	 */
+	public void insertUserRole(Map map);
+	
 }

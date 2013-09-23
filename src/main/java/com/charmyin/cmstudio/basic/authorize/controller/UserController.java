@@ -34,6 +34,7 @@ import com.charmyin.cmstudio.web.utils.ResponseUtil;
 @RequestMapping("/user")
 public class UserController {
 	
+	//TODO use property files
 	//初始化的密码和密码盐分,密码默认为“111111”，six “1”
 	private String salt = "qpOvViSVIY7XyYMpAsJHnQ==";
 	private String passphrase = "9nr6bzUO+BwcJrk8/WQl2XSPb9M10Ra53TEf6TyA9XHqdBWp3AvzjKLPkqWZx6zmARLywD6Mw5lPMYTW/uGwkQ==";
@@ -60,17 +61,18 @@ public class UserController {
 	
 	@RequestMapping(value="/save", method=RequestMethod.POST, produces = "text/plain;charset=UTF-8")
 	@ResponseBody
-	public String saveUser(@Valid User user, BindingResult result){
+	public String saveUser(@Valid UserForm userForm, BindingResult result){
 		if (result.hasErrors()) {
 			return JSRErrorUtil.getErrorString(result);
 	    }
-		
 		try{
-			user.setPassphrase(passphrase);
-			user.setSalt(salt);
-			user.setState(true);
-			user.setEmail(UUID.randomUUID().toString());
-			userService.insertUser(user);
+			//初始化密码
+			userForm.setPassphrase(passphrase);
+			userForm.setSalt(salt);
+			userForm.setState(true);
+			userForm.setEmail(UUID.randomUUID().toString()+"@default.com");
+			userService.insertUser(userForm);
+			userService.updateRoles(userForm.getId(),userForm.getRoles());
 		}catch(Exception e){
 			e.printStackTrace();
 			return ResponseUtil.getFailResultString("保存过程中出错！");
@@ -80,6 +82,7 @@ public class UserController {
 	
 	@RequestMapping(value="/update", method=RequestMethod.POST, produces = "text/plain;charset=UTF-8")
 	@ResponseBody
+	@Transactional
 	public String updateUser(@Valid UserForm userForm, BindingResult result){
 		if (result.hasErrors()) {
 			return JSRErrorUtil.getErrorString(result);
@@ -94,7 +97,9 @@ public class UserController {
 		}
 		try{
 			userService.updateUser((User)userForm);
+			userService.updateRoles(userForm.getId(),userForm.getRoles());
 		}catch(Exception e){
+			logger.error(e.getMessage());
 			e.printStackTrace();
 			return ResponseUtil.getFailResultString("更新过程中出错！");
 		}
@@ -113,34 +118,34 @@ public class UserController {
 	//TODO 长度异常，这里是否要去考虑,测试的时候考虑
 	public Map<String, Object> deleteRoleByNames(@RequestParam("ids") String ids){
 		//ids can not be null
-				if(ids==null || ids.isEmpty()){
-					Map<String, Object> map = ResponseUtil.getFailResultMap();
-					map.put("errorMsg", "删除数据，id不允许为空！");
-					return map;
-				}
-				
-				String[] idsArrayNotEmpty = ArrayUtil.removeEmptyString(ids.split(","));
-				
-				int[] idsIntArray = new int[idsArrayNotEmpty.length];
-				try{
-					for(int i=0; i<idsArrayNotEmpty.length;i++){
-						int idInt = Integer.parseInt(idsArrayNotEmpty[i]);
-						idsIntArray[i] = idInt;
-					}
-					userService.deleteUser(idsIntArray);
-				}catch(NumberFormatException ne){
-					logger.error("提交id值错误!"+ne.getMessage());
-					Map<String, Object> map = ResponseUtil.getFailResultMap();
-					map.put("errorMsg", "提交id值错误!");
-					return map;
-				}catch(Exception e){
-					logger.error(e.getMessage());
-					Map<String, Object> map = ResponseUtil.getFailResultMap();
-					map.put("errorMsg", "删除过程中出错！");
-					return map;
-				}
-				
-				return ResponseUtil.getSuccessResultMap();
+		if(ids==null || ids.isEmpty()){
+			Map<String, Object> map = ResponseUtil.getFailResultMap();
+			map.put("errorMsg", "删除数据，id不允许为空！");
+			return map;
+		}
+		
+		String[] idsArrayNotEmpty = ArrayUtil.removeEmptyString(ids.split(","));
+		
+		int[] idsIntArray = new int[idsArrayNotEmpty.length];
+		try{
+			for(int i=0; i<idsArrayNotEmpty.length;i++){
+				int idInt = Integer.parseInt(idsArrayNotEmpty[i]);
+				idsIntArray[i] = idInt;
+			}
+			userService.deleteUser(idsIntArray);
+		}catch(NumberFormatException ne){
+			logger.error("提交id值错误!"+ne.getMessage());
+			Map<String, Object> map = ResponseUtil.getFailResultMap();
+			map.put("errorMsg", "提交id值错误!");
+			return map;
+		}catch(Exception e){
+			logger.error(e.getMessage());
+			Map<String, Object> map = ResponseUtil.getFailResultMap();
+			map.put("errorMsg", "删除过程中出错！");
+			return map;
+		}
+		
+		return ResponseUtil.getSuccessResultMap();
 	}
 
 	public IdentityService getIdentityService() {

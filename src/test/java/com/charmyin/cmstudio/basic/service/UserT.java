@@ -14,6 +14,7 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.charmyin.cmstudio.basic.authorize.persistence.UserMapper;
+import com.charmyin.cmstudio.basic.authorize.service.UserService;
 import com.charmyin.cmstudio.basic.authorize.vo.User;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -24,6 +25,27 @@ public class UserT{
 	@Resource
 	private UserMapper userMapper;
 	
+	@Resource
+	private UserService userService;
+	
+	@Test
+	public void deleteUserRoleByUserId(){
+		userMapper.deleteUserRoleByUserId(1);
+	}
+	
+	@Test
+	public void insertUserRole(){
+		userService.insertUserRole(1, "test");
+	}
+	
+	@Test
+	public void getRoleNamesByUserId(){
+		List<String> str = userMapper.getRoleNamesByUserId(1);
+		for(String strr: str){
+			System.out.println(strr);
+		}
+	}
+	 
 	@Test
 	public void getUserEqual() {
 		User user1 = new User();
@@ -141,4 +163,13 @@ public class UserT{
 	public void setUserMapper(UserMapper userMapper) {
 		this.userMapper = userMapper;
 	}
+
+	public UserService getUserService() {
+		return userService;
+	}
+
+	public void setUserService(UserService userService) {
+		this.userService = userService;
+	}
+	
 }
