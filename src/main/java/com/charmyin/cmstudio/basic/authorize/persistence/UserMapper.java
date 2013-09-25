@@ -49,7 +49,7 @@ public interface UserMapper {
 	 * @param user
 	 * @return
 	 */
-	public int insertUser(User user);
+	public void insertUser(User user);
 	
 	/**
 	 * Update user by user object which must contain id

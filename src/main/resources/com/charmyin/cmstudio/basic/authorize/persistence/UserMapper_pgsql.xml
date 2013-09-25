@@ -77,8 +77,8 @@
 
  
 	<insert id="insertUser" parameterType="com.charmyin.cmstudio.basic.authorize.vo.User" useGeneratedKeys="true" keyProperty="id" keyColumn="ID">
-		<selectKey keyProperty="id" resultType="int" order="BEFORE">
-			SELECT currval('shiro_user_id_seq') as id
+		<selectKey keyProperty="id" resultType="int" order="AFTER">
+			SELECT currval('shiro_user_id_seq')
 		</selectKey>
 		INSERT INTO SHIRO_USER 
 			<trim prefix="(" suffix=")" suffixOverrides=",">

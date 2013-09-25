@@ -89,7 +89,7 @@ function pagerFilter(data){
         data = {
             total: data.length,
             rows: data
-        }
+        };
     }
     var dg = $(this);
     var opts = dg.datagrid('options');
@@ -189,18 +189,20 @@ function saveForm(){
         	return $(this).form('validate');
         },
         success: function(resultString){
+        	var result;
         	try{
-        		var result = eval("("+resultString+")");
+        		 result = eval("("+resultString+")");
         	}catch(error){
         		$.messager.show({
                 	title: '提示',
-                    msg: result,
+                    msg: resultString,
                     style:{
                 		right:'',
                 		top:document.body.scrollTop+document.documentElement.scrollTop,
                 		bottom:''
                 	}
                 });
+        		return;
         	}
         	
             if (result.errorMsg){
@@ -302,6 +304,6 @@ var saveRole = function(){
 	}
 	$("#input_role").val(roles);
 	$('#role-dlg').dialog('close');
-}
+};
 
 

@@ -48,8 +48,7 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public void insertUser(User user) {
-		int test = userMapper.insertUser(user);
-		System.out.println(test);
+		userMapper.insertUser(user);
 	}
 
 	@Override
