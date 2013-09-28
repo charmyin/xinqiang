@@ -27,18 +27,18 @@ public class ContextLoadedInitialListener implements ServletContextListener {
 		Properties webContextProperties = new Properties();
 		try{
 			webContextProperties.load(is);
-			is.close();
 		}catch(IOException ioe){
 			ioe.printStackTrace();
 			logger.error(ioe.getMessage());
+			return;
+		}finally{
 			try{
 				is.close();
 			}catch(IOException ioe1){
 				ioe1.printStackTrace();
 				logger.error(ioe1.getMessage());
 			}
-			return;
-		} 
+		}
 		Enumeration e = webContextProperties.propertyNames();
 	    while (e.hasMoreElements()) {
 	      String key = (String) e.nextElement();

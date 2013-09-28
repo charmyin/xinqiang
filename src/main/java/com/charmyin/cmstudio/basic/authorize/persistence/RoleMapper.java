@@ -41,7 +41,7 @@ public interface RoleMapper {
 	 * @return
 	 */
 	@Select("SELECT * FROM SHIRO_ROLE WHERE name=#{name, jdbcType=VARCHAR}")
-	public Role getRoleById(String name);
+	public Role getRoleByName(String name);
 	
 	/**
 	 * Insert a piece of role to table

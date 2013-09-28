@@ -159,5 +159,4 @@
 	<delete id="deleteRole" parameterType="string">
 		DELETE FROM SHIRO_ROLE WHERE NAME=#{name, jdbcType=VARCHAR}
 	</delete>
-
 </mapper>

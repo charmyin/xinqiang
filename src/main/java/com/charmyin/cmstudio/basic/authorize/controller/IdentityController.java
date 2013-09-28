@@ -34,6 +34,7 @@ import com.charmyin.cmstudio.basic.authorize.form.LoginForm;
 import com.charmyin.cmstudio.basic.authorize.form.RegistrationForm;
 import com.charmyin.cmstudio.basic.authorize.service.IdentityService;
 import com.charmyin.cmstudio.basic.authorize.vo.Menu;
+import com.charmyin.cmstudio.common.utils.JSRErrorUtil;
 
 /**
  * Handle the login authority requests of this program
@@ -126,18 +127,13 @@ public class IdentityController {
 	   * @return
 	   */
 	  @RequestMapping(method = RequestMethod.POST, value = { "/authenticate" })
-	  public @ResponseBody Map register( @Valid LoginForm loginForm, BindingResult result) {
+	  public @ResponseBody Map authenticateUser( @Valid LoginForm loginForm, BindingResult result) {
 	    logger.trace("Entering Authenticate");
 	    
 	    Map<String,Object> map = new HashMap<String, Object>();
 	    
 	    if (result.hasErrors()) {
-	    //	List<ObjectError> errorlist = result.getAllErrors();
-	    	List<FieldError> errors = result.getFieldErrors();
-	    	String errorInfo = "";
-	        for (FieldError error : errors ) {
-	        	errorInfo += error.getDefaultMessage()+"  ";
-	        }
+	    	String errorInfo = 	JSRErrorUtil.getErrorString(result);
 	        map.put("status", "error");
 	        map.put("msg", errorInfo);
 	    	return map ;
@@ -145,39 +141,17 @@ public class IdentityController {
 
 	    UsernamePasswordToken token = new UsernamePasswordToken(loginForm.getUsername(), loginForm.getPassphrase());
 
-	    // �Remember Me�?built-in, just do this
+	    // <Remember Me>built-in, just do this
 	    // TODO: Make this a user option instead of hard coded in.
 	    token.setRememberMe(true);
-
+	    
 	    Subject currentUser = SecurityUtils.getSubject();
-
-	    try {
-	        currentUser.login(token);
-	        logger.info("AUTH SUCCESS");
-	    } catch (UnknownAccountException ue) {
-	    	logger.info("AUTH MSSG: " + ue.getMessage());
-	    	map.put("msg", "用户名不存在！");
-	    } catch (IncorrectCredentialsException ice){
-	    	logger.info("AUTH MSSG: " + ice.getMessage());
-	    	map.put("msg", "用户名或密码错误!");
-	    } catch (LockedAccountException lae){
-	    	logger.info("AUTH MSSG: " + lae.getMessage());
-	    	map.put("msg", "当前账号已被锁定!请稍后再试！");
-	    } catch (ExpiredCredentialsException ece){
-	    	logger.info("AUTH MSSG: " + ece.getMessage());
-	    	map.put("msg", "当前用户密码已经过期，请及时更改！");
-	    } catch (ExcessiveAttemptsException eae){
-	    	logger.info("AUTH MSSG: " + eae.getMessage());
-	    	map.put("msg", "当前账号登录尝试过于频繁，请稍后再试！");
-	    } catch (ConcurrentAccessException cae){
-	    	logger.info("AUTH MSSG: " + cae.getMessage());
-	    	map.put("msg", "当前系统不允许多点登录，请先退出之前登录的系统！");
-	    } catch (AuthenticationException ae){
-	    	logger.warn("AUTH MSSG: " + ae.getMessage());
-	    	map.put("msg", "未知原因，登录失败！"+ae.getMessage());
-	    }
+	    
+	    //Authenticate the user
+	    authenticateUserByToken(currentUser, token, map);
 
 	    if (currentUser.isAuthenticated()) {
+	      //Set user menus to session
 	      map.put("status", "ok");
 	      return map;
 	    }
@@ -185,10 +159,43 @@ public class IdentityController {
         map.put("status", "error");
         
         return map;
-	  }
+	}
 	  
-	  
-	  @RequestMapping(method = RequestMethod.GET, value = { "/logout" })
+	/**
+	 * Authenticate the login user, catch the exception, log and return it~ 
+	 * @param currentUser
+	 * @param token
+	 * @param resultMap
+	 */
+	private void authenticateUserByToken(Subject currentUser, UsernamePasswordToken token, Map<String, Object> resultMap) {
+		try {
+	        currentUser.login(token);
+	        logger.info("AUTH SUCCESS");
+	    } catch (UnknownAccountException ue) {
+	    	logger.info("AUTH MSSG: " + ue.getMessage());
+	    	resultMap.put("msg", "用户名不存在！");
+	    } catch (IncorrectCredentialsException ice){
+	    	logger.info("AUTH MSSG: " + ice.getMessage());
+	    	resultMap.put("msg", "用户名或密码错误!");
+	    } catch (LockedAccountException lae){
+	    	logger.info("AUTH MSSG: " + lae.getMessage());
+	    	resultMap.put("msg", "当前账号已被锁定!请稍后再试！");
+	    } catch (ExpiredCredentialsException ece){
+	    	logger.info("AUTH MSSG: " + ece.getMessage());
+	    	resultMap.put("msg", "当前用户密码已经过期，请及时更改！");
+	    } catch (ExcessiveAttemptsException eae){
+	    	logger.info("AUTH MSSG: " + eae.getMessage());
+	    	resultMap.put("msg", "当前账号登录尝试过于频繁，请稍后再试！");
+	    } catch (ConcurrentAccessException cae){
+	    	logger.info("AUTH MSSG: " + cae.getMessage());
+	    	resultMap.put("msg", "当前系统不允许多点登录，请先退出之前登录的系统！");
+	    } catch (AuthenticationException ae){
+	    	logger.warn("AUTH MSSG: " + ae.getMessage());
+	    	resultMap.put("msg", "未知原因，登录失败！"+ae.getMessage());
+	    }
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = { "/logout" })
 	  public String logout(Locale locale, Model model){
 		  Subject currentUser = SecurityUtils.getSubject();
 		  try{
@@ -197,7 +204,7 @@ public class IdentityController {
 			  e.printStackTrace();
 		  }
 		  model.addAttribute("loginForm", new LoginForm());
-		 return "basic/authorize/login";
+		  return "basic/authorize/login";
 	  }
 	  
 	  /**

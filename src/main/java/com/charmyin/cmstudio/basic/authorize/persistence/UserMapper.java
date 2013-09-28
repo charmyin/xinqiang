@@ -45,6 +45,14 @@ public interface UserMapper {
 	public User getUserById(int id);
 	
 	/**
+	 * Get user by user name
+	 * @param userName
+	 * @return
+	 */
+	@Select("SELECT * FROM SHIRO_USER WHERE USER_NAME=#{userName, jdbcType=VARCHAR}")
+	public User getUserByName(String userName);
+	
+	/**
 	 * Insert a piece of user to table
 	 * @param user
 	 * @return
@@ -70,7 +78,7 @@ public interface UserMapper {
 	 */
 	@Select("SELECT ROLE_NAME FROM SHIRO_USER_ROLE WHERE USER_ID=#{userId, jdbcType=BIGINT}")
 	public List<String> getRoleNamesByUserId(int userId);
-
+	
 	/**
 	 * Delete user_role by user id
 	 * @param userId

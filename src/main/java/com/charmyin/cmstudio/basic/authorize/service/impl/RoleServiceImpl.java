@@ -53,7 +53,7 @@ public class RoleServiceImpl implements RoleService {
 
 	@Override
 	public Role getRoleByName(String name) {
-		Role role = roleMapper.getRoleById(name);
+		Role role = roleMapper.getRoleByName(name);
 		return role;
 	}
 
