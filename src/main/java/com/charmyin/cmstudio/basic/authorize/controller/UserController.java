@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
@@ -56,6 +57,15 @@ public class UserController {
 	@ResponseBody
 	public List<User> getUserByOrganization(@PathVariable("organizationId") Integer organizationId){
 		List<User> list = userService.getUserByOrgnizationId(organizationId);
+		return list;
+	}
+	
+	@RequestMapping(value="/{userId}/roleNames", method=RequestMethod.GET)
+	@ResponseBody
+	public List<String> getRoleNamesByUserId(@PathVariable("userId") Integer userId){
+//		SecurityUtils.getSecurityManager().
+		//logger.debug(SecurityUtils.getSubject().);
+		List<String> list = userService.getRoleNamesByUserId(userId);
 		return list;
 	}
 	

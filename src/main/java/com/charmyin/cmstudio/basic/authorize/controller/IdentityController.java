@@ -33,6 +33,7 @@ import com.charmyin.cmstudio.basic.authorize.domain.Identity;
 import com.charmyin.cmstudio.basic.authorize.form.LoginForm;
 import com.charmyin.cmstudio.basic.authorize.form.RegistrationForm;
 import com.charmyin.cmstudio.basic.authorize.service.IdentityService;
+import com.charmyin.cmstudio.basic.authorize.vo.Menu;
 
 /**
  * Handle the login authority requests of this program

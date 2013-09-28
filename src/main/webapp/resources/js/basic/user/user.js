@@ -121,10 +121,32 @@ function pagerFilter(data){
 function loadRolesForChoose(){
 	var selectedNode = allOrganizationTreeObj.getNodeByParam("id",selectedNodeId);
 	var htmlInner = "";
+	//The first Get all the role belong to the same organization
 	$.ajax({
 	  type: "GET",
 	  url: "role/orgId/"+selectedNode.id+"/all"
 	}).done(function( msg ) {
+		if(url.indexOf('update')>-1){
+			//Get the uset id
+			var row = $('#userGrid').datagrid('getSelected');
+			//The second request the role of the user
+			$.ajax({
+			  type: "GET",
+			  url: "user/"+row.id+"/roleNames"
+			}).done(function( msg ) {
+				//Check the checkboxes which 
+				$(".roleChooseClass").each(function(){
+					for(var i=0; i<msg.length; i++){
+						if($(this).val()==msg[i]){
+							$(this).attr("checked","checked");
+						}
+					}
+				});
+			});
+		}
+		
+		
+		
 		//alert(msg[0].name);
 		for(var i=0; i<msg.length; i++){
 			htmlInner+='<input type="checkbox" class="roleChooseClass" value="'+msg[i].name+'"/>'+msg[i].name;
@@ -175,7 +197,7 @@ function editForm(){
     	$("#input_loginId").attr("readonly","readonly");
         $('#dlg').dialog('open').dialog('setTitle','修改'+itemName+':'+row.loginId);
         $("#div_initPassphrase").show();
-//        //获取所属群组，修改时显示
+//        获取所属群组，修改时显示
 //        var nodes=allOrganizationTreeObj.getSelectedNodes();
         $('#fm').form('load',row);
         url = 'user/update?id='+row.id;
@@ -300,7 +322,6 @@ var saveRole = function(){
 	});
 	if(roles!=""){
 		roles = roles.substring(0,roles.length-1);
-		//alert(roles);
 	}
 	$("#input_role").val(roles);
 	$('#role-dlg').dialog('close');

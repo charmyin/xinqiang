@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
@@ -56,6 +58,18 @@ public class MenuController {
 		List<Menu> menuList = menuService.getAllMenu();
 		return menuList;
 	}
+	
+	/**
+	 * Get user menus by their shiro session subject
+	 * @return Menu list in json
+	 */
+	 @RequestMapping("/menu/user")
+	 @ResponseBody
+	 public List<Menu> getMenusByUserSessionSubject(){
+		 Subject currentUser = SecurityUtils.getSubject();
+	
+		 return null;
+	 }
 	
 	//TODO The parentId parse exception has not been handled~
 	/**

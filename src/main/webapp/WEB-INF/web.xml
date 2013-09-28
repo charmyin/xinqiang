@@ -35,7 +35,6 @@
 		<servlet-name>appServlet</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
-	
 
 	<!-- The filter-name matches name of a 'shiroFilter' bean inside applicationContext.xml -->
 	<filter>

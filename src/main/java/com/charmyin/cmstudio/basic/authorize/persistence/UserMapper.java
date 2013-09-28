@@ -68,7 +68,7 @@ public interface UserMapper {
 	 * @userId user id
 	 * @return roleName list
 	 */
-	@Select("SELECT * FROM SHIRO_USER_ROLE WHERE USER_ID=#{userId, jdbcType=BIGINT}")
+	@Select("SELECT ROLE_NAME FROM SHIRO_USER_ROLE WHERE USER_ID=#{userId, jdbcType=BIGINT}")
 	public List<String> getRoleNamesByUserId(int userId);
 
 	/**
