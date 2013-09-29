@@ -42,7 +42,7 @@
 			        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editMenu()">修改</a>
 			        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyMenu()">删除</a>
 			    </div>
-			    <div id="dlg" class="easyui-dialog" data-options="closed:'true',buttons:'#dlg-buttons'">
+			    <div id="dlg" class="easyui-dialog" data-options="closed:'true', buttons:'#dlg-buttons', modal:true">
 			        <div class="ftitle">菜单信息</div>
 			        <form id="fm" method="post" >
 			            <div class="fitem">
