@@ -24,6 +24,10 @@
 		FROM  BASIC_MENU
 	</select>
 	
+	<select id="getMenuById" resultMap="MenuResultMap" parameterType="int">
+		SELECT * FROM basic_menu WHERE id=#{id, jdbcType=BIGINT}
+	</select>
+	
 	<select id="getMenuEqual" resultMap="MenuResultMap" parameterType="com.charmyin.cmstudio.basic.authorize.vo.Menu">
 		SELECT 
 			<include refid="Menu_Column_List" />

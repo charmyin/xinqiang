@@ -78,8 +78,13 @@ public class UserT{
 
 	@Test
 	public void getUserById() {
-		User user = userMapper.getUserById(1);
-		System.out.println(user.getId()+"=="+user.getName());
+		User queryUser = new User();
+		queryUser.setId(1);
+		List<User> userList = userMapper.getUserEqual(queryUser);
+		if(userList==null || userList.size()<1){
+			System.out.println("nulllllllllllllllllllll");
+		}
+		System.out.println(userList.get(0).getName());
 	}
 
 	@Test

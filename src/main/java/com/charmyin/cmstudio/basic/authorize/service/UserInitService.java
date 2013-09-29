@@ -22,7 +22,7 @@ public interface UserInitService {
 	 * @param name
 	 * @return
 	 */
-	public Set<String> getRoleNamesByUserName(String userName);
+	public Set<String> getRoleNamesByLoginId(String loginId);
 	
 	/**
 	 * Get user menus by user's role names
@@ -38,4 +38,10 @@ public interface UserInitService {
 	 * @return
 	 */
 	public List<Menu> getMenusByMenuIds(Set<String> menuIdSet);
+	
+	/**
+	 * Get menu list by user name
+	 * @return
+	 */
+	public List<Menu> getMenusByLoginId(String loginId);
 }

@@ -23,12 +23,16 @@
   </head>
   
   <body style="overflow:hidden;" id="bodyIndexMain">
+  	  <div style="position:absolute;width:100%; text-align:center;margin:0 0 0 0;z-index:1">
+     		<span style="height:20px;width:100%;position:relative;top:25px;">欢迎您:&nbsp;${userInfo.name}(${userInfo.loginId})</span>
+     		<span style="height:20px;width:100%;position:relative;top:25px;"></span>
+      </div>
       <div class="easyui-layout" id="divLayout_Main" data-options="fit:true" style="overflow:hidden;">
       	<!-- <div region='north' title="Zebone 前端集成开发平台(EasyUI)" style="width:100%; height:100px;background:blue;"> -->
       	<div region='north' style="width:100%; height:75px;background:blue;">
       		<div id="div_index_head">
       			<div style="float:right; padding:24px 20px 0 0;">
-      				<a href="" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-sum'">桌面版</a>
+      				<!-- <a href="" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-sum'">桌面版</a> -->
       				<a id="aMenubutton_Main" href="#" class="easyui-menubutton" data-options="menu:'#mm1', iconCls:'icon-tip'" >切换主题</a>
       				<a href="#" class="easyui-menubutton" data-options="menu:'#mm2', iconCls:'icon-help'">首选项</a>
       				<a href="#" class="easyui-linkbutton" id="logout" data-options="plain:true, iconCls:'icon-no'">退出</a>
@@ -45,19 +49,18 @@
 		</div>
       	<div region="west" split="true" id="divRegionWest_Main" title="导航栏" style='width:280px; height:auto;'>
       		<div class="easyui-accordion" id="divAccordion_main" data-options="fit:true">
-      			<div title="系统管理" id="divSystemManage_main" data-option="iconCls:'icon-ok'" style="width:100%; overflow-x:hidden; overflow-y:auto;">
+      			<div title="系统功能" id="divSystemManage_main" data-option="iconCls:'icon-ok'" style="width:100%; overflow-x:hidden; overflow-y:auto;">
 						<div id="divSystemManage_main_tree" class="ztree"></div>
 				</div>
-				<div title="开发人员工具"  data-option="iconCls:'icon-help'">
+				<div id="div_developTool" title="开发人员工具"  data-option="iconCls:'icon-help'">
 					 <div id="divDevelopTool_tree" class="ztree"></div>
 				</div>
-				<div title="模版子系统" data-option="iconCls:'icon-search'" >
+				<div id="div_moduleSystem" title="模版子系统" data-option="iconCls:'icon-search'" >
 					<div id="moduleSystem_tree" class="ztree"></div>
 				</div>
       		</div>
       	</div>
       	<div region="center" split="true" style="width:auto;">
-      		
       		<div id="divTab_Main" class="easyui-tabs"  data-options="fit:true" style="">
       			<div title="欢迎使用本平台">
       				<h2 style="color:#0099FF; text-align:center;">关于振邦</h2>

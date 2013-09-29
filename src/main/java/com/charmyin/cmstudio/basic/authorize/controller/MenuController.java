@@ -63,12 +63,17 @@ public class MenuController {
 	 * Get user menus by their shiro session subject
 	 * @return Menu list in json
 	 */
+	 @SuppressWarnings("unchecked")
 	 @RequestMapping("/menu/user")
 	 @ResponseBody
 	 public List<Menu> getMenusByUserSessionSubject(){
 		 Subject currentUser = SecurityUtils.getSubject();
-	
-		 return null;
+		 Object menuListObj =  currentUser.getSession().getAttribute("menuList");
+		 List<Menu> menuList=null;
+		 if(menuListObj!=null){
+			 menuList = (List<Menu>)menuListObj;
+		 }
+		 return menuList;
 	 }
 	
 	//TODO The parentId parse exception has not been handled~
@@ -103,7 +108,6 @@ public class MenuController {
 			return ResponseUtil.getFailResultString("保存过程中出错！");
 		}
 		return ResponseUtil.getSuccessResultString();
-	 
 	}
 	
 	/**

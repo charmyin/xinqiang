@@ -29,6 +29,13 @@ public interface UserService {
 	public User getUserById(int id);
 	
 	/**
+	 * Get user by user name
+	 * @param userName
+	 * @return
+	 */
+	public User getUserByName(String userName);
+	
+	/**
 	 * Get user by orgnization id
 	 * @return
 	 */

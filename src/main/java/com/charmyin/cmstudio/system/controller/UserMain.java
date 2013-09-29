@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("/basic/menu")
 public class UserMain {
-
+	//TODO Deprecated
 	//菜单CRUD界面
 	@RequestMapping(method = RequestMethod.GET, value = { "/manage" })
 	public String MenuManage(){

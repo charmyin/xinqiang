@@ -16,6 +16,7 @@ import com.charmyin.cmstudio.basic.authorize.service.UserInitService;
 import com.charmyin.cmstudio.basic.authorize.vo.Menu;
 import com.charmyin.cmstudio.basic.authorize.vo.Role;
 import com.charmyin.cmstudio.basic.authorize.vo.User;
+import com.charmyin.cmstudio.common.utils.StringUtil;
 
 /**
  * User initial service by using database~
@@ -35,9 +36,12 @@ public class UserInitServiceDatabaseImpl implements UserInitService {
 	private MenuMapper menuMapper;
 
 	@Override
-	public Set<String> getRoleNamesByUserName(String userName) {
+	public Set<String> getRoleNamesByLoginId(String loginId) {
 		//Get user id
-		User user = userMapper.getUserByName(userName);
+		User queryUser = new User();
+		queryUser.setLoginId(loginId);
+		//The user must exist
+		User user = userMapper.getUserEqual(queryUser).get(0);
 		//Get role name list
 		List<String> list = userMapper.getRoleNamesByUserId(user.getId());
 		//Change the roleName arrayList to hashSet
@@ -74,14 +78,25 @@ public class UserInitServiceDatabaseImpl implements UserInitService {
 
 	@Override
 	public List<Menu> getMenusByMenuIds(Set<String> menuIdSet) {
-		Integer[] menuIds = menuIdSet.toArray(new Integer[0]);
+		String[] menuIds = menuIdSet.toArray(new String[0]);
 		List<Menu> menuList = new ArrayList<Menu>();
-		for(Integer menuId : menuIds){
-			Menu menu = menuMapper.getMenuById(menuId);
-			if(menu!=null){
-				menuList.add(menu);
+		for(String menuIdStr : menuIds){
+			if(StringUtil.isPositiveInteger(menuIdStr)){
+				Menu menu = menuMapper.getMenuById(Integer.parseInt(menuIdStr));
+				if(menu!=null){
+					menuList.add(menu);
+				}
 			}
+			
 		}
+		return menuList;
+	}
+	
+	@Override
+	public List<Menu> getMenusByLoginId(String loginId) {
+		Set<String> roleNameSet = getRoleNamesByLoginId(loginId);
+		Set<String> menuIdSet = getMenuIdsByUserRoleNames(roleNameSet);
+		List<Menu> menuList = getMenusByMenuIds(menuIdSet);
 		return menuList;
 	}
 	

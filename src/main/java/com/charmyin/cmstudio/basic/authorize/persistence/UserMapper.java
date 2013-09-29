@@ -37,22 +37,6 @@ public interface UserMapper {
 	public List<User> getUserLike(User user);
 	
 	/**
-	 * Get user by user id
-	 * @param id
-	 * @return
-	 */
-	@Select("SELECT * FROM SHIRO_USER WHERE id=#{id, jdbcType=BIGINT}")
-	public User getUserById(int id);
-	
-	/**
-	 * Get user by user name
-	 * @param userName
-	 * @return
-	 */
-	@Select("SELECT * FROM SHIRO_USER WHERE USER_NAME=#{userName, jdbcType=VARCHAR}")
-	public User getUserByName(String userName);
-	
-	/**
 	 * Insert a piece of user to table
 	 * @param user
 	 * @return

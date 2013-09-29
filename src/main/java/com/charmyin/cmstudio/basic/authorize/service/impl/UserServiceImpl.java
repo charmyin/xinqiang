@@ -9,6 +9,7 @@ import java.util.Set;
 
 import javax.annotation.Resource;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import com.charmyin.cmstudio.basic.authorize.persistence.UserMapper;
@@ -23,6 +24,8 @@ import com.charmyin.cmstudio.basic.authorize.vo.User;
 @Service
 public class UserServiceImpl implements UserService{
 	
+	Logger logger = Logger.getLogger(UserServiceImpl.class);
+	
 	@Resource
 	UserMapper userMapper;
 
@@ -34,8 +37,13 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public User getUserById(int id) {
-		User user = userMapper.getUserById(id);
-		return user;
+		User queryUser = new User();
+		queryUser.setId(id);
+		List<User> userList = userMapper.getUserEqual(queryUser);
+		if(userList==null || userList.size()<1){
+			return null;
+		}
+		return userList.get(0);
 	}
 
 	@Override
@@ -55,6 +63,18 @@ public class UserServiceImpl implements UserService{
 	public void updateUser(User user) {
 		userMapper.updateUser(user);
 	}
+	
+
+	@Override
+	public User getUserByName(String userName) {
+		User queryUser = new User();
+		queryUser.setLoginId(userName);
+		List<User> userList = userMapper.getUserEqual(queryUser);
+		if(userList==null || userList.size()<1){
+			return null;
+		}
+		return userList.get(0);
+	}
 
 	@Override
 	public void deleteUser(int[] ids) {
@@ -63,7 +83,6 @@ public class UserServiceImpl implements UserService{
 			userMapper.deleteUser(id);
 		}
 	}
-
 	
 	@Override
 	public void updateRoles(Integer userId, String roles) {

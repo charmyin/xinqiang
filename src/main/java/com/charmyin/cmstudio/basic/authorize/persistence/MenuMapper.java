@@ -40,7 +40,6 @@ public interface MenuMapper {
 	 * @param id
 	 * @return
 	 */
-	@Select("SELECT * FROM basic_menu WHERE id=#{id, jdbcType=BIGINT}")
 	public Menu getMenuById(int id);
 	
 	/**
