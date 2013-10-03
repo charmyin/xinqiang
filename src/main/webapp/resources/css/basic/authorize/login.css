@@ -161,3 +161,7 @@ div[region=west]{
 #divLoading span{
 	background:url(../../../img/common/loading.gif) no-repeat left center; padding-left: 20px;
 }
+
+a, img {
+    border:none;
+}
