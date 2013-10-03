@@ -19,6 +19,14 @@
 		<listener-class>com.charmyin.cmstudio.basic.initial.ContextLoadedInitialListener</listener-class>
 	</listener>
 	
+	<servlet>
+        <servlet-name>jcaptcha</servlet-name>
+        <servlet-class>com.octo.captcha.module.servlet.image.SimpleImageCaptchaServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+	        <servlet-name>jcaptcha</servlet-name>
+	        <url-pattern>/jcaptcha.jpg</url-pattern>
+	</servlet-mapping>
 
 	<!-- Processes application requests -->
 	<servlet>

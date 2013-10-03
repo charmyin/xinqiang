@@ -40,6 +40,7 @@ function setEnterPressEvent() {
 	
 	var userName = $('#inputUsername').val();
 	var password = $('#inputPassword').val();
+	var validateCode = $("#inputValiCode").val();
 	
 	//保存cookie
 	if($('#inputRememberMe').is(':checked')){
@@ -57,19 +58,20 @@ function setEnterPressEvent() {
 	if($('#inputDesktop_login').is(':checked')){
 		window.location.href="http://localhost:8080/bbrj/jsframes/jQueryDesktop/index.html";
 	}else{
-		validUserByAjax(userName, password);
+		validUserByAjax(userName, password, validateCode);
 	}
 }
 
 //Ajax形式验证用户凭据
-function validUserByAjax(userName, password){
+function validUserByAjax(userName, password, validateCode){
 	//alert(userName+password);
 	$.ajax({
 		  url: "identity/authenticate",
 		  type:"POST",
 		  data: {
 		    passphrase : password,
-		    username : userName
+		    username : userName,
+		    validateCode : validateCode
 		  },
 		  dataType: "json",
 		  success: function( data ) {
@@ -87,6 +89,9 @@ function validUserByAjax(userName, password){
 						bottom:''
 					}
 				});
+		    	
+		    	//change the validate Image
+		    	changeValiImg();
 		    }
 		  },
 		  error: function(data){
@@ -102,11 +107,19 @@ function validUserByAjax(userName, password){
 					bottom:''
 				}
 			});
-			  
+			//change the validate Image
+			changeValiImg();
 		  }
 		});
 	
 }
+
+//Change the validate code image~
+function changeValiImg(){
+	var randomNum = Math.floor(Math.random()*10000);
+	$("#imgValiCode").attr("src", "captcha/valiCode.jpg?"+randomNum);
+}
+
 
 //监视easyloader加载组件完成的事件
 $(function(){
@@ -160,3 +173,9 @@ $(function(){
 	});
 	
 });
+
+
+
+
+
+

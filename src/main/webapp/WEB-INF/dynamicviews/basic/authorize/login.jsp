@@ -40,16 +40,16 @@
 				 						<ul id="formUl">
 				 							<li class="inputText">
 				 								<label for="inputUsername">用户名:</label>
-					 							<input class="easyui-validatebox" type="text" id="inputUsername" name="username" type="password" placeholder="用户名" data-options="required:true, validType:'length[1,15]'" autofocus/>
+					 							<input class="easyui-validatebox" type="text" id="inputUsername" name="username" placeholder="用户名" data-options="required:true, validType:'length[1,15]'" autofocus/>
 				 							</li>
 				 							<li class="inputText">
 				 								<label style="" for="inputPassword">密&nbsp;&nbsp;码:</label>
-					 							<input class="easyui-validatebox" type="password" id="inputPassword" name="password" type="password" placeholder="密码" data-options="required:true, validType:'length[1,15]'" />
+					 							<input class="easyui-validatebox" type="password" id="inputPassword" name="password" placeholder="密码" data-options="required:true, validType:'length[1,15]'" />
 				 							</li>
 				 							<li id="liValiCode">
 				 								<label style="" for="inputValiCode">验证码:</label>
-				 								<img src="resources/css/basic/authorize/images/validateCode1.jpg" id="imgValiCode"/>
-					 							<input class="easyui-validatebox" id="inputValiCode" name="valiCode" placeholder="验证码" data-options="required:true, validType:'fixedLength[5]'" />
+				 								<a href="javascript:changeValiImg()"><img src="captcha/valiCode.jpg" id="imgValiCode"/></a>
+					 							<input class="easyui-validatebox" type="text" id="inputValiCode" name="validateCode" placeholder="验证码" data-options="required:true, validType:'length[4,5]'" />
 				 							</li>
 				 							<li class="liConfig">
 				 								<div id="checkboxConfig">

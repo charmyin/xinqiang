@@ -8,7 +8,6 @@ import javax.annotation.Resource;
 import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
-import org.apache.shiro.SecurityUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;

@@ -39,7 +39,7 @@
 				/user/info/** = perms[info]
 				
 				-->
-				
+				/captcha/valiCode.jpg = anon
 				/identity/authenticate=anon
 				/resources/** = anon
 				/** = authc

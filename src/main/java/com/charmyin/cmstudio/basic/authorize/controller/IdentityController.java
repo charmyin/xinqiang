@@ -6,6 +6,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.Validator;
 
@@ -38,6 +39,8 @@ import com.charmyin.cmstudio.basic.authorize.service.UserService;
 import com.charmyin.cmstudio.basic.authorize.vo.Menu;
 import com.charmyin.cmstudio.basic.authorize.vo.User;
 import com.charmyin.cmstudio.common.utils.JSRErrorUtil;
+import com.octo.captcha.service.CaptchaServiceException;
+import com.octo.captcha.service.multitype.MultiTypeCaptchaService;
 
 /**
  * Handle the login authority requests of this program
@@ -58,6 +61,9 @@ public class IdentityController {
 	@Resource(name="userInitServiceDatabaseImpl")
 	private UserInitService userInitService;
 
+	@Resource
+	private MultiTypeCaptchaService captchaService;
+	
 	private Validator validator;
 	
 	private static final Logger logger = LoggerFactory.getLogger(IdentityController.class);
@@ -128,11 +134,10 @@ public class IdentityController {
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.POST, value = { "/authenticate" })
-	public @ResponseBody Map authenticateUser(@Valid LoginForm loginForm, BindingResult result, Model model) {
-		logger.trace("Entering Authenticate");
-
+	public @ResponseBody Map authenticateUser(@Valid LoginForm loginForm, HttpServletRequest request, BindingResult result, Model model) {
+		
+		logger.trace("A request has been received, and validate it's effectivity~");
 		Map<String, Object> map = new HashMap<String, Object>();
-
 		if (result.hasErrors()) {
 			String errorInfo = JSRErrorUtil.getErrorString(result);
 			map.put("status", "error");
@@ -140,6 +145,24 @@ public class IdentityController {
 			return map;
 		}
 
+		logger.trace("Validate validate code~");
+		// If the captcha field is already rejected
+		  boolean validCaptcha = false;
+		  try {
+			  validCaptcha = captchaService.validateResponseForID(request.getSession().getId(), loginForm.getValidateCode());
+		  }
+		  catch (CaptchaServiceException e) {
+		      //should not happen, may be thrown if the id is not valid
+			  logger.warn("validateCaptcha()", e);
+		  }
+		  if(!validCaptcha){
+			  map.put("status", "error");
+			  map.put("msg", "验证码错误");
+			  return map;
+		  }
+		
+		logger.trace("Entering Authenticate");
+		
 		UsernamePasswordToken token = new UsernamePasswordToken(loginForm.getUsername(), loginForm.getPassphrase());
 
 		// <Remember Me>built-in, just do this
@@ -261,4 +284,14 @@ public class IdentityController {
 	public void setValidator(Validator validator) {
 		this.validator = validator;
 	}
+
+	public MultiTypeCaptchaService getCaptchaService() {
+		return captchaService;
+	}
+
+	public void setCaptchaService(MultiTypeCaptchaService captchaService) {
+		this.captchaService = captchaService;
+	}
+	
+	
 }

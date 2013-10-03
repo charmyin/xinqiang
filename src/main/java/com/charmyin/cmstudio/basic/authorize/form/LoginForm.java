@@ -18,6 +18,19 @@ public class LoginForm {
 	@Size(min=4, max=50, message="密码长度必须大于4小于50")
 	private String passphrase;
 
+	@NotNull(message = "验证码不允许为空")
+	@Size(min=4, max=5, message="验证码长度必须大于4小于5")
+	private String validateCode;
+	
+	
+	public String getValidateCode() {
+		return validateCode;
+	}
+
+	public void setValidateCode(String validateCode) {
+		this.validateCode = validateCode;
+	}
+
 	public String getUsername() {
 		return username;
 	}

@@ -32,6 +32,7 @@
 		<org.javax.servlet.jstl-version>1.2</org.javax.servlet.jstl-version>
 		
 		<org.codehaus.jackson.version>1.9.12</org.codehaus.jackson.version>
+		
 	</properties>
 	<dependencies>
 		<!-- Apache Datasource -->
@@ -55,7 +56,7 @@
 			<artifactId>postgresql</artifactId>
 			<version>${org.postgresql.jdbc-version}</version>
 		</dependency>
-		            
+		
 		<!-- JSR 303 Validation - Hibernat Validator 后端验证-->
 		<dependency>
 	    	<groupId>org.hibernate</groupId>
@@ -63,6 +64,28 @@
 	     	<version>${org.hibernate-validator-version}</version>
 		</dependency>
 		
+		<!-- Jcaptcha -->
+		<dependency>
+	      <groupId>com.octo.captcha</groupId>
+	      <artifactId>jcaptcha-api</artifactId>
+	      <version>1.0</version>
+	    </dependency>
+	    <dependency>
+	      <groupId>com.octo.captcha</groupId>
+	      <artifactId>jcaptcha</artifactId>
+	      <version>2.0-alpha-1</version>
+	    </dependency>
+		<dependency>
+	      <groupId>com.octo.captcha</groupId>
+	      <artifactId>jcaptcha-integration-simple-servlet</artifactId>
+	      <version>2.0-alpha-1</version>
+	    </dependency>
+	    <dependency>
+	      <groupId>com.jhlabs</groupId>
+	      <artifactId>filters</artifactId>
+	      <version>2.0.235</version>
+	    </dependency>
+	    
 		<!-- SHIRO Security Stuff -->
 		<dependency>
 			<groupId>org.apache.shiro</groupId>
@@ -192,7 +215,6 @@
 			<version>${org.javax.servlet.jsp-api-version}</version>
 			<scope>provided</scope>
 		</dependency>
-		
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
@@ -234,8 +256,14 @@
 		             
 	</dependencies>
 
-	
 	<repositories>
+		<!-- Jcaptcha -->
+		<repository>
+	        <id>sourceforge-releases</id>
+	        <name>Sourceforge Releases</name>
+	        <url>https://oss.sonatype.org/content/repositories/sourceforge-releases</url>
+	    </repository>
+	    
 		<!-- For JSR 303 Validation - Hibernat Validator -->
 		<repository>
 			<id>jboss-public-repository-group</id>
@@ -252,7 +280,6 @@
 			<url>http://repository.springsource.com/maven/bundles/release/</url>
 		</repository>
 	</repositories>
-	
 	
     <build>
         <plugins>

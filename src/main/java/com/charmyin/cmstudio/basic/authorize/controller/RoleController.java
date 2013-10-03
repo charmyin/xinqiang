@@ -1,7 +1,5 @@
 package com.charmyin.cmstudio.basic.authorize.controller;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -9,10 +7,6 @@ import javax.annotation.Resource;
 import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
@@ -24,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.charmyin.cmstudio.basic.authorize.service.RoleService;
 import com.charmyin.cmstudio.basic.authorize.vo.Role;
-import com.charmyin.cmstudio.basic.authorize.vo.RoleMenu;
 import com.charmyin.cmstudio.common.utils.ArrayUtil;
 import com.charmyin.cmstudio.common.utils.JSRErrorUtil;
 import com.charmyin.cmstudio.web.utils.ResponseUtil;

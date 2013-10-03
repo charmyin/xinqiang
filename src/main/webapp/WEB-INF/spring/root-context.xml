@@ -54,6 +54,9 @@ xsi:schemaLocation="
 	<!-- Security Configuration / Apache Shiro -->
 	<import resource="shiro-context.xml" />
 	
+	<!-- Security Configuration / Apache Shiro -->
+	<import resource="jcaptcha-context.xml" />
+	
 	<!-- Database Configuration / MyBatis -->
 	<!-- define the SqlSessionFactory -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
