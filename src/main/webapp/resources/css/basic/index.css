@@ -30,3 +30,16 @@ body{
 #div_index_head{
 	height:100%; width:100%; background:url(images/head.jpg) no-repeat #8badcc;
 } 
+
+#modifyPassword{
+	padding:15px 0 0 0;
+}
+
+#modifyPassword div label{
+	margin:0 10px 0 14px;
+	width:100px;
+	display:inline-block;
+	font-size:12px;
+	font-weight:bold;
+	text-align:right;
+}

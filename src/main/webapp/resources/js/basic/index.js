@@ -136,7 +136,7 @@ $(function() {
 	var changeTheme = function(theme) {
 		// link.attr('href', '/easyui/themes/'+theme+'/easyui.css');
 	};
-
+	
 	// Logout the system
 	$("#logout").click(function() {
 		$.messager.confirm('退出提示', '确定退出系统？', function(r) {
@@ -147,3 +147,69 @@ $(function() {
 
 	});
 });
+
+//Change password
+function modifyPassword(){
+	$('#modifyPassword').dialog({
+	    title: '密码修改',
+	    width: 350,
+	    buttons:'#mp_form_btns',
+	    height: 185,
+	    closed: false,
+	    cache: false,
+	    modal: true
+	});
+}
+
+function savePassword(){
+    $('#mp_form').form('submit',{
+        url: "",
+        onSubmit: function(){
+        	//组件验证，未通过则返回false
+        	return $(this).form('validate');
+        },
+        success: function(resultString){
+        	var result;
+        	try{
+        		 result = eval("("+resultString+")");
+        	}catch(error){
+        		$.messager.show({
+                	title: '提示',
+                    msg: resultString,
+                    style:{
+                		right:'',
+                		top:document.body.scrollTop+document.documentElement.scrollTop,
+                		bottom:''
+                	}
+                });
+        		return;
+        	}
+        	
+            if (result.errorMsg){
+                $.messager.show({
+                	title: '提示<span style="color:red;">!</span>',
+                    msg: "<div style='text-align:center;margin-top:10px;'>"+result.errorMsg+"</div>",
+                    style:{
+                		right:'',
+                		top:document.body.scrollTop+document.documentElement.scrollTop,
+                		bottom:''
+                	}
+                });
+            } else {
+                $('#modifyPassword').dialog('close');        // close the dialog
+                
+                $.messager.show({
+                	title: '提示',
+                    msg: "<div style='text-align:center;margin-top:10px;'>保存成功!</div>",
+                    style:{
+                		right:'',
+                		top:document.body.scrollTop+document.documentElement.scrollTop,
+                		bottom:''
+                	}
+                });
+            }
+        }
+    });
+}
+
+

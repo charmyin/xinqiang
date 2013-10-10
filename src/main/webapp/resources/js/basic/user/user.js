@@ -203,6 +203,7 @@ function editForm(){
         url = 'user/update?id='+row.id;
     }
 }
+
 function saveForm(){
     $('#fm').form('submit',{
         url: url,

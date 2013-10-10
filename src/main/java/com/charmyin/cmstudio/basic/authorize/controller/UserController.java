@@ -5,9 +5,13 @@ import java.util.Map;
 import java.util.UUID;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
@@ -115,6 +119,44 @@ public class UserController {
 		return ResponseUtil.getSuccessResultString();
 	}
 	
+	
+	@RequestMapping(value="/modifyPassword", method=RequestMethod.POST)
+	@ResponseBody
+	public String modifyPassword(HttpServletRequest request, @RequestParam("oldPW") String oldPW, @RequestParam("newPW") String newPW, @RequestParam("newPW1") String newPW1){
+		//验证是否为空
+		if(oldPW==null || newPW==null || newPW1==null){
+			return ResponseUtil.getFailResultString("密码不允许为空！");
+		}
+		//验证是否过长
+		if(oldPW.length()>50 || newPW.length()>50 || newPW1.length()>50 ){
+			return ResponseUtil.getFailResultString("密码字符过长！");
+		}
+		//获取session中的用户名称
+		Subject currentUser = SecurityUtils.getSubject();
+		Object userInfoObj = currentUser.getSession().getAttribute("userInfo");
+		if(userInfoObj==null){
+			return ResponseUtil.getFailResultString("修改密码失败，登录超时或者未登录！");
+		}
+		//结合原有密码，验证用户有效性
+		User userInfo = (User)userInfoObj;
+		UsernamePasswordToken token = new UsernamePasswordToken(userInfo.getLoginId(), oldPW);
+		//如果验证未通过，返回错误信息
+		try{
+			currentUser.login(token);
+		}catch(Exception e){
+			logger.warn("Dangerous user login:"+request.getRemoteHost());
+			return ResponseUtil.getFailResultString("修改密码失败，登录超时或者未登录！");
+		}
+		String salt = IdentityService.getSalt();
+		userInfo.setSalt(salt);
+		//如果验证通过，进行更新
+		String ps = identityService.encodePassphrase(newPW, salt);
+		userInfo.setPassphrase(ps);
+		
+		userService.updateUser(userInfo);
+		
+		return ResponseUtil.getSuccessResultString();
+	}
 	
 	/**
 	 * Delete by ids string split by ',' ; Example:"1,2,3,4,5" 

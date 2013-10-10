@@ -34,16 +34,16 @@
       			<div style="float:right; padding:24px 20px 0 0;">
       				<!-- <a href="" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-sum'">桌面版</a> -->
       				<a id="aMenubutton_Main" href="#" class="easyui-menubutton" data-options="menu:'#mm1', iconCls:'icon-tip'" >切换主题</a>
-      				<a href="#" class="easyui-menubutton" data-options="menu:'#mm2', iconCls:'icon-help'">首选项</a>
+      				<a href="#" class="easyui-menubutton" data-options="menu:'#mm2', iconCls:'icon-help'">用户管理</a>
       				<a href="#" class="easyui-linkbutton" id="logout" data-options="plain:true, iconCls:'icon-no'">退出</a>
       			</div>
-      			<div id="mm1" style="width:150px;">
+      			<!-- <div id="mm1" style="width:150px;">
       				<div data-options="iconCls: 'icon-undo'" class="divOnChangeTheme" value="default">Default</div>
       				<div data-options="iconCls: 'icon-redo'" class="divOnChangeTheme" value="bootstrap">Bootstrap</div>
-      			</div>
+      			</div> -->
       			<div id="mm2">
-      				<div data-options="iconCls: 'icon-edit'" onclick="alert($(this).html())">修改密码</div>
-      				<div data-options="iconCls: 'icon-save'" onclick="alert($(this).html())">系统锁定</div>
+      				<div data-options="iconCls: 'icon-edit'" onclick="modifyPassword();">修改密码</div>
+      				<div data-options="iconCls: 'icon-save'" onclick="alert($(this).html())">资料管理</div>
       			</div>
       		</div>
 		</div>
@@ -76,6 +76,28 @@
       </div>
       <!--等待界面-->
 	  <div id='divLoading_Main'><span>登录成功~</span></div>
+	  
+	  <!-- Modify user password -->
+	  <div id="modifyPassword">
+	  		<form id="mp_form" method="post">
+			    <div>
+			        <label for="name">原密码:</label>
+			        <input class="easyui-validatebox" type="password" name="oldPW" data-options="required:true" />
+			    </div>
+			    <div>
+			        <label for="email">新密码:</label>
+			        <input class="easyui-validatebox" type="password" name="newPW" data-options="required:true" />
+			    </div>
+			    <div>
+			        <label for="email">确认新密码:</label>
+			        <input class="easyui-validatebox" type="password" name="newPW1" data-options="required:true" />
+			    </div>
+			</form>
+	  </div>
+	  <div id="mp_form_btns">
+	  	 <a href="javascript:savePassword();" data-options="iconCls: 'icon-save'" class="easyui-linkbutton">保存</a>
+		 <a href="javascript:$('#modifyPassword').dialog('close');" data-options="iconCls: 'icon-cancel'" class="easyui-linkbutton">关闭</a>
+	  </div>
   </body>
 </html>
 
