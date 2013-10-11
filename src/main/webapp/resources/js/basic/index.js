@@ -163,10 +163,28 @@ function modifyPassword(){
 
 function savePassword(){
     $('#mp_form').form('submit',{
-        url: "",
+        url: "user/modifyPassword",
         onSubmit: function(){
+        	
+        	var isValidated = $(this).form('validate');
+        	
+        	if(isValidated){
+        		if($("#newPW").val() != $("#newPW1").val()){
+        			isValidated = false;
+        			$.messager.show({
+                    	title: '提示<span style="color:red;">!</span>',
+                        msg: "<div style='text-align:center;margin-top:10px;'>新密码不一致！</div>",
+                        style:{
+                    		right:'',
+                    		top:document.body.scrollTop+document.documentElement.scrollTop,
+                    		bottom:''
+                    	}
+                    });
+        		}
+        	}
+        	
         	//组件验证，未通过则返回false
-        	return $(this).form('validate');
+        	return isValidated;
         },
         success: function(resultString){
         	var result;
@@ -200,13 +218,18 @@ function savePassword(){
                 
                 $.messager.show({
                 	title: '提示',
-                    msg: "<div style='text-align:center;margin-top:10px;'>保存成功!</div>",
+                    msg: "<div style='text-align:center;margin-top:10px;'>保存成功,请重新登录!</div>",
                     style:{
                 		right:'',
                 		top:document.body.scrollTop+document.documentElement.scrollTop,
                 		bottom:''
                 	}
                 });
+                
+                setInterval(function(){
+                	window.location.href = "identity/logout";
+                },2000);
+                
             }
         }
     });

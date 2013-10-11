@@ -33,7 +33,7 @@
       		<div id="div_index_head">
       			<div style="float:right; padding:24px 20px 0 0;">
       				<!-- <a href="" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-sum'">桌面版</a> -->
-      				<a id="aMenubutton_Main" href="#" class="easyui-menubutton" data-options="menu:'#mm1', iconCls:'icon-tip'" >切换主题</a>
+      				<!-- <a id="aMenubutton_Main" href="#" class="easyui-menubutton" data-options="menu:'#mm1', iconCls:'icon-tip'" >切换主题</a> -->
       				<a href="#" class="easyui-menubutton" data-options="menu:'#mm2', iconCls:'icon-help'">用户管理</a>
       				<a href="#" class="easyui-linkbutton" id="logout" data-options="plain:true, iconCls:'icon-no'">退出</a>
       			</div>
@@ -43,7 +43,7 @@
       			</div> -->
       			<div id="mm2">
       				<div data-options="iconCls: 'icon-edit'" onclick="modifyPassword();">修改密码</div>
-      				<div data-options="iconCls: 'icon-save'" onclick="alert($(this).html())">资料管理</div>
+      				<!-- <div data-options="iconCls: 'icon-save'" onclick="alert($(this).html())">资料管理</div> -->
       			</div>
       		</div>
 		</div>
@@ -82,15 +82,15 @@
 	  		<form id="mp_form" method="post">
 			    <div>
 			        <label for="name">原密码:</label>
-			        <input class="easyui-validatebox" type="password" name="oldPW" data-options="required:true" />
+			        <input class="easyui-validatebox" type="password" id="oldPW" name="oldPW" data-options="required:true, validType:'length[6,50]'" />
 			    </div>
 			    <div>
 			        <label for="email">新密码:</label>
-			        <input class="easyui-validatebox" type="password" name="newPW" data-options="required:true" />
+			        <input class="easyui-validatebox" type="password" id="newPW" name="newPW" data-options="required:true, validType:'length[6,50]'" />
 			    </div>
 			    <div>
 			        <label for="email">确认新密码:</label>
-			        <input class="easyui-validatebox" type="password" name="newPW1" data-options="required:true" />
+			        <input class="easyui-validatebox" type="password" id="newPW1" name="newPW1" data-options="required:true, validType:'length[6,50]'" />
 			    </div>
 			</form>
 	  </div>

@@ -120,22 +120,33 @@ public class UserController {
 	}
 	
 	
-	@RequestMapping(value="/modifyPassword", method=RequestMethod.POST)
+	@RequestMapping(value="/modifyPassword", method=RequestMethod.POST, produces = "text/plain;charset=UTF-8")
 	@ResponseBody
-	public String modifyPassword(HttpServletRequest request, @RequestParam("oldPW") String oldPW, @RequestParam("newPW") String newPW, @RequestParam("newPW1") String newPW1){
+	public String modifyPassword(HttpServletRequest request,String oldPW, String newPW, String newPW1){
 		//验证是否为空
 		if(oldPW==null || newPW==null || newPW1==null){
 			return ResponseUtil.getFailResultString("密码不允许为空！");
 		}
+		
+		//验证是新密码是否一致
+		if(!newPW.equals(newPW1) ){
+			return ResponseUtil.getFailResultString("新密码不一致！");
+		}
+		
 		//验证是否过长
 		if(oldPW.length()>50 || newPW.length()>50 || newPW1.length()>50 ){
 			return ResponseUtil.getFailResultString("密码字符过长！");
 		}
+		//验证新密码长度
+		if(newPW.length()<6){
+			return ResponseUtil.getFailResultString("新密码字符长度应大于6！");
+		}
+		
 		//获取session中的用户名称
 		Subject currentUser = SecurityUtils.getSubject();
 		Object userInfoObj = currentUser.getSession().getAttribute("userInfo");
 		if(userInfoObj==null){
-			return ResponseUtil.getFailResultString("修改密码失败，登录超时或者未登录！");
+			return ResponseUtil.getFailResultString("密码修改失败，登录超时或者未登录！");
 		}
 		//结合原有密码，验证用户有效性
 		User userInfo = (User)userInfoObj;
@@ -145,7 +156,7 @@ public class UserController {
 			currentUser.login(token);
 		}catch(Exception e){
 			logger.warn("Dangerous user login:"+request.getRemoteHost());
-			return ResponseUtil.getFailResultString("修改密码失败，登录超时或者未登录！");
+			return ResponseUtil.getFailResultString("密码修改失败，原密码输入错误!");
 		}
 		String salt = IdentityService.getSalt();
 		userInfo.setSalt(salt);

@@ -44,7 +44,7 @@
 				 							</li>
 				 							<li class="inputText">
 				 								<label style="" for="inputPassword">密&nbsp;&nbsp;码:</label>
-					 							<input class="easyui-validatebox" type="password" id="inputPassword" name="password" placeholder="密码" data-options="required:true, validType:'length[1,15]'" />
+					 							<input class="easyui-validatebox" type="password" id="inputPassword" name="password" placeholder="密码" data-options="required:true, validType:'length[6,50]'" />
 				 							</li>
 				 							<li id="liValiCode">
 				 								<label style="" for="inputValiCode">验证码:</label>
