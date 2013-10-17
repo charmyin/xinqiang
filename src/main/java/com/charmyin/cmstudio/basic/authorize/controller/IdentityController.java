@@ -149,6 +149,8 @@ public class IdentityController {
 		// If the captcha field is already rejected
 		  boolean validCaptcha = false;
 		  try {
+			  logger.debug("---------Session id for captcha---------"+request.getSession().getId());
+			  
 			  validCaptcha = captchaService.validateResponseForID(request.getSession().getId(), loginForm.getValidateCode());
 		  }
 		  catch (CaptchaServiceException e) {

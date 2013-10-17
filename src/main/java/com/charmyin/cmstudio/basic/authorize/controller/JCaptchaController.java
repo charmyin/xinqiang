@@ -8,6 +8,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +26,8 @@ import com.octo.captcha.service.image.ImageCaptchaService;
 @Controller
 public class JCaptchaController {
 
+	private static final Logger logger = Logger.getLogger(JCaptchaController.class);
+	
 	public static final String CAPTCHA_IMAGE_FORMAT = "jpeg";
 
 	@Autowired
@@ -45,6 +48,7 @@ public class JCaptchaController {
 			BufferedImage challenge = ((ImageCaptchaService) captchaService)
 					.getImageChallengeForID(captchaId, request.getLocale());
 
+			logger.debug("---------captchaId----------is--"+captchaId);
 			ImageIO.write(challenge, CAPTCHA_IMAGE_FORMAT, jpegOutputStream);
 		} catch (IllegalArgumentException e) {
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);

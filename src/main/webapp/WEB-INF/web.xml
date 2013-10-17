@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	version="3.0">
 
-	<!-- The definition of the Root Spring Container shared by all Servlets and Filters -->
+	<!-- This is used for hiding the jsessionid in url -->
+	<session-config>
+		<tracking-mode>COOKIE</tracking-mode>
+	</session-config>
+
+	<!-- The definition of the Root Spring Container shared by all Servlets 
+		and Filters -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>/WEB-INF/spring/root-context.xml</param-value>
 	</context-param>
-	
+
 	<!-- Creates the Spring Container shared by all Servlets and Filters -->
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
@@ -18,14 +24,14 @@
 	<listener>
 		<listener-class>com.charmyin.cmstudio.basic.initial.ContextLoadedInitialListener</listener-class>
 	</listener>
-	
+
 	<servlet>
-        <servlet-name>jcaptcha</servlet-name>
-        <servlet-class>com.octo.captcha.module.servlet.image.SimpleImageCaptchaServlet</servlet-class>
+		<servlet-name>jcaptcha</servlet-name>
+		<servlet-class>com.octo.captcha.module.servlet.image.SimpleImageCaptchaServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
-	        <servlet-name>jcaptcha</servlet-name>
-	        <url-pattern>/jcaptcha.jpg</url-pattern>
+		<servlet-name>jcaptcha</servlet-name>
+		<url-pattern>/jcaptcha.jpg</url-pattern>
 	</servlet-mapping>
 
 	<!-- Processes application requests -->
@@ -38,7 +44,7 @@
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
-		
+
 	<servlet-mapping>
 		<servlet-name>appServlet</servlet-name>
 		<url-pattern>/</url-pattern>
@@ -54,34 +60,41 @@
 		</init-param>
 	</filter>
 
-	<!-- Make sure any request you want accessible to Shiro is filtered. catches all -->
-	<!-- requests. Usually this filter mapping is defined first (before all	others) to -->
+	<!-- Make sure any request you want accessible to Shiro is filtered. catches 
+		all -->
+	<!-- requests. Usually this filter mapping is defined first (before all 
+		others) to -->
 	<!-- ensure that Shiro works in subsequent filters in the filter chain: -->
 	<filter-mapping>
 		<filter-name>shiroFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-	
-	<filter>
-	 <filter-name>CharacterEncodingFilter</filter-name>
-        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
-        <init-param>
-            <param-name>encoding</param-name>
-            <param-value>UTF-8</param-value>
-        </init-param>
-        <init-param>
-            <param-name>forceEncoding</param-name>
-            <param-value>true</param-value>
-        </init-param>
-    </filter>
 
-    <filter-mapping>
-        <filter-name>CharacterEncodingFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
-    
-    <error-page>
-	    <error-code>404</error-code>
-	    <location>/dynamicviews/basic/errorpage/400.jsp</location>
+	<filter>
+		<filter-name>CharacterEncodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+		<init-param>
+			<param-name>forceEncoding</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>CharacterEncodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<!-- Error handle page -->
+	<error-page>
+		<location>/clientError</location>
+	</error-page>
+	
+	<error-page>
+		<exception-type>java.lang.Throwable</exception-type>
+		<location>/throwError</location>
 	</error-page>
 </web-app>
