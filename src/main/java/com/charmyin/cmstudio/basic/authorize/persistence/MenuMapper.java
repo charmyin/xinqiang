@@ -2,7 +2,7 @@ package com.charmyin.cmstudio.basic.authorize.persistence;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Select;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 
 import com.charmyin.cmstudio.basic.authorize.vo.Menu;
 import com.charmyin.cmstudio.basic.initial.SQLMapper;
@@ -19,6 +19,7 @@ public interface MenuMapper {
 	 * Get all menus from menu role 
 	 * @return
 	 */
+	@RequiresPermissions("menu:getallxx")
 	public List<Menu> getAllMenu();
 	
 	/**

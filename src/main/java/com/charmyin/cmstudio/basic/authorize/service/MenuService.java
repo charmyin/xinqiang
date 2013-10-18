@@ -2,6 +2,8 @@ package com.charmyin.cmstudio.basic.authorize.service;
 
 import java.util.List;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+
 import com.charmyin.cmstudio.basic.authorize.vo.Menu;
 
 /**
@@ -16,6 +18,7 @@ public interface MenuService {
 	 * Only the developer has this operation. 
 	 * @return Menu List
 	 */
+	@RequiresPermissions("menu:getallxx")
 	public List<Menu> getAllMenu();
 	
 	/**

@@ -27,12 +27,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.authc.AccountException;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -93,6 +95,12 @@ public class CustomJdbcRealm extends AuthorizingRealm {
      */
     protected static final String DEFAULT_USER_ROLES_QUERY = "select role_name from user_roles where username = ?";
 
+    
+    /**
+     * The default query used to retrieve the permissions by menu id that apply to a user.
+     */
+    protected static final String DEFAULT_PERMISSION_QUERY_BY_MENUID = "select full_permission from basic_menu where id=?";
+    
     /**
      * The default query used to retrieve permissions that apply to a particular role.
      */
@@ -121,6 +129,8 @@ public class CustomJdbcRealm extends AuthorizingRealm {
 
     protected String permissionsQuery = DEFAULT_PERMISSIONS_QUERY;
 
+    protected String permissionsQueryByMenuId = DEFAULT_PERMISSION_QUERY_BY_MENUID;
+    
     protected boolean permissionsLookupEnabled = false;
     
     protected SaltStyle saltStyle = SaltStyle.NO_SALT;
@@ -170,6 +180,15 @@ public class CustomJdbcRealm extends AuthorizingRealm {
         this.userRolesQuery = userRolesQuery;
     }
 
+    /**
+     * Query the permissions owned by menu 
+     * 
+     * @param permissionsQueryByMenuId
+     */
+    public void setPermissionsQueryByMenuId(String permissionsQueryByMenuId){
+    	this.permissionsQueryByMenuId = permissionsQueryByMenuId;
+    }
+    
     /**
      * Overrides the default query used to retrieve a user's permissions during authorization.  When using the default
      * implementation, this query must take a role name as the single parameter and return a row
@@ -394,6 +413,7 @@ public class CustomJdbcRealm extends AuthorizingRealm {
 
                 // Add the role to the list of names if it isn't null
                 if (roleName != null) {
+                	
                     roleNames.add(roleName);
                 } else {
                     if (log.isWarnEnabled()) {
@@ -416,8 +436,11 @@ public class CustomJdbcRealm extends AuthorizingRealm {
     	//未处理的权限，为json格式的数据"[{"permission":"aaaa:bbb:ddd","remark":"bbb"},{"permission":"ddd","remark":"eeee"}]"
         Set<String> rawPermissions = new LinkedHashSet<String>();
         
-        //已经处理过的权限
-        Set<String> permissions = new LinkedHashSet<String>();
+        //String to save all the menu ids of the user
+        StringBuilder menuIdsSb = new StringBuilder();
+        
+        log.debug("Getting the "+username+"'s permissions");
+        
         try {
             ps = conn.prepareStatement(permissionsQuery);
             for (String roleName : roleNames) {
@@ -429,15 +452,16 @@ public class CustomJdbcRealm extends AuthorizingRealm {
                 try {
                     // Execute query
                     rs = ps.executeQuery();
-
+                    
                     // Loop over results and add each returned role to a set
                     while (rs.next()) {
-                        String permissionString = rs.getString(2);
-                        String menuPermissionString = rs.getString(1);
-                        // Add the menuPermission to the set of menuPermissions
-                        rawPermissions.add(menuPermissionString);
-                        // Add the permission to the set of permissions
-                        rawPermissions.add(permissionString);
+                    	//Get the menu_ids of a role
+                        String menuIdsString = rs.getString(2);
+                        menuIdsSb.append(menuIdsString).append(",");
+                        
+                        String RolePermissionString = rs.getString(1);
+                        // Add the permission to the set of menuPermissions
+                        rawPermissions.add(RolePermissionString);
                     }
                 } finally {
                     JdbcUtils.closeResultSet(rs);
@@ -446,29 +470,94 @@ public class CustomJdbcRealm extends AuthorizingRealm {
         } finally {
             JdbcUtils.closeStatement(ps);
         }
+        
+        //Get permission set by menuIds 
+        Set<String> permissionsByMenuId = getPermissionByMenuIds(conn, menuIdsSb);
+        
+        //add permissionsByMenuId to rawPermissions
+        rawPermissions.addAll(permissionsByMenuId);
+        
         //分解permissions
         ObjectMapper mapper = new ObjectMapper();
         List<Permission> permissionsList = new ArrayList<Permission>();
-        try {
-        	//分解所有存储的json权限
-        	for(String str: rawPermissions){
+        
+    	//分解所有存储的json权限
+    	for(String str: rawPermissions){
+    		if(str==null || str.trim().equals("")){
+    			continue;
+    		}
+    		try {
         		permissionsList.addAll((List<Permission>)mapper.readValue(str, new TypeReference<List<Permission>>() {}));
-        	}
-		} catch (JsonParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        	} catch (JsonParseException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		} catch (JsonMappingException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		} catch (IOException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+    	}
+        //已经处理过的权限
+        Set<String> permissions = new LinkedHashSet<String>();
         //permissions.addAll();
         for(Permission p : permissionsList){
         	permissions.add(p.getPermission());
         }
         return permissions;
+    }
+    
+    /**
+     * Get permission string set by menu ids
+     * @param menuIdsSb
+     * @return
+     */
+    private Set<String> getPermissionByMenuIds(Connection conn, StringBuilder menuIdsSb) throws SQLException { 
+    	//if nomenuid exists, return null
+    	String menuIdsStr = menuIdsSb.toString();
+    	if(menuIdsStr.trim().length() < 1){
+    		return null;
+    	}
+    	
+    	String[] menuIdsArray = menuIdsStr.split(",");
+    	//Menu Ids set
+    	Set<String> set = new HashSet<String>();
+    	CollectionUtils.addAll(set, menuIdsArray);
+    	
+    	Set<String> permissionSet = new HashSet<String>();
+    	//Get menu permissions by menu ids
+    	PreparedStatement ps = null;
+    	try {
+            ps = conn.prepareStatement(permissionsQueryByMenuId);
+            for (String menuId : set) {
+            	int menuIdInt = 0;
+            	//no empty value
+            	try{
+            		menuIdInt = Integer.parseInt(menuId);
+            	}catch(Exception e){
+            		log.warn("menuId:"+menuId+" is not integer!");
+            		continue;
+            	}
+                ps.setInt(1, menuIdInt);
+                ResultSet rs = null;
+                try {
+                    // Execute query
+                    rs = ps.executeQuery();
+                    // Loop over results and add each returned role to a set
+                    while (rs.next()) {
+                    	String permissionString = rs.getString(1);
+                        // Add the menu Permission to the set of menuPermissions
+                    	permissionSet.add(permissionString);
+                    }
+                } finally {
+                    JdbcUtils.closeResultSet(rs);
+                }
+            }
+        } finally {
+            JdbcUtils.closeStatement(ps);
+        }
+    	return permissionSet;
     }
     
     protected String getSaltForUser(String username) {

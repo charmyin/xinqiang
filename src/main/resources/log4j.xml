@@ -19,7 +19,7 @@
 		<!-- Spring framework -->
 		
 	<logger name="org.springframework">
-		<level value="warn" />
+		<level value="debug" />
 	</logger>
 	<!-- <logger name="org.springframework.core">
 		<level value="error" />

@@ -1,8 +1,5 @@
 package com.charmyin.cmstudio.basic.exception.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,8 +27,10 @@ public class ErrorController {
 		Object status_codeObj = request.getAttribute("javax.servlet.error.status_code");
 		if(status_codeObj!=null){
 			model.addAttribute("status_code", status_codeObj);
+		}else{
+			model.addAttribute("status_code", "T_T");
 		}
-		model.addAttribute("status_code", "T_T");
+		
 		//request.getAttribute("javax.servlet.forward.request_uri");
 		response.setStatus(200);
 		Object originalUriObj = request.getAttribute(RequestDispatcher.FORWARD_CONTEXT_PATH);

@@ -3,7 +3,6 @@ package com.charmyin.cmstudio.basic.authorize.controller;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

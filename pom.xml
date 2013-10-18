@@ -9,16 +9,20 @@
 	<version>1.0.0-BUILD-SNAPSHOT</version>
 	<properties>
 		<java-version>1.6</java-version>
+		
 		<org.springframework-version>3.2.3.RELEASE</org.springframework-version>
 		<org.spring-dao>2.0.7</org.spring-dao>
-		<org.aspectj-version>1.6.9</org.aspectj-version>
+		<org.aspectj-version>1.6.11</org.aspectj-version>
+		<org.aspectj-jweaver-version>1.6.12</org.aspectj-jweaver-version>
 		
+		<org.apache.commons-collections>3.2.1</org.apache.commons-collections>
 		<org.apache.shiro-version>1.2.2</org.apache.shiro-version>
 		<org.apache.tomcat.dbcp_version>6.0.29</org.apache.tomcat.dbcp_version>
 		
 		<org.junit-version>4.7</org.junit-version>
 		<org.hibernate-validator-version>4.2.0.Final</org.hibernate-validator-version>
 		<org.postgresql.jdbc-version>9.1-901.jdbc4</org.postgresql.jdbc-version>
+		
 		
 		<org.mybatis-version>3.2.2</org.mybatis-version>
 		<org.mybatis-spring-version>1.2.0</org.mybatis-spring-version>
@@ -31,10 +35,19 @@
 		<org.javax.servlet.jsp-api-version>2.1</org.javax.servlet.jsp-api-version>
 		<org.javax.servlet.jstl-version>1.2</org.javax.servlet.jstl-version>
 		
+		
 		<org.codehaus.jackson.version>1.9.12</org.codehaus.jackson.version>
 		
 	</properties>
 	<dependencies>
+	
+		<!-- Apache commons -->
+		<dependency>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
+			<version>${org.apache.commons-collections}</version>
+		</dependency>
+		
 		<!-- Apache Datasource -->
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>
@@ -143,6 +156,10 @@
 			<version>${org.springframework-version}</version>
 		</dependency>
             
+            
+ 
+   
+
 				
 		<!-- AspectJ -->
 		<dependency>
@@ -150,7 +167,17 @@
 			<artifactId>aspectjrt</artifactId>
 			<version>${org.aspectj-version}</version>
 		</dependency>	
-		
+		<!-- <dependency>
+		    <groupId>org.aspectj</groupId>
+		    <artifactId>aspectjweaver</artifactId>
+		    <version>${org.aspectj-jweaver-version}</version>
+		</dependency>  -->
+		<!-- Cglib -->
+		<dependency>
+		    <groupId>cglib</groupId>
+		    <artifactId>cglib</artifactId>
+		    <version>2.2.2</version>
+		</dependency>
 		<!-- Logging -->
 		<dependency>
 			<groupId>org.slf4j</groupId>

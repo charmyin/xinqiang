@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Service;
 
 import com.charmyin.cmstudio.basic.authorize.persistence.MenuMapper;
@@ -17,6 +18,7 @@ public class MenuServiceImpl implements MenuService {
 	private MenuMapper menuMapper ;
 	
 	@Override
+	@RequiresPermissions("menu:getallxx")
 	public List<Menu> getAllMenu() {
 		List<Menu> menuList = menuMapper.getAllMenu();
 		return menuList;
