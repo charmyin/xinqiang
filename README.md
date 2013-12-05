@@ -10,3 +10,7 @@ CMStudio
 #Postgresql is the initial database~ Of course, I'll make it compatible with mysql, oracle later~ 
 
 On developing~
+
+-------------
+user:charmyin passworod:111111
+user:admin password:asusual
