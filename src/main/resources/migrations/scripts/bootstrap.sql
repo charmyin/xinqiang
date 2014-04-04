@@ -44,7 +44,7 @@ CREATE TABLE shiro_user (id SERIAL NOT NULL, login_id VARCHAR(50) NOT NULL UNIQU
 alter table shiro_user add constraint fk_shiro_user_organization_id foreign key (organization_id) references basic_organization (id);
 comment on table shiro_user is '用户表';
 comment on column shiro_user.id is '用户唯一标识（从0逐1递增）';
-comment on column shiro_user.userid is '用户登录账号（具有唯一性，最大长度为50）';
+comment on column shiro_user.login_id is '用户登录账号（具有唯一性，最大长度为50）';
 comment on column shiro_user.name is '用户名（人名可重复，最大长度为50）';
 comment on column shiro_user.organization_id is '所属部门（长整型）';
 comment on column shiro_user.email is 'email地址（具有唯一性，最大长度为100）';
@@ -54,7 +54,8 @@ comment on column shiro_user.state is '用户状态，boolean类型，true为激
 comment on column shiro_user.date_created is '用户创建时间';
 comment on column shiro_user.remark is '用户备注';
 comment on constraint fk_shiro_user_organization_id on shiro_user is 'shiro_user.organization_id的外键，指向basic_organization';
-insert into shiro_user (userid, name, email, passphrase, salt, state, date_created) values ('adminadmin','adminadmin','adminadmin@gmail.com', 'tSGnqbyVA6bk8WtgttwAscc2Qe1V6pSC3vFTXViQ0LIlQ07V2Lwn0vk7Voao5C5Lma2P3rnsagtEQ+G+xOFfcw==', '3+trVcGAkXok5VFMNw4yrw==', TRUE, '2013-06-25 14:54:22.646');
+--该用户位超级用户：admin 111111
+insert into shiro_user (login_id, name, email, passphrase, salt, state, date_created) values ('admin','admin','adminadmin@gmail.com', '9nr6bzUO+BwcJrk8/WQl2XSPb9M10Ra53TEf6TyA9XHqdBWp3AvzjKLPkqWZx6zmARLywD6Mw5lPMYTW/uGwkQ==', 'qpOvViSVIY7XyYMpAsJHnQ==', TRUE, '2013-06-25 14:54:22.646');
 
 --角色表
 CREATE TABLE shiro_role (name VARCHAR(50) NOT NULL, description VARCHAR(200), organization_id bigint, permission varchar(300), menu VARCHAR(500), remark varchar(200), state boolean default true, PRIMARY KEY (name));
@@ -63,12 +64,11 @@ comment on table shiro_role is '角色表';
 comment on column shiro_role.name is '角色名称（最大长度为50,唯一标识）';
 comment on column shiro_role.description is '角色描述(最大长度为200)';
 comment on column shiro_role.organization_id is '所属部门id（长整型）';
-comment on column shiro_role.permission is '角色权限（最大长度为1000）';
-comment on column shiro_role.permission is '角色所包含的菜单，逗号分隔的菜单id，包含其父节点（最大长度为1000）';
+comment on column shiro_role.permission is '角色所包含的权限，逗号分隔的菜单id，包含其父节点（最大长度为1000）';
 comment on column shiro_role.remark is '角色备注（最大长度为200）';
 comment on column shiro_role.state is '角色状态（boolean类型）true为激活状态，false为锁定状态，默认为true';
 comment on constraint fk_shiro_role_organization_id on shiro_role is 'shiro_role.organization_id外键，指向basic_organization.id';
-
+insert into shiro_role (name,description, organization_id, permission, menu,  remark, state) values ('developer', '开发者角色', '[{"permission":"menu:getallxx","remark":"eeee"}]', 1, '1,2,3,4,5,6,7,8', '开发者角色', true)
 
 --用户角色关联表
 CREATE TABLE shiro_user_role (user_id SERIAL NOT NULL , role_name VARCHAR(50) NOT NULL, PRIMARY KEY (user_id, role_name));
@@ -79,7 +79,7 @@ comment on column shiro_user_role.user_id is '用户唯一标识';
 comment on column shiro_user_role.role_name is '角色唯一标识';
 comment on constraint fk_shiro_user_role_user_id on shiro_user_role is 'shiro_user_role.user_id外键，指向shiro_user.id';
 comment on constraint fk_shiro_user_role_role_name on shiro_user_role is 'shiro_user_role.role_name外键，指向shiro_role.id';
-
+insert into shiro_user_role (user_id, role_name) values (1, 'developer')
 
 --角色权限关联表  --------暂时不用~直接采用menu里面的fullpermission
 --CREATE TABLE shiro_role_permission (role_id BIGINT NOT NULL, permission VARCHAR(100) NOT NULL, PRIMARY KEY (role_id, permission));
@@ -106,8 +106,11 @@ insert into basic_menu (name, link_url) values ('root','') ;
 insert into basic_menu (name, parent_id, link_url) values ('系统管理',1,''); 
 insert into basic_menu (name, parent_id, link_url) values ('开发人员管理',1,''); 
 insert into basic_menu (name, parent_id, link_url) values ('模板子系统',1,''); 
-insert into basic_menu (name, parent_id, link_url) values ('权限管理',2,'menu/manage'); 
+insert into basic_menu (name, parent_id, link_url) values ('权限管理',2,''); 
 insert into basic_menu (name, parent_id, link_url) values ('菜单资源管理',5,'menu/manage'); 
+insert into basic_menu (name, parent_id, link_url) values ('角色管理',5,'role/manage');
+insert into basic_menu (name, parent_id, link_url) values ('用户管理',5,'user/manage');
+insert into basic_menu (name, parent_id, link_url) values ('组织机构管理',5,'organization/manage');
 
 
 --菜单权限表 

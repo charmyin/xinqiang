@@ -21,7 +21,7 @@ public class IdentityServiceT {
 		rg.setEmail("admin@admin.com");
 		rg.setLoginId("admin");
 		
-		this.identityService.registerIdentity(rg);
+		this.identityService.registerIdentity();
 		System.out.println("Successs!!!");
 	}
 

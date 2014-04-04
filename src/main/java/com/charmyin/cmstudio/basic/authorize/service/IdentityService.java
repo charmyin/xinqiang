@@ -52,6 +52,19 @@ public class IdentityService {
 		return this.getIdentity(registration.getId());
 	}
 	
+	
+	public void registerIdentity(){
+		RegistrationForm registration = new RegistrationForm();
+		registration.setSalt(getSalt());
+		registration.setPassphrase(encodePassphrase("111111", registration.getSalt()));
+		System.out.println("salt="+registration.getSalt()+"  pasd:"+registration.getPassphrase());
+		
+		identityMapper.registerIdentity(registration);
+		
+		logger.trace("INSERTED ID = (" + registration.getId() + ")");
+		//return this.getIdentity(registration.getId());
+	}
+	
 	public static String getSalt(){
 		return new SecureRandomNumberGenerator().nextBytes().toBase64();
 	}
