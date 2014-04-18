@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 CMStudio
 ========
 
@@ -14,3 +15,9 @@ On developing~
 -------------
 user:yinchangming passworod:111111
 user:admin password:111111
+=======
+xinqiang
+========
+
+Xinqiang jiaxiao
+>>>>>>> d0fa1eb33a4e54051db53d711097e0ac1c872017
