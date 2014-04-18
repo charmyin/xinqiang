@@ -12,5 +12,5 @@ CMStudio
 On developing~
 
 -------------
-user:charmyin passworod:111111
-user:admin password:asusual
+user:yinchangming passworod:111111
+user:admin password:111111
