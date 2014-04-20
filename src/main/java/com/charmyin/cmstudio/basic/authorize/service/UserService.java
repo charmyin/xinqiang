@@ -1,11 +1,11 @@
 package com.charmyin.cmstudio.basic.authorize.service;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
 import com.charmyin.cmstudio.basic.authorize.vo.User;
+import com.charmyin.cmstudio.web.utils.pagination.page.Page;
 
 /**
  * 用户服务层接口
@@ -20,6 +20,12 @@ public interface UserService {
 	 * @return
 	 */
 	public List<User> getAllUser();
+	
+	/**
+	 * Get all users from user role 
+	 * @return
+	 */
+	public List<User> findAllUser(User user);
  
 	/**
 	 * Get user by user id

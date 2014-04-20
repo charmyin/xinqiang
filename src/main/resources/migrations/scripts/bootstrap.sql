@@ -112,6 +112,31 @@ insert into basic_menu (name, parent_id, link_url) values ('角色管理',5,'rol
 insert into basic_menu (name, parent_id, link_url) values ('用户管理',5,'user/manage');
 insert into basic_menu (name, parent_id, link_url) values ('组织机构管理',5,'organization/manage');
 
+----Subject question and answers
+create table question(id serial not null, type char(2) not null,  content varchar(300) not null, imageVideoPath varchar(300), chooseA varchar(300), chooseB varchar(300), chooseC varchar(300), chooseD varchar(300), answer varchar(10), remark varchar(300), primary key(id));
+comment on table question is '科目一试题集';
+comment on column question.id is '题目编号（唯一标识）';
+comment on column question.type is '1代表科目一， 4代表科目4';
+comment on column question.content is '题干';
+comment on column question.imageVideoPath is '图片或者视频路径';
+comment on column question.chooseA is 'A选项答案';
+comment on column question.chooseB is 'B选项答案';
+comment on column question.chooseC is 'C选项答案';
+comment on column question.chooseD is 'D选项答案';
+comment on column question.answer is '正确答案:A,B,C, 如果为判断题，则A为正确，B为错误';
+comment on column question.remark is '答案注解';
+
+ 
+--create table basic_role_menu(role_name varchar(50) not null, menu_id int not null, primary key(role_name, menu_id));
+--alter table basic_role_menu add constraint fk_basic_role_menu_role_name foreign key (role_name) references shiro_role(name);
+--alter table basic_role_menu add constraint fk_basic_role_menu_menu_id foreign key (menu_id) references basic_menu(id);
+--comment on table basic_role_menu is '角色所用关联的菜单表';
+--comment on column basic_role_menu.role_name is '角色唯一标识（外键）';
+--comment on column basic_role_menu.menu_id is '菜单条目唯一标识（外键）';
+--comment on constraint fk_basic_role_menu_role_name on basic_role_menu is 'basic_role_menu.role_name外键，指向shiro_role.id';
+--comment on constraint fk_basic_role_menu_menu_id on basic_role_menu is 'basic_role_menu.menu_id外键，指向basic_menu.id';
+
+
 
 --菜单权限表 
 --create table basic_menu_permission(id SERIAL NOT NULL,menu_id int not null, permission varchar(100) not null, primary key(id));

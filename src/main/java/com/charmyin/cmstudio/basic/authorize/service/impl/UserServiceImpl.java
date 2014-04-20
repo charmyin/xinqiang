@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.charmyin.cmstudio.basic.authorize.persistence.UserMapper;
 import com.charmyin.cmstudio.basic.authorize.service.UserService;
 import com.charmyin.cmstudio.basic.authorize.vo.User;
+import com.charmyin.cmstudio.web.utils.pagination.page.Page;
 
 /**
  * 用户信息数据服务实现
@@ -34,6 +35,13 @@ public class UserServiceImpl implements UserService{
 		List<User> list = userMapper.getAllUser();
 		return list;
 	}
+	
+	@Override
+	public List<User> findAllUser(User user) {
+		List<User> list = userMapper.findAllUser(user);
+		return list;
+	}
+	
 
 	@Override
 	public User getUserById(int id) {
