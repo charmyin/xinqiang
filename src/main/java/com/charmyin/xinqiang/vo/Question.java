@@ -3,17 +3,20 @@ package com.charmyin.xinqiang.vo;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.charmyin.cmstudio.web.utils.pagination.annotation.Paging;
+import com.charmyin.cmstudio.web.utils.pagination.page.Page;
+
 
 
 /**
- * User VO
+ * Question VO
  * @author YinCM
  * @since 2014-4-19 13:15:51
  */
-//@Paging(field = "pageVO")
+@Paging(field = "pageVO")
 public class Question {	
 	
-	/*private Page pageVO;
+	private Page pageVO;
 
     public Page getPageVO() {
         return pageVO;
@@ -21,7 +24,7 @@ public class Question {
 
     public void setPageVO(Page pageVO) {
         this.pageVO = pageVO;
-    }*/
+    }
 	
 	private Integer id;
 	

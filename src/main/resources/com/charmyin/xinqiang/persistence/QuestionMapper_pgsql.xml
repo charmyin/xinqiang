@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.charmyin.xinqiang.persistence.QuestionMapper">
+	<resultMap id="QuestionResultMap" type="com.charmyin.xinqiang.vo.Question">
+		<id column="ID" property="id" jdbcType="INTEGER"/>
+		<result column="TYPE" property="type" jdbcType="VARCHAR"/>
+		<result column="CONTENT" property="content" jdbcType="VARCHAR"/>
+		<result column="IMAGEVIDEOPATH" property="imageVideoPath" jdbcType="VARCHAR"/>
+		<result column="CHOOSEA" property="choosea" jdbcType="VARCHAR"/>
+		<result column="CHOOSEB" property="chooseb" jdbcType="VARCHAR"/>
+		<result column="CHOOSEC" property="choosec" jdbcType="VARCHAR"/>
+		<result column="CHOOSED" property="choosed" jdbcType="VARCHAR"/>
+		<result column="ANSWER" property="answer" jdbcType="VARCHAR"/>
+		<result column="REMARK" property="remark" jdbcType="VARCHAR"/>
+	</resultMap>
+
+	<sql id="Question_Column_List" >
+		ID, TYPE, CONTENT, IMAGEVIDEOPATH, CHOOSEA, CHOOSEB, CHOOSEC, CHOOSED, ANSWER, REMARK
+	</sql>
+	
+	<select id="findAllQuestions" resultMap="QuestionResultMap">
+		SELECT 
+			<include refid="Question_Column_List" />
+		FROM  QUESTION
+	</select>
+	
+	<select id="findAllQuestionsEqual" resultMap="QuestionResultMap" parameterType="com.charmyin.xinqiang.vo.Question">
+		SELECT 
+			<include refid="Question_Column_List" />
+		FROM  QUESTION
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+				<if test="type != null">
+					AND TYPE=#{type, jdbcType=VARCHAR}
+				</if>
+				<if test="content != null">
+					AND CONTENT=#{content, jdbcType=VARCHAR}
+				</if>
+		</trim>
+	</select>
+	
+	<select id="findAllQuestionsLike" parameterType="com.charmyin.xinqiang.vo.Question"  resultMap="QuestionResultMap" >
+		SELECT 
+			<include refid="Question_Column_List" />
+		FROM  QUESTION
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+				<if test="type != null">
+					AND TYPE LIKE '%'||#{type, jdbcType=VARCHAR}||'%'
+				</if>
+				<if test="content != null">
+					AND CONTENT LIKE '%'||#{content, jdbcType=VARCHAR}||'%'
+				</if>
+		</trim>
+	</select>
+
+	<insert id="insertQuestion" parameterType="com.charmyin.xinqiang.vo.Question">
+		INSERT INTO QUESTION 
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				<!-- <if test="id != null">
+					ID,
+				</if> -->
+				<if test="type != null">
+					TYPE,
+				</if>
+				<if test="content != null">
+					CONTENT,
+				</if>
+				<if test="imageVideoPath != null">
+					IMAGEVIDEOPATH,
+				</if>
+				<if test="choosea != null">
+					CHOOSEA,
+				</if>
+				<if test="chooseb != null">
+					CHOOSEB,
+				</if>
+				<if test="choosec != null">
+					CHOOSEC,
+				</if>
+				<if test="choosed !=null">
+					CHOOSED,
+				</if>
+				<if test="answer != null">
+					ANSWER,
+				</if>
+				<if test="remark != null">
+					REMARK,
+				</if>
+			</trim>
+			<trim prefix="values (" suffix=")" suffixOverrides=",">
+				<!-- <if test="id != null">
+					#{id, jdbcType=BIGINT},
+				</if> -->
+				
+				<if test="type != null">
+					#{type, jdbcType=VARCHAR},
+				</if>
+				<if test="content != null">
+					#{content, jdbcType=VARCHAR},
+				</if>
+				<if test="imageVideoPath != null">
+					#{imageVideoPath, jdbcType=VARCHAR},
+				</if>
+				<if test="choosea != null">
+					#{choosea, jdbcType=VARCHAR},
+				</if>
+				<if test="chooseb != null">
+					#{chooseb, jdbcType=VARCHAR},
+				</if>
+				<if test="choosec != null">
+					#{choosec, jdbcType=VARCHAR},
+				</if>
+				<if test="choosed != null">
+					#{choosed, jdbcType=VARCHAR},
+				</if>
+				<if test="answer != null">
+					#{answer, jdbcType=VARCHAR},
+				</if>
+				<if test="remark != null">
+					#{remark, jdbcType=VARCHAR},
+				</if>
+				
+			</trim>
+	</insert>
+	
+	<update id="updateQuestion" parameterType="com.charmyin.xinqiang.vo.Question">
+		UPDATE QUESTION
+		<trim prefix="SET" suffixOverrides=",">
+				<if test="type != null">
+					TYPE = #{type, jdbcType=VARCHAR},
+				</if>
+				<if test="content != null">
+					CONTENT = #{content, jdbcType=VARCHAR},
+				</if>
+				<if test="imageVideoPath != null">
+					IMAGEVIDEOPATH = #{imageVideoPath, jdbcType=VARCHAR},
+				</if>
+				<if test="choosea != null">
+					CHOOSEA = #{choosea, jdbcType=VARCHAR},
+				</if>
+				<if test="chooseb != null">
+					CHOOSEB = #{chooseb, jdbcType=VARCHAR},
+				</if>
+				<if test="choosec != null">
+					CHOOSEC = #{choosec, jdbcType=VARCHAR},
+				</if>
+				<if test="choosed != null">
+					CHOOSED = #{choosed, jdbcType=VARCHAR},
+				</if>
+				<if test="answer != null">
+					ANSWER = #{answer, jdbcType=VARCHAR},
+				</if>
+				<if test="remark != null">
+					REMARK = #{remark, jdbcType=VARCHAR},
+				</if>
+		</trim>
+		WHERE ID=#{id, jdbcType=INTEGER};
+	</update>
+	
+	<delete id="deleteQuestion" parameterType="int">
+		DELETE FROM QUESTION WHERE ID=#{id, jdbcType=INTEGER}
+	</delete>
+	
+	<select id="findQuestionsByID" parameterType="int"  resultMap="QuestionResultMap" >
+		SELECT 
+			<include refid="Question_Column_List" />
+		FROM  QUESTION
+		WHERE ID = #{id, jdbcType=INTEGER}
+	</select>
+</mapper>

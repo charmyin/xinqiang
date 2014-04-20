@@ -41,21 +41,6 @@ public class HomeController {
 	  @RequestMapping(method = RequestMethod.GET, value = { "/", "/index" })
 	  public String home(Locale locale, Model model, HttpServletRequest request) {
 	    logger.info("Welcome home! the client locale is " + locale.toString());
-	    User find = new User();
-    	//find.setName("i");
-        Page paginationSupport = new Pagination();
-        paginationSupport.setCurrentPage(2);
-        paginationSupport.setPageSize(2);
-        find.setPageVO(paginationSupport);
-      /*  PageContext page = PageContext.getPageContext();
-        page.setCurrentPage(1);
-        page.setPageSize(2);*/
-        List<User> list = userService.findAllUser(find);
-        System.out.println(list.size());
-        System.out.println(paginationSupport.getTotalPages());
-        System.out.println(paginationSupport.getTotalRows());
-        for(User user : list)
-        System.out.println(user.getName());
 	    return "basic/index";
 	  }
 	

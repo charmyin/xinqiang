@@ -65,6 +65,7 @@ public class PaginationInterceptor extends BaseInterceptor {
                 if (totPage == 0) {
                     Connection connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
                     totPage = SQLHelp.getCount(originalSql, connection, mappedStatement, parameterObject, boundSql);
+                    connection.close();
                 }
 
                 //分页计算
