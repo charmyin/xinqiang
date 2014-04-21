@@ -1,6 +1,6 @@
 <%
 /**
- * This is the Organization Manage page~ 
+ * This is the Question Manage page~ 
  * @author charmyin
  * @since 2013-8-19
  * @serial 1.0
@@ -56,25 +56,25 @@
 			            </div>
 			            <div class="fitem">
 			                <label>
-				                答案A(√) <input type="checkbox" name="answera" value="A"/>
+				                答案A(√) <input class="answercb" type="checkbox" name="answera" value="A"/>
 			                </label>
 			                <textarea name="choosea" id="choosea" class="answer" ></textarea>
 			            </div>
 			            <div class="fitem">
 			                <label>
-				                答案B(×)<input type="checkbox" name="answerb" value="B"/>
+				                答案B(×)<input class="answercb" type="checkbox" name="answerb" value="B"/>
 			                </label>
 			                <textarea name="chooseb" id="chooseb" class="answer" ></textarea>
 			            </div>
 			            <div class="fitem">
 			                <label>
-				                答案C<input type="checkbox" name="answerc" value="C"/>
+				                答案C<input class="answercb" type="checkbox" name="answerc" value="C"/>
 			                </label>
 			                <textarea name="choosec" id="choosec" class="answer" ></textarea>
 			            </div>
 			            <div class="fitem">
 			                <label>
-				                答案D<input type="checkbox" name="answerd" value="D"/>
+				                答案D<input class="answercb" type="checkbox" name="answerd" value="D"/>
 			                </label>
 			                <textarea name="choosed" id="choosed" class="answer" ></textarea>
 			            </div>

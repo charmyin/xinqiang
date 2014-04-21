@@ -29,12 +29,12 @@ function loadGrid(){
 		          {field:'ck', checkbox:true },
 		          {field:'id', title:'编号' , width:40},
 		          {field:'type', title:'类型' , width:40, hidden:true},
-		          {field:'answer', title:'答案' , width:40},
 		          {field:'choosea', title:'A选项' , width:40, hidden:true},
 		          {field:'chooseb', title:'B选项' , width:40, hidden:true},
 		          {field:'choosec', title:'C选项' , width:40, hidden:true},
 		          {field:'choosed', title:'D选项' , width:40, hidden:true},
 		          {field:'content', title:'题干', width:450},
+		          {field:'answer', title:'答案' , width:60},
 		          {field:'remark', title:'备注', width:450}
 		]],
 		onLoadError: function(msge){
@@ -88,7 +88,7 @@ function editForm(){
 
 function saveForm(){
 	var answerFinal="";
-	$( "input:checked" ).each(function(index){
+	$( ".answercb:checked" ).each(function(index){
 		if(index!=0){
 			answerFinal+=",";
 		}

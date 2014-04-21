@@ -54,12 +54,12 @@ public class QuestionController {
 	}
 	
 	/**
-	 * Insert the organization committed from client
+	 * Insert the question committed from client
 	 * @return 
 	 */
 	@RequestMapping(value="/save", method=RequestMethod.POST, produces = "text/plain;charset=UTF-8")
 	@ResponseBody
-	public String saveOrganization( @Valid Question question, BindingResult result){
+	public String saveQuestion( @Valid Question question, BindingResult result){
 		
 		if (result.hasErrors()) {
 			return JSRErrorUtil.getErrorString(result);
@@ -70,6 +70,29 @@ public class QuestionController {
 		}catch(Exception e){
 			e.printStackTrace();
 			return ResponseUtil.getFailResultString("保存过程中出错！");
+		}
+		return ResponseUtil.getSuccessResultString();
+	 
+	}
+	
+	
+	/**
+	 * Update the question committed from client
+	 * @return 
+	 */
+	@RequestMapping(value="/update", method=RequestMethod.POST, produces = "text/plain;charset=UTF-8")
+	@ResponseBody
+	public String updateQuestion( @Valid Question question, BindingResult result){
+		
+		if (result.hasErrors()) {
+			return JSRErrorUtil.getErrorString(result);
+	    }
+		
+		try{
+			questionMapper.updateQuestion(question);
+		}catch(Exception e){
+			e.printStackTrace();
+			return ResponseUtil.getFailResultString("更新过程中出错！");
 		}
 		return ResponseUtil.getSuccessResultString();
 	 

@@ -20,10 +20,26 @@
 		ID, TYPE, CONTENT, IMAGEVIDEOPATH, CHOOSEA, CHOOSEB, CHOOSEC, CHOOSED, ANSWER, REMARK
 	</sql>
 	
+	<select id="allSubject1Questions" resultMap="QuestionResultMap">
+		SELECT 
+			<include refid="Question_Column_List" />
+		FROM  QUESTION 
+		WHERE TYPE='1'
+		ORDER BY ID ASC
+	</select>
+	
+	<select id="allSubject4Questions" resultMap="QuestionResultMap">
+		SELECT 
+			<include refid="Question_Column_List" />
+		FROM  QUESTION 
+		WHERE TYPE='4'
+		ORDER BY ID ASC
+	</select>
+	
 	<select id="findAllQuestions" resultMap="QuestionResultMap">
 		SELECT 
 			<include refid="Question_Column_List" />
-		FROM  QUESTION
+		FROM  QUESTION ORDER BY ID ASC
 	</select>
 	
 	<select id="findAllQuestionsEqual" resultMap="QuestionResultMap" parameterType="com.charmyin.xinqiang.vo.Question">
@@ -38,6 +54,7 @@
 					AND CONTENT=#{content, jdbcType=VARCHAR}
 				</if>
 		</trim>
+		ORDER BY ID ASC
 	</select>
 	
 	<select id="findAllQuestionsLike" parameterType="com.charmyin.xinqiang.vo.Question"  resultMap="QuestionResultMap" >
@@ -52,6 +69,7 @@
 					AND CONTENT LIKE '%'||#{content, jdbcType=VARCHAR}||'%'
 				</if>
 		</trim>
+		ORDER BY ID ASC
 	</select>
 
 	<insert id="insertQuestion" parameterType="com.charmyin.xinqiang.vo.Question">

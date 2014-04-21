@@ -14,6 +14,18 @@ import com.charmyin.xinqiang.vo.Question;
 public interface QuestionMapper {
 	
 	/**
+	 * Get all Subject1 questions from question role 
+	 * @return
+	 */
+	public List<Question> allSubject1Questions();
+	
+	/**
+	 * Get all Subject4 questions from question role 
+	 * @return
+	 */
+	public List<Question> allSubject4Questions();
+	
+	/**
 	 * Get all questions from question role 
 	 * @return
 	 */
