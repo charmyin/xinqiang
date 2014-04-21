@@ -12,11 +12,28 @@ if(inputTypeValue=="1"){
 	itemName = "科目四模拟测试";
 }
 
+function initPage(){
+	currentIndex+=1;
+	correctCount+=1;
+	$("#correctCount").html(correctCount);
+	$("#progressCount").html(currentIndex+"/"+totalQuestionCount);
+}
+var myInterval;
+function myTimer(){
+	timerSeconds--;
+	if(timerSeconds==0){
+		//Do something
+	}
+	var minutes = Math.floor(timerSeconds/60);
+	var seconds = timerSeconds%60;
+	$("#timerCount").html(minutes+"分"+seconds+"秒");
+}
+
 $(function(){
 	$("#spanTitle").text(itemName);
 	$("title").html(itemName);
 	$("#nextQuestion").click(function(){
-		alert("ddddddd");
+		initPage();
 	});
-	
+	myInterval=setInterval(function(){myTimer()},1000);
 });

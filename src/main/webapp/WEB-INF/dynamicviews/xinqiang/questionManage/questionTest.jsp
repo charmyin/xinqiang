@@ -54,10 +54,10 @@
 						<h4><span class="label label-info">用户：小明i金将军</span>&nbsp;<span class="label label-info" id="spanTitle">模拟科目一</span></h4>
 					</a>
 					<a class="list-group-item" >
-						<span class="label label-primary">进度：12/100</span>
-						<span class="label label-success">正确：6</span>
-						<span class="label label-danger">错误 : 6</span>
-						<span class="label label-warning">时间：12分11秒</span>
+						<span class="label label-primary">进度：<strong id="progressCount">1/100</strong></span>
+						<span class="label label-success">正确：<strong id="correctCount">0</strong></span>
+						<span class="label label-danger">错误 : <strong id="wrongCount">0</strong></span>
+						<span class="label label-warning">时间：<strong id="timerCount">45分00秒</strong></span>
 					</a>
 		            <a class="list-group-item active" style="color:#fff; font-size:17px; font-weight:bold;">
 			              <strong>1. &nbsp;</strong>Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.
@@ -141,10 +141,13 @@
     	var inputTypeValue = "${subjectType}";
     	//总题目数量
     	var totalQuestionCount=0;
+    	var timerSeconds;
     	if(inputTypeValue=="1"){
     		totalQuestionCount=100;
+    		timerSeconds=2700;
     	}else{
     		totalQuestionCount=50;
+    		timerSeconds=1800;
     	}
     	//当前题目位置
     	var currentIndex=1;
