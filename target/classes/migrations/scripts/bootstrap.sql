@@ -126,7 +126,15 @@ comment on column question.chooseD is 'D选项答案';
 comment on column question.answer is '正确答案:A,B,C, 如果为判断题，则A为正确，B为错误';
 comment on column question.remark is '答案注解';
 
- 
+create table score(id serial not null, type varchar(4) not null, score smallint not null, userid integer not null,  testTime timestamp not null, primary key(id));
+comment on table score is '成绩表';
+comment on column score.id is '成绩唯一标识';
+comment on column score.type is '1代表科目一， 4代表科目4';
+comment on column score.score is '得分';
+comment on column score.userid is '用户id，外键';
+comment on column score.testTime is '考试提交时间';
+
+
 --create table basic_role_menu(role_name varchar(50) not null, menu_id int not null, primary key(role_name, menu_id));
 --alter table basic_role_menu add constraint fk_basic_role_menu_role_name foreign key (role_name) references shiro_role(name);
 --alter table basic_role_menu add constraint fk_basic_role_menu_menu_id foreign key (menu_id) references basic_menu(id);

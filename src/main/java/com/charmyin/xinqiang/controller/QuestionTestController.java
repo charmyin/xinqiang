@@ -1,23 +1,31 @@
 package com.charmyin.xinqiang.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.charmyin.cmstudio.basic.authorize.vo.User;
+import com.charmyin.cmstudio.common.utils.JSRErrorUtil;
 import com.charmyin.cmstudio.utils.NumberUtils;
+import com.charmyin.cmstudio.web.utils.ResponseUtil;
 import com.charmyin.xinqiang.persistence.QuestionMapper;
+import com.charmyin.xinqiang.persistence.ScoreMapper;
 import com.charmyin.xinqiang.vo.Question;
+import com.charmyin.xinqiang.vo.Score;
 
 /**
  * Manage Questions
@@ -30,6 +38,15 @@ public class QuestionTestController {
 	
 	@Resource
 	private QuestionMapper questionMapper;
+	
+	@Resource
+	private ScoreMapper scoreMapper;
+	
+	@RequestMapping(value="/{subjectType}/welcome", method=RequestMethod.GET)
+	public String manage(@PathVariable String subjectType, Model model){
+		model.addAttribute("subjectType", subjectType);
+		return "/xinqiang/questionManage/questionWelcome";
+	}
 	
 	@RequestMapping(value="/{subjectType}/test", method=RequestMethod.GET)
 	public String manage(@PathVariable String subjectType, Model model, HttpServletRequest request){
@@ -58,7 +75,7 @@ public class QuestionTestController {
 			subject4QuestionListObj = request.getServletContext().getAttribute("subject4QuestionListObj");
 			if(subject4QuestionListObj==null){
 				subject4QuestionListObj = questionMapper.allSubject4Questions();
-				request.getServletContext().setAttribute("subject1QuestionListObj", subject4QuestionListObj);
+				request.getServletContext().setAttribute("subject4QuestionListObj", subject4QuestionListObj);
 			}
 			questionCount =( (List)subject4QuestionListObj).size();
 			//存储1-1000的题目数索引，每考一题，将索引减去一个，再在剩余的数中选取随机数，作为下一题。

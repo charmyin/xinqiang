@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.charmyin.xinqiang.persistence.ScoreMapper">
+	<resultMap id="ScoreResultMap" type="com.charmyin.xinqiang.vo.Score">
+		<id column="ID" property="id" jdbcType="INTEGER"/>
+		<result column="TYPE" property="type" jdbcType="VARCHAR"/>
+		<result column="SCORE" property="score" jdbcType="INTEGER"/>
+		<result column="USERID" property="userId" jdbcType="INTEGER"/>
+		<result column="TESTTIME" property="testTime" jdbcType="TIMESTAMP"/>
+	</resultMap>
+
+	<sql id="Score_Column_List" >
+		ID, TYPE, SCORE, USERID, TESTTIME
+	</sql>
+	
+	<select id="findScoreByUserIdAndType" resultMap="ScoreResultMap" parameterType="com.charmyin.xinqiang.vo.Score">
+		SELECT 
+			<include refid="Score_Column_List" />
+		FROM  SCORE 
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+				<if test="type != null">
+					AND TYPE = #{type, jdbcType=VARCHAR}
+				</if>
+				<if test="userId != null">
+					AND USERID=#{userId, jdbcType=INTEGER}
+				</if>
+		</trim>
+		ORDER BY TESTTIME ASC
+	</select>
+	
+	<insert id="insertScore" parameterType="com.charmyin.xinqiang.vo.Score">
+	INSERT INTO SCORE 
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<!-- <if test="id != null">
+				ID,
+			</if> -->
+			<if test="type != null">
+				TYPE,
+			</if>
+			<if test="score != null">
+				SCORE,
+			</if>
+			<if test="userId != null">
+				USERID,
+			</if>
+			<if test="testTime != null">
+				TESTTIME,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<!-- <if test="id != null">
+				#{id, jdbcType=BIGINT},
+			</if> -->
+			<if test="type != null">
+				#{type, jdbcType=VARCHAR},
+			</if>
+			<if test="score != null">
+				#{score, jdbcType=INTEGER},
+			</if>
+			<if test="userId != null">
+				#{userId, jdbcType=INTEGER},
+			</if>
+			<if test="testTime != null">
+				#{testTime, jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+</insert>
+	
+<!-- 	<select id="findScoresByID" parameterType="int"  resultMap="ScoreResultMap" >
+		SELECT 
+			<include refid="Score_Column_List" />
+		FROM  QUESTION
+		WHERE ID = #{id, jdbcType=INTEGER}
+	</select> -->
+</mapper>

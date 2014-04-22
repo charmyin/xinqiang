@@ -26,6 +26,9 @@
     		font-size:15px;
     		font-weight:bold;	
     	}
+    	.innerTitle{
+    		margin:0 10px 0 10px
+    	}
     </style>
 
     <!-- Bootstrap core CSS -->
@@ -47,11 +50,9 @@
   </head>
 
   <body role="document">
-	
-	
-		<div class="list-group">
+		<div class="list-group" id="chooseOptions">
 					<a class="list-group-item" style="text-align:center;" >
-						<h4><span class="label label-info">用户：小明i金将军</span>&nbsp;<span class="label label-info" id="spanTitle">模拟科目一</span></h4>
+						<h4><span class="label label-info">用户：金将军</span>&nbsp;<span class="label label-info" id="spanTitle">模拟科目一</span></h4>
 					</a>
 					<a class="list-group-item" >
 						<span class="label label-primary">进度：<strong id="progressCount">1/100</strong></span>
@@ -59,34 +60,9 @@
 						<span class="label label-danger">错误 : <strong id="wrongCount">0</strong></span>
 						<span class="label label-warning">时间：<strong id="timerCount">45分00秒</strong></span>
 					</a>
-		            <a class="list-group-item active" style="color:#fff; font-size:17px; font-weight:bold;">
-			              <strong>1. &nbsp;</strong>Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.
+		            <a class="list-group-item active" style="color:#fff; font-size:17px; font-weight:bold;" id="questionContent">
 		            </a>
-		            <a class="list-group-item">
-						  <label>
-						    <input type="checkbox" value="">
-						    	A.  Option one is this and that&mdash;be sure to include why it's greatOption one is this and that&mdash;be sure to include why it's gre
-						  </label>
-					</a>
-		            <a class="list-group-item">
-						  <label>
-						    <input type="checkbox" value="">
-						    	B.  Optand that&mdash;be sure to include why it's gre
-						  </label>
-					</a>
-					<a class="list-group-item">
-						  <label>
-						    <input type="checkbox" value="">
-						    	C.  Option one is this and that&mdash;be sure to include why it's gre
-						  </label>
-					</a>
-					<a class="list-group-item">
-						  <label>
-						    <input type="checkbox" value="">
-						    	D.  Option one is this and that&mdash;be sure to inclube sure to include why it's gre
-						  </label>
-					</a>
-					
+		             
 					<div class="list-group-item" style="text-align:center;">
 						<a class="btn btn-primary btn-lg" role="button" id="nextQuestion">下一题</a>
 					</div>
@@ -143,11 +119,12 @@
     	var totalQuestionCount=0;
     	var timerSeconds;
     	if(inputTypeValue=="1"){
-    		totalQuestionCount=100;
+    		totalQuestionCount=5;
+    		//timerSeconds=6;
     		timerSeconds=2700;
     	}else{
-    		totalQuestionCount=50;
-    		timerSeconds=1800;
+    		totalQuestionCount=3;
+    		timerSeconds=10;
     	}
     	//当前题目位置
     	var currentIndex=1;
@@ -155,7 +132,6 @@
     	var wrongCount=0;
     	//正确数量
     	var correctCount=0;
-    	
     	
     </script>
     <script type="text/javascript" src="resources/js/xinqiang/questionManage/questionTest.js"></script>
