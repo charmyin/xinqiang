@@ -40,6 +40,14 @@ public class ResponseUtil {
 	}
 	
 	/**
+	 * Get the Success String return for ie
+	 * @return
+	 */
+	public static String getSuccessResultString(String msg){
+		return "{'suc':true, 'msg':'"+msg+"'}";
+	}
+	
+	/**
 	 * Get the failed String result for ie
 	 * @param msg
 	 * @return
@@ -53,6 +61,6 @@ public class ResponseUtil {
 	 * @return
 	 */
 	public static String getFailResultJsonString(String msgObj){
-		return "{'suc':false, 'errorMsg':"+msgObj+"}";
+		return "{'suc':false, 'errorMsg':'"+msgObj+"'}";
 	}
 }

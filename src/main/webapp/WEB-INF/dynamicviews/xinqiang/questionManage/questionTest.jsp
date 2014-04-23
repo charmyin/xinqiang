@@ -47,6 +47,9 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <link href="resources/vendor/videojs/video-js.css" rel="stylesheet">
+  	<script src="resources/vendor/videojs/video.js"></script>
+    
   </head>
 
   <body role="document">
@@ -62,7 +65,6 @@
 					</a>
 		            <a class="list-group-item active" style="color:#fff; font-size:17px; font-weight:bold;" id="questionContent">
 		            </a>
-		             
 					<div class="list-group-item" style="text-align:center;">
 						<a class="btn btn-primary btn-lg" role="button" id="nextQuestion">下一题</a>
 					</div>
@@ -119,7 +121,7 @@
     	var totalQuestionCount=0;
     	var timerSeconds;
     	if(inputTypeValue=="1"){
-    		totalQuestionCount=5;
+    		totalQuestionCount=10;
     		//timerSeconds=6;
     		timerSeconds=2700;
     	}else{

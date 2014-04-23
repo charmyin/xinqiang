@@ -22,18 +22,26 @@
 		<!--Start importing the jeasyui files -->
 		<cmstudio:importJsCss name="jeasyui" version="${jeasyui_version}"/>
 		<!--End importing the jeasyui files -->
-		<!--Start importing the ztree files -->
-		<cmstudio:importJsCss name="ztree" version="${ztree_version}"/>
-		<!--End importing the ztree files -->
-		
+		<style type="text/css">
+		 	deletePicBtn {
+			 	style display:block;
+			 	text-align:center;
+		 	}
+		</style>
 		<script type="text/javascript">
 			var inputTypeValue = "${subjectType}";
 		</script>
-		
+		<script src="resources/vendor/jqueryupload/js/vendor/jquery.ui.widget.js"></script>
+		<script src="resources/vendor/jqueryupload/js/jquery.fileupload.js"></script>
+		<link href="resources/vendor/videojs/video-js.css" rel="stylesheet">
+  		<script src="resources/vendor/videojs/video.js"></script>
 		<script type="text/javascript" src="resources/js/xinqiang/questionManage/questionManage.js"></script>
-		
 	</head>
 	<body>
+<!-- 	<video id="video1" class="video-js vjs-default-skin" width="640" height="480"
+        data-setup='{"controls" : true, "autoplay" : true, "preload" : "auto"}'>
+        <source src="upload/1-1.flv" type="video/x-flv">
+    </video> -->
 		 	    <table id="questionGrid">
 			    </table>
 			    <div id="toolbar">
@@ -41,7 +49,7 @@
 			        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editForm()">修改</a>
 			        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroySelectedItems()">删除</a>
 			    </div>
-			    <div id="dlg" class="easyui-dialog" data-options="closed:'true',buttons:'#dlg-buttons'">
+			    <div id="dlg" class="easyui-dialog" data-options="closed:'true',buttons:'#dlg-buttons',modal: true">
 			        <form id="fm" method="post" >
 			            <div class="fitem">
 			                <label>题干：</label>
@@ -50,9 +58,10 @@
 			                <input type="hidden" id="questionAnswer" name="answer" />
 			                <input type="hidden" id="inputtype" name="type" />
 			            </div>
-			            <div class="fitem">
+			            <div class="fitem" id="uploaddiv">
 			                <label>上传图片：</label>
-			                <input id="input_parentId" class="easyui-validatebox" readonly>
+			        		<input id="imageVideoPath" name="imageVideoPath" type="hidden">
+			                <input id="fileupload" type="file" name="myfile" data-url="question/fileUpload">
 			            </div>
 			            <div class="fitem">
 			                <label>
@@ -86,7 +95,7 @@
 			    </div>
 			    <div id="dlg-buttons">
 				        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveForm()">保存</a>
-				        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">取消</a>
+				        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">关闭</a>
 				</div>
 	</body>
 </html>

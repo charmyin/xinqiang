@@ -73,6 +73,9 @@
 	</select>
 
 	<insert id="insertQuestion" parameterType="com.charmyin.xinqiang.vo.Question">
+	  <selectKey order="AFTER" keyProperty="id" resultType="integer">
+	    SELECT currval('question_id_seq')
+	  </selectKey>
 		INSERT INTO QUESTION 
 			<trim prefix="(" suffix=")" suffixOverrides=",">
 				<!-- <if test="id != null">

@@ -1,7 +1,7 @@
 /***
  * author: charmyin
  * datetime: 2013-2-26 21:00
- * title: Control the organizationManage.jsp ~
+ * title: Control the scoreManage.jsp ~
  ***/
 
 //Global the item name

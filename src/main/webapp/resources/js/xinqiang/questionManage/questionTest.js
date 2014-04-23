@@ -55,6 +55,9 @@ function postScore(message){
 }
 
 var currentQuestion;
+var videoIndex=0;
+var videoFlag=false;
+var imageFlag=false;
 
 function setQuestion(){
 	
@@ -82,7 +85,35 @@ function setQuestion(){
 				var contenta ='	<a class="list-group-item chooseItems"><label><input class="answerClass" type="checkbox" name="answera" value="A"/><strong class="innerTitle">A.</strong>'+msg.choosea+'</label></a>';
 				$("#questionContent").after(contenta);
 			}
-			 
+			if(videoFlag){
+			//清理所有的flv播放器
+				videoFlag=false;
+				$(".imgVideoShow").remove();
+				$.each(_V_.players, function (key, player) { 
+				    if (player.isReady) { player.destroy(); } 
+				    else { delete _V_.players[player.id]; } 
+				}); 
+			}
+			if(imageFlag){
+				imageFlag=false;
+				$(".imgVideoShow").remove();
+			}
+			if(msg.imageVideoPath.indexOf("jpg") > -1){
+				var imageTag = "<div class='list-group-item imgVideoShow'><img style='width:300px; height:160px;' src='upload/"+msg.imageVideoPath+"' /></div>";
+				$("#questionContent").after(imageTag);
+				imageFlag=true;
+			}
+			
+			if(msg.imageVideoPath.indexOf("flv") > -1){
+				videoIndex++;
+				videoFlag=true;
+				var videoTag = '<div class="list-group-item imgVideoShow"><video id="video'+videoIndex+'" class="video-js vjs-default-skin imgVideoShow" width="360" height="150"><source src=upload/'+msg.imageVideoPath+' type="video/x-flv"></video></div>';
+				$("#questionContent").after(videoTag);
+				videojs("video"+videoIndex,{ "controls": true, "autoplay": false, "preload": "auto" }).ready(function(){
+					  myPlayer = this;
+					  myPlayer.play();
+				});
+			}
 		  });
 }
 var answerFinal="";
@@ -113,6 +144,9 @@ function compareAnswer(){
 }
 
 $(function(){
+	
+	videojs.options.flash.swf = "resources/vendor/videojs/video-js.swf";
+	
 	$("#spanTitle").text(itemName);
 	$("title").html(itemName);
 	$("#nextQuestion").click(function(){

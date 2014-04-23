@@ -3,6 +3,8 @@
  * datetime: 2013-2-26 21:00
  * title: Control the organizationManage.jsp ~
  ***/
+//当前新增或者修改的问题编号
+var currentId;
 
 //Global the item name
 var itemName="";
@@ -42,34 +44,103 @@ function loadGrid(){
 		}
 	});
 }
+var myPlayer;
+var videoIndex=0;
+function loadImgOrVideo(imgName){
+	
+	if(imgName.indexOf("flv") > -1){
+		videoIndex++;
+		$('<video id="video'+videoIndex+'" class="video-js vjs-default-skin imgVideoShow" width="300" height="150"><source src=upload/'+imgName+' type="video/x-flv"></video>').appendTo("#uploaddiv");
+		//var myPlayer = videojs('video1');
+		videojs("video"+videoIndex,{ "controls": true, "autoplay": false, "preload": "auto" }).ready(function(){
+			  myPlayer = this;
+			  // EXAMPLE: Start playing the video.
+			  myPlayer.play();
+			});
+	}else{
+		$("<img class='imgVideoShow' style='width:200px; height:100px;' src='upload/"+imgName+"' />").appendTo("#uploaddiv");
+	}
+	$("<button class='deletePicBtn'/>").text("删除").appendTo("#uploaddiv").click(function(event){
+		event.preventDefault();
+		$.each(_V_.players, function (key, player) { 
+		    if (player.isReady) { player.destroy(); } 
+		    else { delete _V_.players[player.id]; } 
+		}); 
+		$(".imgVideoShow").remove();
+	    $("#imageVideoPath").val("");
+	    $(this).remove();
+	    return;
+	});;    
+}
 
 /********************************************************Initial the page*****************************************************/
 $(function(){
+	
+	videojs.options.flash.swf = "resources/vendor/videojs/video-js.swf";
+		
 	//Disable cache
 	jQuery.ajaxSetup({ cache: false });
-	//载入成功后，刷新左边树
-	//Load the organization tree
-	//loadOrganizationTree();
-	//Load grid
 	loadGrid();
 });
 
+
+function initUploadImg(){
+	$('#fileupload').fileupload({
+		singleFileUploads:true,
+        formData: {questionId: currentId, subjectType:inputTypeValue},
+        done: function (e, data) {
+        	//alert("dddddd");
+        	$(".imgVideoShow").remove();
+        	$(".deletePicBtn").remove();
+        	var result = eval("("+data.result+")");
+        	$("#imageVideoPath").val(result.msg);
+        	//回显图片或者视频
+        	loadImgOrVideo(result.msg);
+        },
+        add: function (e, data) {
+        	 data.submit();
+        }
+    });
+}
 //OrganizationCrud dialog
 var url;
 
 function newForm(){
+	$(".imgVideoShow").remove();
+	$(".deletePicBtn").remove();
+	currentId=0;
     $('#dlg').dialog('open').dialog('setTitle','新建'+itemName+'');
     $('#fm').form('clear');
     url = 'question/save';
     $("#inputtype").val(inputTypeValue);
+    $("#uploaddiv").hide();
+   // initUploadImg();
 }
 function editForm(){
 	 $('#fm').form('clear');
+	 $(".imgVideoShow").remove();
+	 $(".deletePicBtn").remove();
     var row = $('#questionGrid').datagrid('getSelected');
+  
+    currentId=row.id;
     if (row){
         $('#dlg').dialog('open').dialog('setTitle','修改'+itemName);
         $('#fm').form('load',row);
         url = 'question/update?id='+row.id;
+    }else {
+	    	$.messager.show({
+	        	title: '提示<span style="color:red;">!</span>',
+	            msg: "<div style='text-align:center;margin-top:10px;'>请选择要修改的记录！</div>",
+	            style:{
+	        		right:'',
+	        		top:document.body.scrollTop+document.documentElement.scrollTop,
+	        		bottom:''
+	        	}
+	        });
+	    	return;
+    }
+    if(row.imageVideoPath){
+    	loadImgOrVideo(row.imageVideoPath);
     }
     if(row.answer.indexOf('A') > -1){
     	$( "input[name=answera]" ).attr('checked', true);
@@ -84,6 +155,8 @@ function editForm(){
     	$( "input[name=answerd]" ).attr('checked', true);
     }
     //$( "td:eq( 2 )" )
+    $("#uploaddiv").show();
+    initUploadImg();
 }
 
 function saveForm(){
@@ -104,7 +177,6 @@ function saveForm(){
         		bottom:''
         	}
         });
-		
 		return;
 		
 	}else{
@@ -118,18 +190,11 @@ function saveForm(){
         },
         success: function(resultString){
         	var result = eval("("+resultString+")");
-            if (result.errorMsg){
-                $.messager.show({
-                	title: '提示<span style="color:red;">!</span>',
-                    msg: "<div style='text-align:center;margin-top:10px;'>"+result.errorMsg+"</div>",
-                    style:{
-                		right:'',
-                		top:document.body.scrollTop+document.documentElement.scrollTop,
-                		bottom:''
-                	}
-                });
-            } else {
-                $('#dlg').dialog('close');        // close the dialog
+            if (result.suc){
+              //  $('#dlg').dialog('close');        // close the dialog
+            	//alert(result.msg);
+            	url = 'question/update?id='+result.msg;
+            	currentId=result.msg;
                 $.messager.show({
                 	title: '提示',
                     msg: "<div style='text-align:center;margin-top:10px;'>保存成功!</div>",
@@ -140,6 +205,18 @@ function saveForm(){
                 	}
                 });
                 $('#questionGrid').datagrid('reload');
+                $("#uploaddiv").show();
+                initUploadImg();
+            } else {
+            	$.messager.show({
+                	title: '提示<span style="color:red;">!</span>',
+                    msg: "<div style='text-align:center;margin-top:10px;'>"+result.errorMsg+"</div>",
+                    style:{
+                		right:'',
+                		top:document.body.scrollTop+document.documentElement.scrollTop,
+                		bottom:''
+                	}
+                });
             }
         }
     });
@@ -181,7 +258,6 @@ function destroySelectedItems(){
                         		bottom:''
                         	}
                         });
-                        
                     }
                 });
             }
