@@ -24,7 +24,7 @@ function loadGrid(){
 		collapsible:true,
 		title:"试题库库管理&nbsp----&nbsp"+itemName,
 		rownumbers:true,
-		singleSelect:true,
+		singleSelect:false,
 		pageSize:8,
 	    pageList:[16,32,48,64],
 		columns:[[
@@ -117,12 +117,24 @@ function newForm(){
    // initUploadImg();
 }
 function editForm(){
-	 $('#fm').form('clear');
+    var row = $('#questionGrid').datagrid('getSelected');
+    var rows = $('#questionGrid').datagrid('getSelections');
+    if(rows.length>1){
+    	$.messager.show({
+        	title: '提示<span style="color:red;">!</span>',
+            msg: "<div style='text-align:center;margin-top:10px;'>只能选择一条记录进行修改！</div>",
+            style:{
+        		right:'',
+        		top:document.body.scrollTop+document.documentElement.scrollTop,
+        		bottom:''
+        	}
+        });
+    	return;
+    }
+    currentId=row.id;
+     $('#fm').form('clear');
 	 $(".imgVideoShow").remove();
 	 $(".deletePicBtn").remove();
-    var row = $('#questionGrid').datagrid('getSelected');
-  
-    currentId=row.id;
     if (row){
         $('#dlg').dialog('open').dialog('setTitle','修改'+itemName);
         $('#fm').form('load',row);
@@ -235,7 +247,7 @@ function destroySelectedItems(){
             			idsString+=(rows[i].id+',');
             		}
             	}
-            	$.post('organization/deleteByIds',{ids:idsString},function(result){
+            	$.post('question/deleteByIds',{ids:idsString},function(result){
                     if (result.suc){
                     	$.messager.show({
                         	title: '提示',
@@ -246,8 +258,7 @@ function destroySelectedItems(){
                         		bottom:''
                         	}
                         });
-                    	//Reload left tree and refresh the datagrid
-                    	loadOrganizationTree();
+                    	$('#questionGrid').datagrid('reload');
                     } else {
                         $.messager.show({    // show error message
                             title: '提示<span style="color:red;">!</span>',

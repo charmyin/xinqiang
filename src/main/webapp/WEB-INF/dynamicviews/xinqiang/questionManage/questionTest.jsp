@@ -29,6 +29,9 @@
     	.innerTitle{
     		margin:0 10px 0 10px
     	}
+    	.imgVideoShow{
+    		text-align:center;'
+    	}
     </style>
 
     <!-- Bootstrap core CSS -->
@@ -126,7 +129,7 @@
     		timerSeconds=2700;
     	}else{
     		totalQuestionCount=3;
-    		timerSeconds=10;
+    		timerSeconds=1800;
     	}
     	//当前题目位置
     	var currentIndex=1;

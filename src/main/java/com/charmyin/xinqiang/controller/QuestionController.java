@@ -3,7 +3,7 @@ package com.charmyin.xinqiang.controller;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.Random;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +12,7 @@ import javax.validation.Valid;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,11 +22,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.charmyin.cmstudio.common.utils.ArrayUtil;
 import com.charmyin.cmstudio.common.utils.JSRErrorUtil;
 import com.charmyin.cmstudio.web.utils.ResponseUtil;
 import com.charmyin.cmstudio.web.utils.pagination.page.Pagination;
 import com.charmyin.cmstudio.web.utils.pagination.page.PaginationResultVO;
 import com.charmyin.xinqiang.persistence.QuestionMapper;
+import com.charmyin.xinqiang.util.UpdateContextQuestion;
 import com.charmyin.xinqiang.vo.Question;
 
 /**
@@ -66,7 +69,7 @@ public class QuestionController {
 	 */
 	@RequestMapping(value="/save", method=RequestMethod.POST, produces = "text/plain;charset=UTF-8")
 	@ResponseBody
-	public String saveQuestion( @Valid Question question, BindingResult result){
+	public String saveQuestion( @Valid Question question, BindingResult result, HttpServletRequest request){
 		
 		if (result.hasErrors()) {
 			return JSRErrorUtil.getErrorString(result);
@@ -78,6 +81,9 @@ public class QuestionController {
 			e.printStackTrace();
 			return ResponseUtil.getFailResultString("保存过程中出错！");
 		}
+		
+		//更新context中的题库
+		UpdateContextQuestion.updateContextQuestion(questionMapper, request);
 		return ResponseUtil.getSuccessResultString(question.getId().toString());
 	 
 	}
@@ -89,7 +95,7 @@ public class QuestionController {
 	 */
 	@RequestMapping(value="/update", method=RequestMethod.POST, produces = "text/plain;charset=UTF-8")
 	@ResponseBody
-	public String updateQuestion( @Valid Question question, BindingResult result){
+	public String updateQuestion( @Valid Question question, BindingResult result, HttpServletRequest request){
 		
 		if (result.hasErrors()) {
 			return JSRErrorUtil.getErrorString(result);
@@ -101,6 +107,9 @@ public class QuestionController {
 			e.printStackTrace();
 			return ResponseUtil.getFailResultString("更新过程中出错！");
 		}
+		//更新context中的题库
+		UpdateContextQuestion.updateContextQuestion(questionMapper, request);
+		
 		return ResponseUtil.getSuccessResultString(question.getId().toString());
 	 
 	}
@@ -152,5 +161,45 @@ public class QuestionController {
     	return ResponseUtil.getSuccessResultString(originalFilename); 
     }  
 
+	/**
+	 * Delete by ids string split by ',' ; Example:"1,2,3,4,5" 
+	 * @param ids eg."1,2,3,4,5"
+	 * @return
+	 */
+	@RequestMapping(value="/deleteByIds", method=RequestMethod.POST)
+	@ResponseBody
+	@Transactional
+	//TODO 长度异常，这里是否要去考虑,测试的时候考虑
+	public Map<String, Object> deleteRoleByNames(@RequestParam("ids") String ids,  HttpServletRequest request){
+		//ids can not be null
+		if(ids==null || ids.isEmpty()){
+			Map<String, Object> map = ResponseUtil.getFailResultMap();
+			map.put("errorMsg", "删除数据，id不允许为空！");
+			return map;
+		}
+		
+		String[] idsArrayNotEmpty = ArrayUtil.removeEmptyString(ids.split(","));
+		
+		try{
+			for(int i=0; i<idsArrayNotEmpty.length;i++){
+				int idInt = Integer.parseInt(idsArrayNotEmpty[i]);
+				questionMapper.deleteQuestion(idInt);
+			}
+		}catch(NumberFormatException ne){
+			Map<String, Object> map = ResponseUtil.getFailResultMap();
+			map.put("errorMsg", "提交id值错误!");
+			return map;
+		}catch(Exception e){
+			Map<String, Object> map = ResponseUtil.getFailResultMap();
+			map.put("errorMsg", "删除过程中出错！");
+			return map;
+		}
+		//更新context中的题库
+		UpdateContextQuestion.updateContextQuestion(questionMapper, request);
+		
+		return ResponseUtil.getSuccessResultMap();
+	}
+
+	
 	
 }

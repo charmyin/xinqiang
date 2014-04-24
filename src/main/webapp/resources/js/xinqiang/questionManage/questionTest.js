@@ -70,21 +70,47 @@ function setQuestion(){
 			$("#questionContent").html("<strong>"+currentIndex+".</strong>"+msg.content);
 			//判断题
 			if(msg.choosec=="" && msg.choosed==""){
-				var contentb ='	<a class="list-group-item chooseItems"><label><input class="answerClass" type="radio" name="answerradio" value="B"/><strong class="innerTitle">错误.</strong></label></a>';
+				var contentb ='	<a class="list-group-item chooseItems radioChooseItems"><label><input class="answerClass" type="radio" name="answerradio" value="B"/><strong class="innerTitle">错误.</strong></label></a>';
 				$("#questionContent").after(contentb);
-				var contenta ='	<a class="list-group-item chooseItems"><label><input class="answerClass" type="radio" name="answerradio" value="A"/><strong class="innerTitle">正确.</strong>'+msg.choosea+'</label></a>';
+				var contenta ='	<a class="list-group-item chooseItems radioChooseItems"><label><input class="answerClass" type="radio" name="answerradio" value="A"/><strong class="innerTitle">正确.</strong>'+msg.choosea+'</label></a>';
 				$("#questionContent").after(contenta);
 			}else{
+				if(inputTypeValue=="4"){
 				//选择题
-				var contentd ='	<a class="list-group-item chooseItems"><label><input class="answerClass" type="checkbox" name="answerd" value="D"/><strong class="innerTitle">D.</strong>'+msg.choosed+'</label></a>';
-				$("#questionContent").after(contentd);
-				var contentc ='	<a class="list-group-item chooseItems"><label><input class="answerClass" type="checkbox" name="answerc" value="C"/><strong class="innerTitle">C.</strong>'+msg.choosec+'</label></a>';
-				$("#questionContent").after(contentc);
-				var contentb ='	<a class="list-group-item chooseItems"><label><input  class="answerClass" type="checkbox" name="answerb" value="B"/><strong class="innerTitle">B.</strong>'+msg.chooseb+'</label></a>';
-				$("#questionContent").after(contentb);
-				var contenta ='	<a class="list-group-item chooseItems"><label><input class="answerClass" type="checkbox" name="answera" value="A"/><strong class="innerTitle">A.</strong>'+msg.choosea+'</label></a>';
+					var contentd ='	<a class="list-group-item chooseItems checkboxChooseItems"><label><input class="answerClass" type="checkbox" name="answerd" value="D"/><strong class="innerTitle">D.</strong>'+msg.choosed+'</label></a>';
+					$("#questionContent").after(contentd);
+					var contentc ='	<a class="list-group-item chooseItems checkboxChooseItems"><label><input class="answerClass" type="checkbox" name="answerc" value="C"/><strong class="innerTitle">C.</strong>'+msg.choosec+'</label></a>';
+					$("#questionContent").after(contentc);
+					var contentb ='	<a class="list-group-item chooseItems checkboxChooseItems"><label><input  class="answerClass" type="checkbox" name="answerb" value="B"/><strong class="innerTitle">B.</strong>'+msg.chooseb+'</label></a>';
+					$("#questionContent").after(contentb);
+					var contenta ='	<a class="list-group-item chooseItems checkboxChooseItems"><label><input class="answerClass" type="checkbox" name="answera" value="A"/><strong class="innerTitle">A.</strong>'+msg.choosea+'</label></a>';
+				}else if(inputTypeValue=="1"){
+					//选择题
+					var contentd ='	<a class="list-group-item chooseItems radioChooseItems"><label><input class="answerClass" type="radio" name="answerd" value="D"/><strong class="innerTitle">D.</strong>'+msg.choosed+'</label></a>';
+					$("#questionContent").after(contentd);
+					var contentc ='	<a class="list-group-item chooseItems radioChooseItems"><label><input class="answerClass" type="radio" name="answerc" value="C"/><strong class="innerTitle">C.</strong>'+msg.choosec+'</label></a>';
+					$("#questionContent").after(contentc);
+					var contentb ='	<a class="list-group-item chooseItems radioChooseItems"><label><input  class="answerClass" type="radio" name="answerb" value="B"/><strong class="innerTitle">B.</strong>'+msg.chooseb+'</label></a>';
+					$("#questionContent").after(contentb);
+					var contenta ='	<a class="list-group-item chooseItems radioChooseItems"><label><input class="answerClass" type="radio" name="answera" value="A"/><strong class="innerTitle">A.</strong>'+msg.choosea+'</label></a>';
+
+				}
 				$("#questionContent").after(contenta);
 			}
+			
+			$(".radioChooseItems").click(function(){
+				$(this).find(".answerClass").prop("checked", true);
+			});
+			
+			$(".checkboxChooseItems").click(function(){
+				if($(this).find(".answerClass").attr("checked")){
+					$(this).find(".answerClass").attr("checked", false);
+				}else{
+					$(this).find(".answerClass").attr("checked",true);
+				}
+			});
+			
+			
 			if(videoFlag){
 			//清理所有的flv播放器
 				videoFlag=false;
@@ -107,7 +133,7 @@ function setQuestion(){
 			if(msg.imageVideoPath.indexOf("flv") > -1){
 				videoIndex++;
 				videoFlag=true;
-				var videoTag = '<div class="list-group-item imgVideoShow"><video id="video'+videoIndex+'" class="video-js vjs-default-skin imgVideoShow" width="360" height="150"><source src=upload/'+msg.imageVideoPath+' type="video/x-flv"></video></div>';
+				var videoTag = '<div class="list-group-item imgVideoShow"><video id="video'+videoIndex+'" class="video-js vjs-default-skin imgVideoShow" width="330" height="150"><source src=upload/'+msg.imageVideoPath+' type="video/x-flv"></video></div>';
 				$("#questionContent").after(videoTag);
 				videojs("video"+videoIndex,{ "controls": true, "autoplay": false, "preload": "auto" }).ready(function(){
 					  myPlayer = this;
@@ -162,4 +188,6 @@ $(function(){
 	myInterval=setInterval(function(){myTimer()},1000);
 	//初始化第一题
 	setQuestion();
+	
+	
 });
